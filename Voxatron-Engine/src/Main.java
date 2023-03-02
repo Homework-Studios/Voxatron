@@ -1,4 +1,4 @@
-import Input.Input;
+import input.Input;
 import render.Renderer;
 import window.Window;
 import com.raylib.java.Raylib;

@@ -1,6 +1,6 @@
-package Input;
+package input;
 
-import Input.Map.Mapping;
+import input.map.Mapping;
 import com.raylib.java.Raylib;
 import com.raylib.java.core.input.Keyboard;
 

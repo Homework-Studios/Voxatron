@@ -1,7 +1,7 @@
 package render.Scene.Types;
 
-import Input.Input;
-import Input.Map.Mapping;
+import input.Input;
+import input.map.Mapping;
 import render.Scene.Scene;
 import render.Scene.SceneManager;
 import render.Scene.SceneType;
