@@ -1,7 +1,7 @@
-package Render.Scene;
+package render.Scene;
 
-import Render.Scene.Types.Credits;
-import Render.Scene.Types.MainMenu;
+import render.Scene.Types.Credits;
+import render.Scene.Types.MainMenu;
 import com.raylib.java.Raylib;
 
 import java.util.ArrayList;

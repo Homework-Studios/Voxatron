@@ -1,6 +1,6 @@
 import Input.Input;
-import Render.Renderer;
-import Window.Window;
+import render.Renderer;
+import window.Window;
 import com.raylib.java.Raylib;
 public class Main {
 

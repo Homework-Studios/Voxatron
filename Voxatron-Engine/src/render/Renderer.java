@@ -1,7 +1,6 @@
-package Render;
+package render;
 
-import Input.Input;
-import Render.Scene.SceneManager;
+import render.Scene.SceneManager;
 import com.raylib.java.Raylib;
 import com.raylib.java.core.Color;
 

@@ -4,7 +4,6 @@ import Input.Map.Mapping;
 import com.raylib.java.Raylib;
 import com.raylib.java.core.input.Keyboard;
 
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 

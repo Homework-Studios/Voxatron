@@ -1,4 +1,4 @@
-package Render.Scene;
+package render.Scene;
 
 public enum SceneType {
     MAIN_MENU,

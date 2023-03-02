@@ -1,4 +1,4 @@
-package Render.Scene;
+package render.Scene;
 
 import com.raylib.java.Raylib;
 
