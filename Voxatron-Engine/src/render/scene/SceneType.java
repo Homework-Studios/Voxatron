@@ -2,7 +2,7 @@ package render.scene;
 
 public enum SceneType {
     MAIN_MENU,
-    GAME,
+    LEVEL,
     OPTIONS,
     CREDITS,
     EXIT

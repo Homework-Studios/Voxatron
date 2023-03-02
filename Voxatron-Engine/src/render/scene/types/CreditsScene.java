@@ -8,9 +8,9 @@ import render.scene.SceneType;
 import com.raylib.java.Raylib;
 import com.raylib.java.core.Color;
 
-public class Credits extends Scene {
+public class CreditsScene extends Scene {
 
-    public Credits() {
+    public CreditsScene() {
         super(SceneType.CREDITS);
     }
 

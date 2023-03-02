@@ -8,9 +8,9 @@ import render.scene.SceneType;
 import com.raylib.java.Raylib;
 import com.raylib.java.core.Color;
 
-public class MainMenu extends Scene {
+public class MainMenuScene extends Scene {
 
-    public MainMenu() {
+    public MainMenuScene() {
         super(SceneType.MAIN_MENU);
     }
 

@@ -1,7 +1,7 @@
 package render.scene;
 
-import render.scene.types.Credits;
-import render.scene.types.MainMenu;
+import render.scene.types.CreditsScene;
+import render.scene.types.MainMenuScene;
 import com.raylib.java.Raylib;
 
 import java.util.ArrayList;
@@ -16,8 +16,8 @@ public class SceneManager {
 
     public SceneManager() {
         instance = this;
-        addScene(new MainMenu());
-        addScene(new Credits());
+        addScene(new MainMenuScene());
+        addScene(new CreditsScene());
     }
 
     public void addScene(Scene scene) {
