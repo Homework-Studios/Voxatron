@@ -1,4 +1,4 @@
-package render.Scene;
+package render.scene;
 
 public enum SceneType {
     MAIN_MENU,

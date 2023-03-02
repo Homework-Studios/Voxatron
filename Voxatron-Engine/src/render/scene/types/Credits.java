@@ -1,10 +1,10 @@
-package render.Scene.Types;
+package render.scene.types;
 
 import input.Input;
 import input.map.Mapping;
-import render.Scene.Scene;
-import render.Scene.SceneManager;
-import render.Scene.SceneType;
+import render.scene.Scene;
+import render.scene.SceneManager;
+import render.scene.SceneType;
 import com.raylib.java.Raylib;
 import com.raylib.java.core.Color;
 

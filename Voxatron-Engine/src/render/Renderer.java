@@ -1,6 +1,6 @@
 package render;
 
-import render.Scene.SceneManager;
+import render.scene.SceneManager;
 import com.raylib.java.Raylib;
 import com.raylib.java.core.Color;
 
