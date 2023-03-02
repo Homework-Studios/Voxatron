@@ -2,7 +2,6 @@ package render.scene;
 
 import render.scene.types.CreditsScene;
 import render.scene.types.MainMenuScene;
-import com.raylib.java.Raylib;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +54,7 @@ public class SceneManager {
         return null;
     }
 
-    public void render(Raylib raylib) {
-        currentScene.render(raylib);
+    public void render() {
+        currentScene.render();
     }
 }

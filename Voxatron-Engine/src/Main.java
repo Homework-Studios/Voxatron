@@ -2,19 +2,17 @@ import input.Input;
 import level.LevelManager;
 import render.Renderer;
 import window.Window;
-import com.raylib.java.Raylib;
 public class Main {
 
     public static void main(String[] args) {
-        Raylib raylib = new Raylib();
 
-        new Input(raylib);
+        //new Input();
 
-        Window window = new Window(raylib);
+        Window window = new Window();
         window.init();
 
-        Renderer renderer = new Renderer(raylib);
-        renderer.begin();
+        //Renderer renderer = new Renderer();
+        //renderer.begin();
 
         new LevelManager();
     }

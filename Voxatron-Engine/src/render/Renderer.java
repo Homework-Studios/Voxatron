@@ -1,18 +1,18 @@
 package render;
 
+import com.raylib.Jaylib;
+import com.raylib.Raylib;
 import render.scene.SceneManager;
-import com.raylib.java.Raylib;
-import com.raylib.java.core.Color;
+
 
 public class Renderer {
 
-    Raylib raylib;
     SceneManager sceneManager = new SceneManager();
 
     boolean isRunning = false;
 
-    public Renderer(Raylib raylib) {
-        this.raylib = raylib;
+    public Renderer() {
+
     }
 
     public void begin() {
@@ -21,13 +21,13 @@ public class Renderer {
     }
 
     public void loop() {
-        while (isRunning && !raylib.core.WindowShouldClose()) {
-            raylib.core.BeginDrawing();
-            raylib.core.ClearBackground(Color.BLACK);
+        while (isRunning && !Raylib.WindowShouldClose()) {
+            Raylib.BeginDrawing();
+            Raylib.ClearBackground(Raylib.ColorFromHSV(0,0,0));
 
-            sceneManager.render(raylib);
+            sceneManager.render();
 
-            raylib.core.EndDrawing();
+            Raylib.EndDrawing();
         }
     }
 

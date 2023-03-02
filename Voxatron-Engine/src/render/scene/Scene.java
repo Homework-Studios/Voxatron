@@ -1,6 +1,5 @@
 package render.scene;
 
-import com.raylib.java.Raylib;
 
 public abstract class Scene {
 
@@ -10,5 +9,5 @@ public abstract class Scene {
         this.sceneType = sceneType;
     }
 
-    public abstract void render(Raylib raylib);
+    public abstract void render();
 }

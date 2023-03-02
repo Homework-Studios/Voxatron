@@ -1,27 +1,26 @@
 package input;
 
+import com.raylib.Raylib;
 import input.map.Mapping;
-import com.raylib.java.Raylib;
-import com.raylib.java.core.input.Keyboard;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.security.Key;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Input {
 
-    Raylib raylib;
-
     public static Input instance;
     public Map<Mapping, Integer> mappings = new HashMap<>();
 
-    public Input(Raylib raylib) {
-        this.raylib = raylib;
+    public Input() {
         instance = this;
         loadMappings();
     }
 
     public void loadMappings() {
-        mappings.put(Mapping.TOGGLE_SCENE, Keyboard.KEY_SPACE);
+        mappings.put(Mapping.TOGGLE_SCENE, KeyEvent.VK_SPACE);
     }
 
     public int findMapping(Mapping mapping) {
@@ -41,6 +40,6 @@ public class Input {
 
         if(key == -1) return false;
 
-        return raylib.core.IsKeyPressed(key);
+        return Raylib.IsKeyPressed(key);
     }
 }
