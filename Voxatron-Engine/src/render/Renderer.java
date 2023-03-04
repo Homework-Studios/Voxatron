@@ -4,10 +4,14 @@ import com.raylib.Raylib;
 import render.scene.SceneManager;
 import render.task.RenderTask;
 
+import static com.raylib.Jaylib.RED;
+
 
 public class Renderer {
 
     public static Renderer instance;
+
+    public boolean isDebugOverlay = false;
 
     SceneManager sceneManager = new SceneManager();
 
@@ -29,6 +33,12 @@ public class Renderer {
 
             sceneManager.update();
             sceneManager.render();
+
+            // Debug overlay
+            if(isDebugOverlay) {
+                // Draw a red dot in the middle of the screen
+                Raylib.DrawCircle(Raylib.GetScreenWidth() / 2, Raylib.GetScreenHeight() / 2, 5, RED);
+            }
 
             Raylib.EndDrawing();
         }
