@@ -24,7 +24,7 @@ public class MainMenuScene extends Scene {
     public void render() {
 
         if(Input.instance.isKeyPressed(Mapping.TOGGLE_SCENE)){
-            SceneManager.instance.setCurrentScene(SceneType.CREDITS);
+            SceneManager.instance.setCurrentScene(SceneType.LEVEL);
         }
 
        DrawText("Main Menu!", 10, 10, 20, WHITE);

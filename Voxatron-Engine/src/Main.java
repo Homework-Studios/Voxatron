@@ -13,7 +13,5 @@ public class Main {
 
         Renderer renderer = new Renderer();
         renderer.begin();
-
-        new LevelManager();
     }
 }

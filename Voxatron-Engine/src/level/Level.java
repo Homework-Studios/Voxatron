@@ -2,13 +2,14 @@ package level;
 
 import actor.Actor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Level {
 
     public LevelType levelType;
 
-    public List<Actor> actors = List.of();
+    public List<Actor> actors = new ArrayList<>();
 
     public Level(LevelType type) {
         this.levelType = type;
@@ -25,4 +26,6 @@ public abstract class Level {
     }
 
     public abstract void update();
+
+    public abstract void render();
 }

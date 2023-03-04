@@ -55,4 +55,8 @@ public class LevelManager {
     public void update() {
         currentLevel.update();
     }
+
+    public void render() {
+        currentLevel.render();
+    }
 }

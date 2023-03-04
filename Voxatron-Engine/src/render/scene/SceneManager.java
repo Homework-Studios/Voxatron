@@ -1,6 +1,7 @@
 package render.scene;
 
 import render.scene.types.CreditsScene;
+import render.scene.types.LevelScene;
 import render.scene.types.MainMenuScene;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class SceneManager {
     public SceneManager() {
         instance = this;
         addScene(new MainMenuScene());
+        addScene(new LevelScene());
         addScene(new CreditsScene());
     }
 
@@ -52,6 +54,10 @@ public class SceneManager {
             }
         }
         return null;
+    }
+
+    public void update() {
+        currentScene.update();
     }
 
     public void render() {
