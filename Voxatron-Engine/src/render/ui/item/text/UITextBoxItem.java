@@ -28,6 +28,7 @@ public class UITextBoxItem extends UIItem {
 
     @Override
     public void update() {
+        // This Libary Method is EXTREMLY BAD and doesnt work as it is supposed to
         Raylib.Vector2 textDimensions = MeasureTextEx(GetFontDefault(), text, ((UiTextRenderTask)renderables.get(0)).scale * 20, 2);
         Vector2 dimensions = new Vector2((float) (textDimensions.x() * 0.48), (float)(textDimensions.y()));
 
