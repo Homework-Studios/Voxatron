@@ -9,5 +9,7 @@ public abstract class Scene {
         this.sceneType = sceneType;
     }
 
+    public abstract void update();
+
     public abstract void render();
 }

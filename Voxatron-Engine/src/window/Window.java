@@ -17,19 +17,12 @@ public class Window {
         // Init window
         InitWindow(GetScreenWidth(), GetScreenHeight(), "Voxatron");
         SetTargetFPS(60);
-        //Todo: Fix image not loading correctly
-        SetWindowIcon(LoadImage("icon.png"));
+        ToggleFullscreen();
 
-        while (true) {
-            if (WindowShouldClose()) {
-                break;
-            }
+        String path = System.getProperty("user.dir") + "\\Voxatron-Engine\\src\\window\\icon.png";
+        SetWindowIcon(LoadImage(path));
 
-            BeginDrawing();
-            ClearBackground(ColorFromHSV(0, 0, 0));
-            DrawText("Hello World!", 190, 200, 20, ColorFromHSV(255, 255, 255));
-            EndDrawing();
-        }
+        //WARNING: HERE IS NOT THE PLACE TO RENDER ANYTHING. NO WHILE LOOP OR ANYTHING
     }
 
 }

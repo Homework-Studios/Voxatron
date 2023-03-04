@@ -10,6 +10,11 @@ public class LevelScene extends Scene {
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
     public void render() {
 
     }

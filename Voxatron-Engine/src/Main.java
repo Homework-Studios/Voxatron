@@ -6,13 +6,13 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //new Input();
+        new Input();
 
         Window window = new Window();
         window.init();
 
-        //Renderer renderer = new Renderer();
-        //renderer.begin();
+        Renderer renderer = new Renderer();
+        renderer.begin();
 
         new LevelManager();
     }
