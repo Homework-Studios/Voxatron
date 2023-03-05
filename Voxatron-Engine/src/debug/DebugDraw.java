@@ -11,6 +11,8 @@ public class DebugDraw {
 
     public static final int MAX_STRINGS = 100;
     public static final int MAX_DURATION = 800;
+    public long timePassed = 0;
+    public long lastTime = System.currentTimeMillis();
 
     public static DebugDraw instance;
 
@@ -23,19 +25,18 @@ public class DebugDraw {
     public void print(String string) {
         debugStrings.add(string);
 
+        lastTime = System.currentTimeMillis();
+        timePassed = 0;
+
         if (debugStrings.size() > MAX_STRINGS) {
             debugStrings.remove(0);
         }
     }
 
-    public long timePassed = 0;
-    public long lastTime = System.currentTimeMillis();
-
     public void render() {
-        if(debugStrings.size() == 0){
-            timePassed = 0;
+        if(debugStrings.size() == 0)
             return;
-        }
+
 
         // every MAX_DURATION milliseconds, remove the oldest string
         if (timePassed > MAX_DURATION && debugStrings.size() > 0) {
