@@ -1,38 +1,35 @@
-package render.ui.item.image;
+package render.ui.item.input;
 
 import com.raylib.Raylib;
 import math.Vector2;
+import render.task.ui.UiRoundBoxRenderTask;
 import render.task.ui.UiTextureRenderTask;
 import render.ui.box.BoxFilter;
 import render.ui.item.UIItem;
 import util.BoxLayoutUtil;
 
-import static com.raylib.Jaylib.*;
+import static com.raylib.Jaylib.DARKGRAY;
 
-public class UiImageItem extends UIItem {
+public class UIButtonItem extends UIItem {
 
-    public Raylib.Texture texture;
     public Vector2 position;
+    public Vector2 size;
     public BoxFilter filter;
 
-    public UiImageItem(Raylib.Texture texture, Vector2 position, BoxFilter filter) {
-        this.texture = texture;
+    public UIButtonItem(Vector2 position, Vector2 size, BoxFilter filter) {
         this.position = position;
+        this.size = size;
         this.filter = filter;
 
-        addTask(new UiTextureRenderTask(position, texture));
+        addTask(new UiRoundBoxRenderTask(position, size, 0.2f, 10, DARKGRAY));
     }
 
     @Override
     public void update() {
-        // Make the texture centered on the position
-        int textureWidth = texture.width();
-        int textureHeight = texture.height();
-
         Vector2 posOnScreen = BoxLayoutUtil.applyFilter(screen.position, screen.size, filter);
         Vector2 movedPosition = position.add(posOnScreen);
 
-        ((UiTextureRenderTask)tasks.get(0)).position = movedPosition.subtract(new Vector2(textureWidth * 0.5f, textureHeight * 0.5f));
+        ((UiRoundBoxRenderTask)tasks.get(0)).position = movedPosition;
     }
 
     @Override

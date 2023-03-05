@@ -39,8 +39,8 @@ public class UiRoundBoxItem extends UIItem {
         Vector2 posOnScreen = BoxLayoutUtil.applyFilter(screen.position, screen.size, filter);
         Vector2 middleOfRect = sPosition.add(ePosition).divide(new Vector2(2, 2));
 
-        ((UiRoundBoxRenderTask)tasks.get(0)).sPosition = sPosition.add(posOnScreen).subtract(middleOfRect);
-        ((UiRoundBoxRenderTask)tasks.get(0)).ePosition = ePosition;
+        ((UiRoundBoxRenderTask)tasks.get(0)).position = sPosition.add(posOnScreen).subtract(middleOfRect);
+        ((UiRoundBoxRenderTask)tasks.get(0)).size = ePosition;
         ((UiRoundBoxRenderTask)tasks.get(0)).v = v;
         ((UiRoundBoxRenderTask)tasks.get(0)).i = i;
         ((UiRoundBoxRenderTask)tasks.get(0)).color = color;

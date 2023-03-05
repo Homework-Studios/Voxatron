@@ -10,15 +10,15 @@ import static com.raylib.Raylib.*;
 
 public class UiRoundBoxRenderTask extends RenderTask {
 
-    public Vector2 sPosition;
-    public Vector2 ePosition;
+    public Vector2 position;
+    public Vector2 size;
     public float v;
     public int i;
     public Raylib.Color color;
 
-    public UiRoundBoxRenderTask(Vector2 sPosition, Vector2 ePosition, float v, int i, Raylib.Color color) {
-        this.sPosition = sPosition;
-        this.ePosition = ePosition;
+    public UiRoundBoxRenderTask(Vector2 position, Vector2 size, float v, int i, Raylib.Color color) {
+        this.position = position;
+        this.size = size;
         this.v = v;
         this.i = i;
         this.color = color;
@@ -26,7 +26,10 @@ public class UiRoundBoxRenderTask extends RenderTask {
 
     @Override
     public void render() {
-        Jaylib.Rectangle rectangle = new Jaylib.Rectangle(sPosition.x, sPosition.y, ePosition.x, ePosition.y);
+        Vector2 halfSize = size.divide(new Vector2(2, 2));
+
+        // Jaylib.Rectangle rectangle = new Jaylib.Rectangle(position.x - halfSize.x, position.y - halfSize.y, position.x + halfSize.x, position.y + halfSize.y);
+        Jaylib.Rectangle rectangle = new Jaylib.Rectangle(position.x - halfSize.x, position.y - halfSize.y, size.x, size.y);
         DrawRectangleRounded(rectangle, v, i, color);
     }
 }

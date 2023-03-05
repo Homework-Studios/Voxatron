@@ -14,7 +14,7 @@ public class Window {
 
     public void init() {
 
-        // SetConfigFlags(FLAG_MSAA_4X_HINT);
+        SetConfigFlags(FLAG_MSAA_4X_HINT);
 
         // Init window
         InitWindow(GetScreenWidth(), GetScreenHeight(), "Voxatron");
