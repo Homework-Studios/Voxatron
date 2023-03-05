@@ -2,14 +2,17 @@ package window;
 
 
 import com.raylib.Raylib;
+import render.Renderer;
+import render.task.RenderTask;
 
 import static com.raylib.Raylib.*;
 
 public class Window {
 
-    public boolean devMode = true;
+    public static Window instance;
 
     public Window() {
+        instance = this;
     }
 
     public void init() {
@@ -27,4 +30,11 @@ public class Window {
         //WARNING: HERE IS NOT THE PLACE TO RENDER ANYTHING. NO WHILE LOOP OR ANYTHING
     }
 
+    public void stop() {
+        Renderer.instance.stop();
+    }
+
+    public void finish() {
+        CloseWindow();
+    }
 }

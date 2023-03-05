@@ -16,6 +16,8 @@ public class UiRoundBoxRenderTask extends RenderTask {
     public int i;
     public Raylib.Color color;
 
+    public boolean lines = false;
+
     public UiRoundBoxRenderTask(Vector2 position, Vector2 size, float v, int i, Raylib.Color color) {
         this.position = position;
         this.size = size;
@@ -30,6 +32,10 @@ public class UiRoundBoxRenderTask extends RenderTask {
 
         // Jaylib.Rectangle rectangle = new Jaylib.Rectangle(position.x - halfSize.x, position.y - halfSize.y, position.x + halfSize.x, position.y + halfSize.y);
         Jaylib.Rectangle rectangle = new Jaylib.Rectangle(position.x - halfSize.x, position.y - halfSize.y, size.x, size.y);
-        DrawRectangleRounded(rectangle, v, i, color);
+
+        if (lines)
+            DrawRectangleRoundedLines(rectangle, v, i, 5, color);
+        else
+            DrawRectangleRounded(rectangle, v, i, color);
     }
 }

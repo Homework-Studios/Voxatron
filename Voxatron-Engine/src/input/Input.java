@@ -1,5 +1,6 @@
 package input;
 
+import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import input.map.Mapping;
 
@@ -21,6 +22,7 @@ public class Input {
 
     public void loadMappings() {
         mappings.put(Mapping.TOGGLE_SCENE, KeyEvent.VK_SPACE);
+        mappings.put(Mapping.TOGGLE_DEBUG, KeyEvent.VK_P);
     }
 
     public int findMapping(Mapping mapping) {
@@ -40,6 +42,6 @@ public class Input {
 
         if(key == -1) return false;
 
-        return Raylib.IsKeyPressed(key);
+        return Jaylib.IsKeyPressed(key);
     }
 }
