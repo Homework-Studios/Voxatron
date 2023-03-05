@@ -1,11 +1,11 @@
 package util;
 
 import math.Vector2;
-import render.ui.box.BoxFiler;
+import render.ui.box.BoxFilter;
 
 public class BoxLayoutUtil {
 
-    public static Vector2 applyFilter(Vector2 a, Vector2 b, BoxFiler filer){
+    public static Vector2 applyFilter(Vector2 a, Vector2 b, BoxFilter filer){
         switch (filer){
             case TOP_LEFT:
                 return new Vector2(a.x, a.y);

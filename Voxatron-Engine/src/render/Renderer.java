@@ -1,10 +1,13 @@
 package render;
 
+import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import render.scene.SceneManager;
 import render.task.RenderTask;
 
 import static com.raylib.Jaylib.RED;
+import static com.raylib.Jaylib.WHITE;
+import static com.raylib.Raylib.DrawRectangleRounded;
 
 
 public class Renderer {
@@ -44,7 +47,7 @@ public class Renderer {
         }
     }
 
-    public void execute(RenderTask renderable) {
-        renderable.render();
+    public void execute(RenderTask task) {
+        task.render();
     }
 }

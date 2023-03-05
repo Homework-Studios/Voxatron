@@ -1,6 +1,6 @@
 package render.ui.box;
 
-public enum BoxFiler {
+public enum BoxFilter {
     TOP_LEFT,
     TOP_CENTER,
     TOP_RIGHT,

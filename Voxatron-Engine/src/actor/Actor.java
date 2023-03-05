@@ -10,14 +10,14 @@ public abstract class Actor {
 
     public String uuid;
 
-    public List<RenderTask> renderables = new ArrayList<>();
+    public List<RenderTask> tasks = new ArrayList<>();
 
-    public void addRenderable(RenderTask renderable) {
-        renderables.add(renderable);
+    public void addTask(RenderTask task) {
+        tasks.add(task);
     }
 
-    public void removeRenderable(RenderTask renderable) {
-        renderables.remove(renderable);
+    public void removeTask(RenderTask task) {
+        tasks.remove(task);
     }
 
     public Actor() {

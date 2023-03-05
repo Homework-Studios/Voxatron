@@ -7,6 +7,9 @@ import render.ui.item.UIItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.raylib.Jaylib.RED;
+import static com.raylib.Raylib.DrawLine;
+
 public class UIScreen {
 
     public Vector2 position;
@@ -21,6 +24,7 @@ public class UIScreen {
 
     public void addItem(UIItem item) {
         item.loadUIValues(position, size);
+        item.loadScreen(this);
         items.add(item);
     }
 
@@ -36,8 +40,8 @@ public class UIScreen {
 
     public void render() {
         for (UIItem item : items) {
-            for (RenderTask renderable : item.renderables) {
-                renderable.render();
+            for (RenderTask task : item.tasks) {
+                task.render();
             }
         }
     }

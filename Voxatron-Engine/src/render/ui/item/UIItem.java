@@ -2,6 +2,7 @@ package render.ui.item;
 
 import math.Vector2;
 import render.task.RenderTask;
+import render.ui.UIScreen;
 import util.UUIDUtil;
 
 import java.util.ArrayList;
@@ -11,18 +12,24 @@ public abstract class UIItem {
 
     public String uuid;
 
-    public List<RenderTask> renderables = new ArrayList<>();
+    public List<RenderTask> tasks = new ArrayList<>();
 
-    public void addRenderable(RenderTask renderable) {
-        renderables.add(renderable);
+    public UIScreen screen;
+
+    public void addTask(RenderTask task) {
+        tasks.add(task);
     }
 
-    public void removeRenderable(RenderTask renderable) {
-        renderables.remove(renderable);
+    public void removeTask(RenderTask task) {
+        tasks.remove(task);
     }
 
     public UIItem() {
         uuid = UUIDUtil.generateUUID();
+    }
+
+    public void loadScreen(UIScreen screen) {
+        this.screen = screen;
     }
 
     public abstract void update();

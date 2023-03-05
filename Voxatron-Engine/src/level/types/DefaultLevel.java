@@ -1,7 +1,6 @@
 package level.types;
 
 import actor.Actor;
-import actor.ui.TestTextActor;
 import level.Level;
 import level.LevelType;
 import render.Renderer;
@@ -13,8 +12,6 @@ public class DefaultLevel extends Level {
 
     public DefaultLevel() {
         super(LevelType.DEFAULT);
-
-        addActor(new TestTextActor());
     }
 
     @Override
@@ -26,14 +23,14 @@ public class DefaultLevel extends Level {
 
     @Override
     public void render() {
-        List<RenderTask> renderables = new java.util.ArrayList<>(List.of());
+        List<RenderTask> tasks = new java.util.ArrayList<>(List.of());
 
         for (Actor actor : actors) {
-            renderables.addAll(actor.renderables);
+            tasks.addAll(actor.tasks);
         }
 
-        for (RenderTask renderable : renderables) {
-            Renderer.instance.execute(renderable);
+        for (RenderTask task : tasks) {
+            Renderer.instance.execute(task);
         }
     }
 }
