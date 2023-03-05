@@ -24,8 +24,8 @@ public class MainMenuUIScreen extends UIScreen {
 
         addItem(new UiImageItem(texture, new Vector2(0, -300), BoxFilter.CENTER));
 
-        addItem(new UIButtonItem(new Vector2(0, 0), new Vector2(1000, 100), BoxFilter.CENTER));
-        addItem(new UIButtonItem(new Vector2(0, 110), new Vector2(1000, 100), BoxFilter.CENTER));
-        addItem(new UIButtonItem(new Vector2(0, 220), new Vector2(1000, 100), BoxFilter.CENTER));
+        addItem(new UIButtonItem(new Vector2(0, 0), new Vector2(1000, 100), BoxFilter.CENTER, 950, 70));
+        addItem(new UIButtonItem(new Vector2(0, 110), new Vector2(1000, 100), BoxFilter.CENTER, 950, 70));
+        addItem(new UIButtonItem(new Vector2(0, 220), new Vector2(1000, 100), BoxFilter.CENTER, 950, 70));
     }
 }
