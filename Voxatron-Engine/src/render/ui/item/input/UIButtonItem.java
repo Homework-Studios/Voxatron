@@ -61,15 +61,18 @@ public class UIButtonItem extends UIItem {
             if(Jaylib.IsMouseButtonPressed(0)) {
                 onClick.run();
             }
-
+            // give it a small boost on the first frame
+            if (hoverTime == 0) hoverTime = 0.48f;
             // add hovertime until it reaches 1
-            hoverTime += 0.06f;
+            hoverTime += 0.12f;
             if(hoverTime > 1) {
                 hoverTime = 1;
             }
         } else {
+            // give it a small boost on the first frame
+            if (hoverTime == 1) hoverTime = 0.76f;
             // remove hovertime until it reaches 0
-            hoverTime -= 0.02f;
+            hoverTime -= 0.06f;
             if(hoverTime < 0) {
                 hoverTime = 0;
             }

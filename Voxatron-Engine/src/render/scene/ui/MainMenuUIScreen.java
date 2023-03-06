@@ -35,15 +35,15 @@ public class MainMenuUIScreen extends UIScreen {
 
         addItem(new UiImageItem(texture, new Vector2(0, -300), BoxFilter.CENTER));
 
-        addItem(new UIButtonItem(play, new Vector2(0, 20), new Vector2(950, 100), BoxFilter.CENTER, 840, 95, () -> {
+        addItem(new UIButtonItem(play, new Vector2(0, 20), new Vector2(950, 100), BoxFilter.CENTER, 900, 95, () -> {
             DebugDraw.instance.print("Clicked Play");
         }));
 
-        addItem(new UIButtonItem(credits, new Vector2(0, 140), new Vector2(950, 100), BoxFilter.CENTER, 840, 95, () -> {
+        addItem(new UIButtonItem(credits, new Vector2(0, 140), new Vector2(950, 100), BoxFilter.CENTER, 900, 95, () -> {
             DebugDraw.instance.print("Clicked Credits");
         }));
 
-        addItem(new UIButtonItem(leave, new Vector2(0, 260), new Vector2(950, 100), BoxFilter.CENTER, 840, 95, () -> {
+        addItem(new UIButtonItem(leave, new Vector2(0, 260), new Vector2(950, 100), BoxFilter.CENTER, 900, 95, () -> {
             Window.instance.stop();
         }));
     }
