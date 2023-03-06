@@ -19,6 +19,13 @@ public class Vector2 {
         return new Vector2(x + other.x, y + other.y);
     }
 
+    public Vector2 add(float other) {
+        return new Vector2(x + other, y + other);
+    }
+
+    public Vector2 add(float x, float y) {
+        return new Vector2(this.x + x, this.y + y);
+    }
     public Vector2 subtract(Vector2 other) {
         return new Vector2(x - other.x, y - other.y);
     }
