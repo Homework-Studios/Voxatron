@@ -5,8 +5,8 @@ import com.raylib.Raylib;
 import math.LerpUtil;
 import math.Vector2;
 import render.task.RenderTask;
-import render.task.ui.UiRoundBoxRenderTask;
-import render.task.ui.UiTextureRenderTask;
+import render.task.ui.UIRoundBoxRenderTask;
+import render.task.ui.UITextureRenderTask;
 import render.ui.box.BoxFilter;
 import render.ui.item.UIItem;
 import util.BoxLayoutUtil;
@@ -27,9 +27,9 @@ public class UISwitchItem extends UIItem {
     public Runnable onClick;
 
     private float hoverTime = 0;
-    private RenderTask toggledTask;
+    private final RenderTask toggledTask;
 
-    public UISwitchItem(Texture texture, Vector2 position, Vector2 size, BoxFilter filter, int minWidth, int minHeight,boolean toggled, Runnable onClick) {
+    public UISwitchItem(Texture texture, Vector2 position, Vector2 size, BoxFilter filter, int minWidth, int minHeight, boolean toggled, Runnable onClick) {
         this.texture = texture;
         this.position = position;
         this.size = size;
@@ -40,11 +40,11 @@ public class UISwitchItem extends UIItem {
         this.toggled = toggled;
         this.onClick = onClick;
 
-        this.toggledTask = new UiRoundBoxRenderTask(position, currentSize, 0.2f, 10, DARKGRAY);
-        if(toggled) ((UiRoundBoxRenderTask)toggledTask).color = GREEN;
+        this.toggledTask = new UIRoundBoxRenderTask(position, currentSize, 0.2f, 10, DARKGRAY);
+        if (toggled) ((UIRoundBoxRenderTask) toggledTask).color = GREEN;
         addTask(toggledTask);
-        ((UiRoundBoxRenderTask)tasks.get(0)).lines = true;
-        addTask(new UiTextureRenderTask(position, texture));
+        ((UIRoundBoxRenderTask) tasks.get(0)).lines = true;
+        addTask(new UITextureRenderTask(position, texture));
     }
 
     public boolean isHovered(Vector2 mousePosition) {
@@ -60,18 +60,18 @@ public class UISwitchItem extends UIItem {
         Vector2 posOnScreen = BoxLayoutUtil.applyFilter(screen.position, screen.size, filter);
         Vector2 movedPosition = position.add(posOnScreen);
 
-        if(isHovered(new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY()))) {
-            if(Jaylib.IsMouseButtonPressed(0)) {
+        if (isHovered(new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY()))) {
+            if (Jaylib.IsMouseButtonPressed(0)) {
                 toggled = !toggled;
-                if(toggled) ((UiRoundBoxRenderTask)toggledTask).color = GREEN;
-                    else((UiRoundBoxRenderTask)toggledTask).color = DARKGRAY;
+                if (toggled) ((UIRoundBoxRenderTask) toggledTask).color = GREEN;
+                else ((UIRoundBoxRenderTask) toggledTask).color = DARKGRAY;
                 onClick.run();
             }
             // give it a small boost on the first frame
             if (hoverTime == 0) hoverTime = 0.48f;
             // add hovertime until it reaches 1
             hoverTime += 0.12f;
-            if(hoverTime > 1) {
+            if (hoverTime > 1) {
                 hoverTime = 1;
             }
         } else {
@@ -79,20 +79,20 @@ public class UISwitchItem extends UIItem {
             if (hoverTime == 1) hoverTime = 0.76f;
             // remove hovertime until it reaches 0
             hoverTime -= 0.06f;
-            if(hoverTime < 0) {
+            if (hoverTime < 0) {
                 hoverTime = 0;
             }
         }
 
         // slerp between the min and max size
         currentSize = new Vector2(LerpUtil.cubic(size.x, minWidth, hoverTime), LerpUtil.cubic(size.y, minHeight, hoverTime));
-        ((UiRoundBoxRenderTask)tasks.get(0)).position = movedPosition;
-        ((UiRoundBoxRenderTask)tasks.get(0)).size = currentSize;
+        ((UIRoundBoxRenderTask) tasks.get(0)).position = movedPosition;
+        ((UIRoundBoxRenderTask) tasks.get(0)).size = currentSize;
 
         // change the size of the texture
-        texture = texture.width((int)currentSize.x).height((int)currentSize.y);
+        texture = texture.width((int) currentSize.x).height((int) currentSize.y);
 
-        ((UiTextureRenderTask)tasks.get(1)).position = movedPosition.subtract(currentSize.divide(new Vector2(2, 2)));
+        ((UITextureRenderTask) tasks.get(1)).position = movedPosition.subtract(currentSize.divide(new Vector2(2, 2)));
     }
 
     @Override

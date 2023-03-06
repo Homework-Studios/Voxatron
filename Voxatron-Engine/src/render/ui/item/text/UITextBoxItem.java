@@ -2,13 +2,14 @@ package render.ui.item.text;
 
 import com.raylib.Raylib;
 import math.Vector2;
-import render.task.ui.UiTextRenderTask;
+import render.task.ui.UITextRenderTask;
 import render.ui.box.BoxFilter;
 import render.ui.item.UIItem;
 import util.BoxLayoutUtil;
 
 import static com.raylib.Jaylib.WHITE;
-import static com.raylib.Raylib.*;
+import static com.raylib.Raylib.GetFontDefault;
+import static com.raylib.Raylib.MeasureTextEx;
 
 public class UITextBoxItem extends UIItem {
 
@@ -23,17 +24,17 @@ public class UITextBoxItem extends UIItem {
         this.text = text;
         this.filter = filter;
 
-        addTask(new UiTextRenderTask(text, new Vector2(), 1, 0, WHITE));
+        addTask(new UITextRenderTask(text, new Vector2(), 1, 0, WHITE));
     }
 
     @Override
     public void update() {
         // This Libary Method is EXTREMLY BAD and doesnt work as it is supposed to
-        Raylib.Vector2 textDimensions = MeasureTextEx(GetFontDefault(), text, ((UiTextRenderTask)tasks.get(0)).scale * 20, 2);
-        Vector2 dimensions = new Vector2((float) (textDimensions.x() * 0.48), (float)(textDimensions.y()));
+        Raylib.Vector2 textDimensions = MeasureTextEx(GetFontDefault(), text, ((UITextRenderTask) tasks.get(0)).scale * 20, 2);
+        Vector2 dimensions = new Vector2((float) (textDimensions.x() * 0.48), textDimensions.y());
 
-        ((UiTextRenderTask)tasks.get(0)).position = BoxLayoutUtil.applyFilter(a, b, filter).subtract(dimensions);
-        ((UiTextRenderTask)tasks.get(0)).text = text;
+        ((UITextRenderTask) tasks.get(0)).position = BoxLayoutUtil.applyFilter(a, b, filter).subtract(dimensions);
+        ((UITextRenderTask) tasks.get(0)).text = text;
     }
 
     @Override

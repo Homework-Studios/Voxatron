@@ -7,18 +7,18 @@ import render.task.RenderTask;
 import static com.raylib.Jaylib.WHITE;
 import static com.raylib.Raylib.DrawTexture;
 
-public class UiTextureRenderTask extends RenderTask {
+public class UITextureRenderTask extends RenderTask {
 
     public Vector2 position;
     public Raylib.Texture texture;
 
-    public UiTextureRenderTask(Vector2 position, Raylib.Texture texture) {
+    public UITextureRenderTask(Vector2 position, Raylib.Texture texture) {
         this.position = position;
         this.texture = texture;
     }
 
     @Override
     public void render() {
-        DrawTexture(texture, (int)position.x, (int)position.y, WHITE);
+        DrawTexture(texture, (int) position.x, (int) position.y, WHITE);
     }
 }

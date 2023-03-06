@@ -5,7 +5,7 @@ import com.raylib.Raylib;
 import debug.DebugDraw;
 import math.LerpUtil;
 import math.Vector2;
-import render.task.ui.UiRoundBoxRenderTask;
+import render.task.ui.UIRoundBoxRenderTask;
 import render.ui.box.BoxFilter;
 import render.ui.item.UIItem;
 import util.BoxLayoutUtil;
@@ -23,7 +23,7 @@ public class UISliderItem extends UIItem {
 
     public Vector2 sliderSize;
     public Vector2 sliderPosition;
-    public UiRoundBoxRenderTask slider;
+    public UIRoundBoxRenderTask slider;
     public float value;
     public Runnable onClick;
 
@@ -39,12 +39,12 @@ public class UISliderItem extends UIItem {
 
         this.sliderPosition = position;
 
-        addTask(new UiRoundBoxRenderTask(position, currentSize, 0.2f, 10, DARKGRAY));
-        ((UiRoundBoxRenderTask) tasks.get(0)).lines = true;
+        addTask(new UIRoundBoxRenderTask(position, currentSize, 0.2f, 10, DARKGRAY));
+        ((UIRoundBoxRenderTask) tasks.get(0)).lines = true;
         sliderSize = size.multiply(new Vector2(0.1f, 1f));
         this.minWidth = (int) sliderSize.x * 2;
         this.minHeight = (int) sliderSize.y;
-        slider = new UiRoundBoxRenderTask(sliderPosition, sliderSize, 0.2f, 10, WHITE);
+        slider = new UIRoundBoxRenderTask(sliderPosition, sliderSize, 0.2f, 10, WHITE);
         addTask(slider);
         slider.lines = true;
 
@@ -93,7 +93,7 @@ public class UISliderItem extends UIItem {
 
         // slerp between the min and max size
         currentSize = new Vector2(LerpUtil.cubic(sliderSize.x, minWidth, hoverTime), LerpUtil.cubic(size.y, minHeight, hoverTime));
-        ((UiRoundBoxRenderTask) tasks.get(0)).position = movedPosition;
+        ((UIRoundBoxRenderTask) tasks.get(0)).position = movedPosition;
         slider.position = movedSliderPosition;
         slider.size = currentSize;
 

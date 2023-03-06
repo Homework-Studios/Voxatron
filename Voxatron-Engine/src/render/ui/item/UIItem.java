@@ -16,16 +16,18 @@ public abstract class UIItem {
 
     public UIScreen screen;
 
+    public boolean hidden = false;
+
+    public UIItem() {
+        uuid = UUIDUtil.generateUUID();
+    }
+
     public void addTask(RenderTask task) {
         tasks.add(task);
     }
 
     public void removeTask(RenderTask task) {
         tasks.remove(task);
-    }
-
-    public UIItem() {
-        uuid = UUIDUtil.generateUUID();
     }
 
     public void loadScreen(UIScreen screen) {
@@ -35,4 +37,8 @@ public abstract class UIItem {
     public abstract void update();
 
     public abstract void loadUIValues(Vector2 position, Vector2 size);
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
 }
