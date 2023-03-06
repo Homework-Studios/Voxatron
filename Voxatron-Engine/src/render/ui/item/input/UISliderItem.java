@@ -18,8 +18,8 @@ public class UISliderItem extends UIItem {
     public Vector2 size;
     public Vector2 currentSize;
     public BoxFilter filter;
-    public int minWidth = 1;
-    public int minHeight = 1;
+    public int minWidth = 2;
+    public int minHeight = 2;
 
     public Vector2 sliderSize;
     public Vector2 sliderPosition;
@@ -34,7 +34,7 @@ public class UISliderItem extends UIItem {
         this.size = size;
         this.currentSize = size;
         this.filter = filter;
-        this.value = value;
+        this.value = value + 0.05f;
         this.onClick = onClick;
 
         this.sliderPosition = position;
@@ -42,12 +42,11 @@ public class UISliderItem extends UIItem {
         addTask(new UIRoundBoxRenderTask(position, currentSize, 0.2f, 10, DARKGRAY));
         ((UIRoundBoxRenderTask) tasks.get(0)).lines = true;
         sliderSize = size.multiply(new Vector2(0.1f, 1f));
-        this.minWidth = (int) sliderSize.x * 2;
+        this.minWidth = (int) (sliderSize.x * 1.5f);
         this.minHeight = (int) sliderSize.y;
-        slider = new UIRoundBoxRenderTask(sliderPosition, sliderSize, 0.2f, 10, WHITE);
+        slider = new UIRoundBoxRenderTask(sliderPosition, sliderSize, 0.3f, 10, WHITE);
         addTask(slider);
         slider.lines = true;
-
     }
 
     public boolean isHovered(Vector2 mousePosition) {
@@ -58,45 +57,56 @@ public class UISliderItem extends UIItem {
         return mousePosition.x > movedPosition.x && mousePosition.x < movedPosition.x + size.x && mousePosition.y > movedPosition.y && mousePosition.y < movedPosition.y + size.y;
     }
 
+    public boolean isSliderHandleHovered(Vector2 mousePosition) {
+        Vector2 posOnScreen = BoxLayoutUtil.applyFilter(screen.position, screen.size, filter);
+        Vector2 movedPosition = sliderPosition.add(posOnScreen);
+        movedPosition = movedPosition.subtract(sliderSize.divide(new Vector2(2, 2)));
+
+        return mousePosition.x > movedPosition.x && mousePosition.x < movedPosition.x + sliderSize.x && mousePosition.y > movedPosition.y && mousePosition.y < movedPosition.y + sliderSize.y;
+    }
+
+    public boolean isInEdit = false;
+
     @Override
     public void update() {
-        Vector2 posOnScreen = BoxLayoutUtil.applyFilter(screen.position, screen.size, filter);
-        Vector2 movedPosition = position.add(posOnScreen);
-        Vector2 movedSliderPosition = sliderPosition.add(posOnScreen).add(size.x * value - size.x * 0.5f, 0);
+        Vector2 screenPositionWithFilter = BoxLayoutUtil.applyFilter(screen.position, screen.size, filter);
+        Vector2 movedPosition = position.add(screenPositionWithFilter);
+        Vector2 movedSliderPosition = sliderPosition.add(screenPositionWithFilter).add(size.x * value - size.x * 0.5f, 0);
 
-        if (isHovered(new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY()))) {
+        Vector2 mp = new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY());
+
+        if (isHovered(mp) || isSliderHandleHovered(mp) || isInEdit) {
             if (Jaylib.IsMouseButtonDown(0)) {
                 slider.color = GREEN;
                 float relativeMouseX = movedPosition.x - Raylib.GetMouseX();
                 relativeMouseX *= -1;
                 relativeMouseX /= size.x;
-                value = Clamp(relativeMouseX + 0.5f, 0, 1);
+                value = Clamp(relativeMouseX + 0.5f, 0.05f, 0.95f);
                 DebugDraw.instance.print(value + " " + relativeMouseX);
-            } else slider.color = WHITE;
-            // give it a small boost on the first frame
-            if (hoverTime == 0) hoverTime = 0.24f;
-            // add hovertime until it reaches 1
-            hoverTime += 0.8f;
-            if (hoverTime > 1) {
-                hoverTime = 1;
+                isInEdit = true;
+            } else {
+                slider.color = LIGHTGRAY;
+                isInEdit = false;
             }
+
+            // Increase hoverTime until it reaches 1
+            hoverTime = Math.min(hoverTime + 0.8f, 1);
         } else {
             slider.color = WHITE;
-            // give it a small boost on the first frame
-            if (hoverTime == 1) hoverTime = 0.76f;
-            // remove hovertime until it reaches 0
-            hoverTime -= 0.06f;
-            if (hoverTime < 0) {
-                hoverTime = 0;
-            }
+
+            // Decrease hoverTime until it reaches 0
+            hoverTime = Math.max(hoverTime - 0.06f, 0);
         }
 
-        // slerp between the min and max size
-        currentSize = new Vector2(LerpUtil.cubic(sliderSize.x, minWidth, hoverTime), LerpUtil.cubic(size.y, minHeight, hoverTime));
+        // Interpolate between the min and max size using cubic interpolation
+        float slerpAmount = LerpUtil.cubic(0, 1, hoverTime);
+        float sliderWidth = LerpUtil.cubic(size.x / 10, minWidth, slerpAmount);
+        float sliderHeight = LerpUtil.cubic(size.y, minHeight, slerpAmount);
+        currentSize = new Vector2(sliderWidth, sliderHeight);
+
         ((UIRoundBoxRenderTask) tasks.get(0)).position = movedPosition;
         slider.position = movedSliderPosition;
         slider.size = currentSize;
-
     }
 
     @Override
