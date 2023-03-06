@@ -41,6 +41,7 @@ public class UISwitchItem extends UIItem {
         this.onClick = onClick;
 
         this.toggledTask = new UiRoundBoxRenderTask(position, currentSize, 0.2f, 10, DARKGRAY);
+        if(toggled) ((UiRoundBoxRenderTask)toggledTask).color = GREEN;
         addTask(toggledTask);
         ((UiRoundBoxRenderTask)tasks.get(0)).lines = true;
         addTask(new UiTextureRenderTask(position, texture));
