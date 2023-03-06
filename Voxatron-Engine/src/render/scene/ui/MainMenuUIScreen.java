@@ -38,6 +38,15 @@ public class MainMenuUIScreen extends UIScreen {
         // load the background.png image (empty dv image)
         Raylib.Texture background = LoadTexture(path + "background.png");
 
+        // load the Music.png image
+        Raylib.Texture music = LoadTexture(path + "Music.png");
+
+        // load the Sounds.png image
+        Raylib.Texture sound = LoadTexture(path + "Sound.png");
+
+        // load the Settings.png image
+        Raylib.Texture settings = LoadTexture(path + "Settings.png");
+
         addItem(new UIImageItem(texture, new Vector2(0, -300), BoxFilter.CENTER));
 
         addItem(new UIButtonItem(play, new Vector2(0, 20), new Vector2(950, 100), BoxFilter.CENTER, 900, 95, () -> {
@@ -52,15 +61,15 @@ public class MainMenuUIScreen extends UIScreen {
             Window.instance.stop();
         }));
 
-        addItem(new UISwitchItem(background, new Vector2(-425, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, true, () -> {
+        addItem(new UISwitchItem(music, new Vector2(-425, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, true, () -> {
             DebugDraw.instance.print("music");
         }));
 
-        addItem(new UISwitchItem(background, new Vector2(-305, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, true, () -> {
+        addItem(new UISwitchItem(sound, new Vector2(-305, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, true, () -> {
             DebugDraw.instance.print("sounds");
         }));
 
-        addItem(new UISliderItem(new Vector2(-85, 380), new Vector2(300, 100), BoxFilter.CENTER, 0, () -> {
+        addItem(new UISliderItem(new Vector2(-60, 380), new Vector2(350, 100), BoxFilter.CENTER, 0, () -> {
             DebugDraw.instance.print("slider");
         }));
 
@@ -71,10 +80,8 @@ public class MainMenuUIScreen extends UIScreen {
         configList.addItem(new SettingsItem());
 
         addItem(configList);
-        addItem(new UIButtonItem(background, new Vector2(425, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, () -> {
+        addItem(new UIButtonItem(settings, new Vector2(425, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, () -> {
             configList.hidden = !configList.hidden;
         }));
-
-
     }
 }

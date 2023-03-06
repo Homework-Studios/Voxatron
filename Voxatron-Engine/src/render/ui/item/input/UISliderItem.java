@@ -44,7 +44,7 @@ public class UISliderItem extends UIItem {
         sliderSize = size.multiply(new Vector2(0.1f, 1f));
         this.minWidth = (int) (sliderSize.x * 1.5f);
         this.minHeight = (int) sliderSize.y;
-        slider = new UIRoundBoxRenderTask(sliderPosition, sliderSize, 0.3f, 10, WHITE);
+        slider = new UIRoundBoxRenderTask(sliderPosition, sliderSize, 0.4f, 10, WHITE);
         addTask(slider);
         slider.lines = true;
     }
@@ -85,14 +85,14 @@ public class UISliderItem extends UIItem {
                 DebugDraw.instance.print(value + " " + relativeMouseX);
                 isInEdit = true;
             } else {
-                slider.color = LIGHTGRAY;
+                slider.color = WHITE;
                 isInEdit = false;
             }
 
             // Increase hoverTime until it reaches 1
             hoverTime = Math.min(hoverTime + 0.8f, 1);
         } else {
-            slider.color = WHITE;
+            slider.color = GRAY;
 
             // Decrease hoverTime until it reaches 0
             hoverTime = Math.max(hoverTime - 0.06f, 0);
