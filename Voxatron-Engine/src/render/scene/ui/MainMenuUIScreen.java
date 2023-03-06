@@ -8,6 +8,7 @@ import render.ui.box.BoxFilter;
 import render.ui.item.basic.UiRoundBoxItem;
 import render.ui.item.image.UiImageItem;
 import render.ui.item.input.UIButtonItem;
+import render.ui.item.input.UISwitchItem;
 import render.ui.item.text.UITextBoxItem;
 import window.Window;
 
@@ -33,6 +34,9 @@ public class MainMenuUIScreen extends UIScreen {
         // load the Leave.png image
         Raylib.Texture leave = LoadTexture(path + "Leave.png");
 
+        // load the background.png image (empty dv image)
+        Raylib.Texture background = LoadTexture(path + "background.png");
+
         addItem(new UiImageItem(texture, new Vector2(0, -300), BoxFilter.CENTER));
 
         addItem(new UIButtonItem(play, new Vector2(0, 20), new Vector2(950, 100), BoxFilter.CENTER, 900, 95, () -> {
@@ -45,6 +49,18 @@ public class MainMenuUIScreen extends UIScreen {
 
         addItem(new UIButtonItem(leave, new Vector2(0, 260), new Vector2(950, 100), BoxFilter.CENTER, 900, 95, () -> {
             Window.instance.stop();
+        }));
+
+        addItem(new UISwitchItem(background, new Vector2(-425, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, true,() -> {
+            DebugDraw.instance.print("music");
+        }));
+
+        addItem(new UISwitchItem(background, new Vector2(-305, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, true, () -> {
+            DebugDraw.instance.print("sounds");
+        }));
+
+        addItem(new UIButtonItem(background, new Vector2(425, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, () -> {
+            DebugDraw.instance.print("settings");
         }));
     }
 }

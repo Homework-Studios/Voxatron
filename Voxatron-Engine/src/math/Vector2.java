@@ -27,6 +27,9 @@ public class Vector2 {
         return new Vector2(x * other.x, y * other.y);
     }
 
+    public Vector2 multiply(float other) {
+        return new Vector2(x * other, y * other);
+    }
     public Vector2 divide(Vector2 other) {
         return new Vector2(x / other.x, y / other.y);
     }

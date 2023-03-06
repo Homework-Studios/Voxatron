@@ -1,5 +1,7 @@
 package testing;
 
+import debug.DebugDraw;
+
 import javax.naming.spi.DirectoryManager;
 import java.io.*;
 
@@ -24,8 +26,7 @@ if(!dir.exists()) {
             while(bufferedReader.readLine() != null) {
                 i++;
             }
-            //TODO: show on screen
-            System.out.println(i);
+           // DebugDraw.instance.print("Lines in file: " + i);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
