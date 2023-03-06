@@ -1,19 +1,15 @@
 package debug;
 
+import com.raylib.Raylib;
+
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
-import static com.raylib.Jaylib.BLUE;
 import static com.raylib.Raylib.DrawText;
 
 public class DebugDraw {
 
     public static final int MAX_STRINGS = 100;
-    public static final int MAX_DURATION = 800;
-    public long timePassed = 0;
-    public long lastTime = System.currentTimeMillis();
-
     public static DebugDraw instance;
 
     public List<String> debugStrings = new ArrayList<>();
@@ -25,25 +21,14 @@ public class DebugDraw {
     public void print(String string) {
         debugStrings.add(string);
 
-        lastTime = System.currentTimeMillis();
-        timePassed = 0;
-
         if (debugStrings.size() > MAX_STRINGS) {
             debugStrings.remove(0);
         }
     }
 
     public void render() {
-        if(debugStrings.size() == 0)
+        if (debugStrings.size() == 0)
             return;
-
-
-        // every MAX_DURATION milliseconds, remove the oldest string
-        if (timePassed > MAX_DURATION && debugStrings.size() > 0) {
-            debugStrings.remove(0);
-            lastTime = System.currentTimeMillis();
-            timePassed = 0;
-        }
 
         String[] stringsReversed = new String[debugStrings.size()];
         debugStrings.toArray(stringsReversed);
@@ -59,11 +44,9 @@ public class DebugDraw {
 
         for (String string : stringsReversed) {
             if (offset < MAX_STRINGS) {
-                DrawText(string, 10, offset * 20 + 10, 20, BLUE);
+                DrawText(string, 10, offset * 20 + 10, 20, Raylib.ColorFromHSV(30, 255, 200));
                 offset++;
             }
         }
-
-        timePassed = System.currentTimeMillis() - lastTime;
     }
 }
