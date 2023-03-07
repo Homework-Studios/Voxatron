@@ -1,7 +1,7 @@
 package render.ui.item.input;
 
 import com.raylib.Jaylib;
-import com.raylib.Raylib;
+import math.Hover;
 import math.LerpUtil;
 import math.Vector2;
 import render.task.RenderTask;
@@ -15,6 +15,7 @@ import static com.raylib.Jaylib.*;
 
 public class UISwitchItem extends UIItem {
 
+    private final RenderTask toggledTask;
     public Texture texture;
     public Vector2 position;
     public Vector2 size;
@@ -22,12 +23,9 @@ public class UISwitchItem extends UIItem {
     public BoxFilter filter;
     public int minWidth;
     public int minHeight;
-
     public boolean toggled = false;
     public Runnable onClick;
-
     private float hoverTime = 0;
-    private final RenderTask toggledTask;
 
     public UISwitchItem(Texture texture, Vector2 position, Vector2 size, BoxFilter filter, int minWidth, int minHeight, boolean toggled, Runnable onClick) {
         this.texture = texture;
@@ -47,20 +45,12 @@ public class UISwitchItem extends UIItem {
         addTask(new UITextureRenderTask(position, texture));
     }
 
-    public boolean isHovered(Vector2 mousePosition) {
-        Vector2 posOnScreen = BoxLayoutUtil.applyFilter(screen.position, screen.size, filter);
-        Vector2 movedPosition = position.add(posOnScreen);
-        movedPosition = movedPosition.subtract(size.divide(new Vector2(2, 2)));
-
-        return mousePosition.x > movedPosition.x && mousePosition.x < movedPosition.x + size.x && mousePosition.y > movedPosition.y && mousePosition.y < movedPosition.y + size.y;
-    }
-
     @Override
     public void update() {
         Vector2 posOnScreen = BoxLayoutUtil.applyFilter(screen.position, screen.size, filter);
         Vector2 movedPosition = position.add(posOnScreen);
 
-        if (isHovered(new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY()))) {
+        if (Hover.isMouseOver(movedPosition, currentSize)) {
             if (Jaylib.IsMouseButtonPressed(0)) {
                 toggled = !toggled;
                 if (toggled) ((UIRoundBoxRenderTask) toggledTask).color = GREEN;

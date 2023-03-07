@@ -2,6 +2,7 @@ package render.ui.item.input;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
+import math.Hover;
 import math.LerpUtil;
 import math.Vector2;
 import render.task.ui.UIRoundBoxRenderTask;
@@ -41,20 +42,12 @@ public class UIButtonItem extends UIItem {
         addTask(new UITextureRenderTask(position, texture));
     }
 
-    public boolean isHovered(Vector2 mousePosition) {
-        Vector2 posOnScreen = BoxLayoutUtil.applyFilter(screen.position, screen.size, filter);
-        Vector2 movedPosition = position.add(posOnScreen);
-        movedPosition = movedPosition.subtract(size.divide(new Vector2(2, 2)));
-
-        return mousePosition.x > movedPosition.x && mousePosition.x < movedPosition.x + size.x && mousePosition.y > movedPosition.y && mousePosition.y < movedPosition.y + size.y;
-    }
-
     @Override
     public void update() {
         Vector2 posOnScreen = BoxLayoutUtil.applyFilter(screen.position, screen.size, filter);
         Vector2 movedPosition = position.add(posOnScreen);
 
-        if (isHovered(new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY()))) {
+        if (Hover.isMouseOver(movedPosition, currentSize)) {
             if (Jaylib.IsMouseButtonPressed(0)) {
                 onClick.run();
             }

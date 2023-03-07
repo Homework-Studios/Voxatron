@@ -3,7 +3,6 @@ package render.scene.ui;
 import com.raylib.Raylib;
 import debug.DebugDraw;
 import math.Vector2;
-import render.scene.Scene;
 import render.scene.SceneManager;
 import render.scene.SceneType;
 import render.ui.UIScreen;
@@ -13,7 +12,6 @@ import render.ui.item.input.UIButtonItem;
 import render.ui.item.input.UISliderItem;
 import render.ui.item.input.UISwitchItem;
 import render.ui.item.view.UIListViewItem;
-import testing.SettingsItem;
 import window.Window;
 
 import static com.raylib.Jaylib.*;
@@ -75,10 +73,7 @@ public class MainMenuUIScreen extends UIScreen {
 
         UIListViewItem configList = new UIListViewItem(new Vector2(0, 0), new Vector2(1000, 1000), BoxFilter.CENTER);
         configList.hidden = true;
-
-        configList.addItem(new SettingsItem());
-        configList.addItem(new SettingsItem());
-
+        
         addItem(configList);
         addItem(new UIButtonItem(settings, new Vector2(425, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, () -> {
             configList.hidden = !configList.hidden;

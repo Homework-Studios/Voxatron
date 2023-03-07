@@ -2,7 +2,7 @@ package render.ui.item.input;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
-import debug.DebugDraw;
+import math.Hover;
 import math.LerpUtil;
 import math.Vector2;
 import render.task.ui.UIRoundBoxRenderTask;
@@ -26,7 +26,7 @@ public class UISliderItem extends UIItem {
     public UIRoundBoxRenderTask slider;
     public float value;
     public Runnable onClick;
-
+    public boolean isInEdit = false;
     private float hoverTime = 0;
 
     public UISliderItem(Vector2 position, Vector2 size, BoxFilter filter, float value, Runnable onClick) {
@@ -49,24 +49,6 @@ public class UISliderItem extends UIItem {
         slider.lines = true;
     }
 
-    public boolean isHovered(Vector2 mousePosition) {
-        Vector2 posOnScreen = BoxLayoutUtil.applyFilter(screen.position, screen.size, filter);
-        Vector2 movedPosition = position.add(posOnScreen);
-        movedPosition = movedPosition.subtract(size.divide(new Vector2(2, 2)));
-
-        return mousePosition.x > movedPosition.x && mousePosition.x < movedPosition.x + size.x && mousePosition.y > movedPosition.y && mousePosition.y < movedPosition.y + size.y;
-    }
-
-    public boolean isSliderHandleHovered(Vector2 mousePosition) {
-        Vector2 posOnScreen = BoxLayoutUtil.applyFilter(screen.position, screen.size, filter);
-        Vector2 movedPosition = sliderPosition.add(posOnScreen);
-        movedPosition = movedPosition.subtract(sliderSize.divide(new Vector2(2, 2)));
-
-        return mousePosition.x > movedPosition.x && mousePosition.x < movedPosition.x + sliderSize.x && mousePosition.y > movedPosition.y && mousePosition.y < movedPosition.y + sliderSize.y;
-    }
-
-    public boolean isInEdit = false;
-
     @Override
     public void update() {
         Vector2 screenPositionWithFilter = BoxLayoutUtil.applyFilter(screen.position, screen.size, filter);
@@ -75,7 +57,7 @@ public class UISliderItem extends UIItem {
 
         Vector2 mp = new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY());
 
-        if (isHovered(mp) || isSliderHandleHovered(mp) || isInEdit) {
+        if (Hover.isMouseOver(movedPosition, currentSize) || Hover.isMouseOver(movedSliderPosition, sliderSize) || isInEdit) {
             if (Jaylib.IsMouseButtonDown(0)) {
                 slider.color = GREEN;
                 float relativeMouseX = movedPosition.x - Raylib.GetMouseX();
