@@ -44,7 +44,7 @@ public class UISliderItem extends UIItem {
         sliderSize = size.multiply(new Vector2(0.1f, 1f));
         this.minWidth = (int) (sliderSize.x * 1.5f);
         this.minHeight = (int) sliderSize.y;
-        slider = new UIRoundBoxRenderTask(sliderPosition, sliderSize, 0.4f, 10, WHITE);
+        slider = new UIRoundBoxRenderTask(sliderPosition, sliderSize, 0.5f, 10, WHITE);
         addTask(slider);
         slider.lines = true;
     }
@@ -82,7 +82,6 @@ public class UISliderItem extends UIItem {
                 relativeMouseX *= -1;
                 relativeMouseX /= size.x;
                 value = Clamp(relativeMouseX + 0.5f, 0.05f, 0.95f);
-                DebugDraw.instance.print(value + " " + relativeMouseX);
                 isInEdit = true;
             } else {
                 slider.color = WHITE;

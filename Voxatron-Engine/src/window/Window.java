@@ -18,11 +18,12 @@ public class Window {
     public void init() {
 
         SetConfigFlags(FLAG_MSAA_4X_HINT);
+        SetConfigFlags(FLAG_WINDOW_MAXIMIZED);
+        SetConfigFlags(FLAG_WINDOW_UNDECORATED);
 
         // Init window
         InitWindow(GetScreenWidth(), GetScreenHeight(), "Voxatron");
         SetTargetFPS(60);
-        ToggleFullscreen();
 
         String path = System.getProperty("user.dir") + "\\Voxatron-Engine\\src\\window\\icon.png";
         SetWindowIcon(LoadImage(path));

@@ -3,6 +3,9 @@ package render.scene.ui;
 import com.raylib.Raylib;
 import debug.DebugDraw;
 import math.Vector2;
+import render.scene.Scene;
+import render.scene.SceneManager;
+import render.scene.SceneType;
 import render.ui.UIScreen;
 import render.ui.box.BoxFilter;
 import render.ui.item.image.UIImageItem;
@@ -35,9 +38,6 @@ public class MainMenuUIScreen extends UIScreen {
         // load the Leave.png image
         Raylib.Texture leave = LoadTexture(path + "Leave.png");
 
-        // load the background.png image (empty dv image)
-        Raylib.Texture background = LoadTexture(path + "background.png");
-
         // load the Music.png image
         Raylib.Texture music = LoadTexture(path + "Music.png");
 
@@ -50,7 +50,7 @@ public class MainMenuUIScreen extends UIScreen {
         addItem(new UIImageItem(texture, new Vector2(0, -300), BoxFilter.CENTER));
 
         addItem(new UIButtonItem(play, new Vector2(0, 20), new Vector2(950, 100), BoxFilter.CENTER, 900, 95, () -> {
-            DebugDraw.instance.print("Clicked Play");
+            SceneManager.instance.setCurrentScene(SceneType.LEVEL_SELECTOR);
         }));
 
         addItem(new UIButtonItem(credits, new Vector2(0, 140), new Vector2(950, 100), BoxFilter.CENTER, 900, 95, () -> {
