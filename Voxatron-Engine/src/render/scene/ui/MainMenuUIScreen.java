@@ -77,7 +77,7 @@ public class MainMenuUIScreen extends UIScreen {
             }
         });
 
-        addItem(new UISliderItem(new Vector2(-60, 380), new Vector2(350, 100), BoxFilter.CENTER, 0, () -> {
+        addItem(new UISliderItem(new Vector2(60, 380), new Vector2(590, 100), BoxFilter.CENTER, 0, () -> {
             DebugDraw.instance.print("slider");
         }));
 
