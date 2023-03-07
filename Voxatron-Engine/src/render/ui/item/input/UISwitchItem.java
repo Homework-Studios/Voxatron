@@ -3,7 +3,6 @@ package render.ui.item.input;
 import com.raylib.Jaylib;
 import math.LerpUtil;
 import math.Vector2;
-import render.task.RenderTask;
 import render.task.ui.UIRoundBoxRenderTask;
 import render.task.ui.UITextureRenderTask;
 import render.ui.box.BoxFilter;
@@ -12,9 +11,10 @@ import util.BoxLayoutUtil;
 
 import static com.raylib.Jaylib.*;
 
-public class UISwitchItem extends UIItem {
+public abstract class UISwitchItem extends UIItem implements Runnable {
 
-    private final RenderTask toggledTask;
+    private final UIRoundBoxRenderTask toggledTask;
+    private final UITextureRenderTask textureTask;
     public Texture texture;
     public Vector2 position;
     public Vector2 size;
@@ -23,10 +23,9 @@ public class UISwitchItem extends UIItem {
     public int minWidth;
     public int minHeight;
     public boolean toggled = false;
-    public Runnable onClick;
     private float hoverTime = 0;
 
-    public UISwitchItem(Texture texture, Vector2 position, Vector2 size, BoxFilter filter, int minWidth, int minHeight, boolean toggled, Runnable onClick) {
+    public UISwitchItem(Texture texture, Vector2 position, Vector2 size, BoxFilter filter, int minWidth, int minHeight, boolean toggled) {
         this.texture = texture;
         this.position = position;
         this.size = size;
@@ -35,13 +34,13 @@ public class UISwitchItem extends UIItem {
         this.minWidth = minWidth;
         this.minHeight = minHeight;
         this.toggled = toggled;
-        this.onClick = onClick;
 
         this.toggledTask = new UIRoundBoxRenderTask(position, currentSize, 0.2f, 10, DARKGRAY);
-        if (toggled) ((UIRoundBoxRenderTask) toggledTask).color = GREEN;
+        if (toggled) toggledTask.color = GREEN;
         addTask(toggledTask);
         ((UIRoundBoxRenderTask) tasks.get(0)).lines = true;
-        addTask(new UITextureRenderTask(position, texture));
+        textureTask = new UITextureRenderTask(position, texture);
+        addTask(textureTask);
     }
 
     @Override
@@ -52,9 +51,9 @@ public class UISwitchItem extends UIItem {
         if (isMouseOver(movedPosition, currentSize)) {
             if (Jaylib.IsMouseButtonPressed(0)) {
                 toggled = !toggled;
-                if (toggled) ((UIRoundBoxRenderTask) toggledTask).color = GREEN;
-                else ((UIRoundBoxRenderTask) toggledTask).color = DARKGRAY;
-                onClick.run();
+                if (toggled) toggledTask.color = GREEN;
+                else toggledTask.color = DARKGRAY;
+                run();
             }
             // give it a small boost on the first frame
             if (hoverTime == 0) hoverTime = 0.48f;
@@ -77,6 +76,8 @@ public class UISwitchItem extends UIItem {
         currentSize = new Vector2(LerpUtil.cubic(size.x, minWidth, hoverTime), LerpUtil.cubic(size.y, minHeight, hoverTime));
         ((UIRoundBoxRenderTask) tasks.get(0)).position = movedPosition;
         ((UIRoundBoxRenderTask) tasks.get(0)).size = currentSize;
+        textureTask.texture = texture;
+
 
         // change the size of the texture
         texture = texture.width((int) currentSize.x).height((int) currentSize.y);

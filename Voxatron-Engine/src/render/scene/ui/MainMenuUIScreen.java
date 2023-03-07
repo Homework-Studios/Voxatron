@@ -43,6 +43,7 @@ public class MainMenuUIScreen extends UIScreen {
 
         // load the Sounds.png image
         Raylib.Texture sound = LoadTexture(path + "Sound.png");
+        Raylib.Texture soundOff = LoadTexture(path + "SoundOff.png");
 
         // load the Settings.png image
         Raylib.Texture settings = LoadTexture(path + "Settings.png");
@@ -61,13 +62,20 @@ public class MainMenuUIScreen extends UIScreen {
             Window.instance.stop();
         }));
 
-        addItem(new UISwitchItem(music, new Vector2(-425, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, true, () -> {
-            DebugDraw.instance.print("music");
-        }));
+        addItem(new UISwitchItem(music, new Vector2(-425, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, true) {
+            @Override
+            public void run() {
 
-        addItem(new UISwitchItem(sound, new Vector2(-305, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, true, () -> {
-            DebugDraw.instance.print("sounds");
-        }));
+            }
+        });
+
+        addItem(new UISwitchItem(sound, new Vector2(-305, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, true) {
+            @Override
+            public void run() {
+                if (toggled) this.texture = sound;
+                else this.texture = soundOff;
+            }
+        });
 
         addItem(new UISliderItem(new Vector2(-60, 380), new Vector2(350, 100), BoxFilter.CENTER, 0, () -> {
             DebugDraw.instance.print("slider");
