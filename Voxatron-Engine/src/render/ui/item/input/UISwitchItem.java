@@ -24,6 +24,7 @@ public abstract class UISwitchItem extends UIItem implements Runnable {
     public int minHeight;
     public boolean toggled = false;
     private float hoverTime = 0;
+    private float pushedTime = 0;
 
     public UISwitchItem(Texture texture, Vector2 position, Vector2 size, BoxFilter filter, int minWidth, int minHeight, boolean toggled) {
         this.texture = texture;
@@ -50,11 +51,17 @@ public abstract class UISwitchItem extends UIItem implements Runnable {
 
         if (isMouseOver(movedPosition, currentSize)) {
             if (Jaylib.IsMouseButtonPressed(0)) {
+                pushedTime = 1f;
                 toggled = !toggled;
                 if (toggled) toggledTask.color = GREEN;
                 else toggledTask.color = DARKGRAY;
                 run();
             }
+            if (pushedTime > 0) {
+                pushedTime -= 0.1f;
+                if (pushedTime < 0) pushedTime = 0;
+            }
+
             // give it a small boost on the first frame
             if (hoverTime == 0) hoverTime = 0.48f;
             // add hovertime until it reaches 1
@@ -73,7 +80,7 @@ public abstract class UISwitchItem extends UIItem implements Runnable {
         }
 
         // slerp between the min and max size
-        currentSize = new Vector2(LerpUtil.cubic(size.x, minWidth, hoverTime), LerpUtil.cubic(size.y, minHeight, hoverTime));
+        currentSize = new Vector2(LerpUtil.cubic(size.x, minWidth, hoverTime - pushedTime), LerpUtil.cubic(size.y, minHeight, hoverTime));
         ((UIRoundBoxRenderTask) tasks.get(0)).position = movedPosition;
         ((UIRoundBoxRenderTask) tasks.get(0)).size = currentSize;
         textureTask.texture = texture;

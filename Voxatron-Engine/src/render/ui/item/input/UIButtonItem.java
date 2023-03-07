@@ -25,6 +25,7 @@ public class UIButtonItem extends UIItem {
     public Runnable onClick;
 
     private float hoverTime = 0;
+    private float pushedTime = 0;
 
     public UIButtonItem(Raylib.Texture texture, Vector2 position, Vector2 size, BoxFilter filter, int minWidth, int minHeight, Runnable onClick) {
         this.texture = texture;
@@ -48,8 +49,14 @@ public class UIButtonItem extends UIItem {
 
         if (isMouseOver(movedPosition, currentSize)) {
             if (Jaylib.IsMouseButtonPressed(0)) {
+                pushedTime = 1f;
                 onClick.run();
             }
+            if (pushedTime > 0) {
+                pushedTime -= 0.1f;
+                if (pushedTime < 0) pushedTime = 0;
+            }
+
             // give it a small boost on the first frame
             if (hoverTime == 0) hoverTime = 0.48f;
             // add hovertime until it reaches 1
@@ -68,7 +75,7 @@ public class UIButtonItem extends UIItem {
         }
 
         // slerp between the min and max size
-        currentSize = new Vector2(LerpUtil.cubic(size.x, minWidth, hoverTime), LerpUtil.cubic(size.y, minHeight, hoverTime));
+        currentSize = new Vector2(LerpUtil.cubic(size.x, minWidth, hoverTime - pushedTime), LerpUtil.cubic(size.y, minHeight, hoverTime));
         ((UIRoundBoxRenderTask) tasks.get(0)).position = movedPosition;
         ((UIRoundBoxRenderTask) tasks.get(0)).size = currentSize;
 
