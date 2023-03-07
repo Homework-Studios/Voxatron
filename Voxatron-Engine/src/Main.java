@@ -9,8 +9,8 @@ public class Main {
 
         new Input();
 
-        //for testing
-        new AppdataFolder();
+        // for testing -- no function
+        // new AppdataFolder();
 
         Window window = new Window();
         window.init();
