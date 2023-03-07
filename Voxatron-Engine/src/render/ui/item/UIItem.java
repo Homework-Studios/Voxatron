@@ -1,5 +1,6 @@
 package render.ui.item;
 
+import com.raylib.Raylib;
 import math.Vector2;
 import render.task.RenderTask;
 import render.ui.UIScreen;
@@ -40,5 +41,10 @@ public abstract class UIItem {
 
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
+    }
+
+    public boolean isMouseOver(Vector2 areaPosition, Vector2 areaSize) {
+        areaPosition = areaPosition.subtract(areaSize.divide(new Vector2(2, 2)));
+        return Raylib.GetMouseX() > areaPosition.x && Raylib.GetMouseX() < areaPosition.x + areaSize.x && Raylib.GetMouseY() > areaPosition.y && Raylib.GetMouseY() < areaPosition.y + areaSize.y;
     }
 }

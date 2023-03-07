@@ -2,7 +2,6 @@ package render.ui.item.input;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
-import math.Hover;
 import math.LerpUtil;
 import math.Vector2;
 import render.task.ui.UIRoundBoxRenderTask;
@@ -57,7 +56,7 @@ public class UISliderItem extends UIItem {
 
         Vector2 mp = new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY());
 
-        if (Hover.isMouseOver(movedPosition, currentSize) || Hover.isMouseOver(movedSliderPosition, sliderSize) || isInEdit) {
+        if (isMouseOver(movedPosition, currentSize) || isMouseOver(movedSliderPosition, sliderSize) || isInEdit) {
             if (Jaylib.IsMouseButtonDown(0)) {
                 slider.color = GREEN;
                 float relativeMouseX = movedPosition.x - Raylib.GetMouseX();

@@ -1,7 +1,6 @@
 package render.ui.item.input;
 
 import com.raylib.Jaylib;
-import math.Hover;
 import math.LerpUtil;
 import math.Vector2;
 import render.task.RenderTask;
@@ -50,7 +49,7 @@ public class UISwitchItem extends UIItem {
         Vector2 posOnScreen = BoxLayoutUtil.applyFilter(screen.position, screen.size, filter);
         Vector2 movedPosition = position.add(posOnScreen);
 
-        if (Hover.isMouseOver(movedPosition, currentSize)) {
+        if (isMouseOver(movedPosition, currentSize)) {
             if (Jaylib.IsMouseButtonPressed(0)) {
                 toggled = !toggled;
                 if (toggled) ((UIRoundBoxRenderTask) toggledTask).color = GREEN;
