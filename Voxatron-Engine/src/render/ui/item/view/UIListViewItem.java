@@ -6,15 +6,18 @@ import render.ui.box.BoxFilter;
 import render.ui.item.UIItem;
 import util.BoxLayoutUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.raylib.Jaylib.BLACK;
-import static com.raylib.Jaylib.DARKGRAY;
 
 public class UIListViewItem extends UIItem {
     public Vector2 position;
     public Vector2 size;
     public BoxFilter filter;
 
-    //TODO: switch to executable task
+    public List<UIListViewItemItem> items = new ArrayList<>();
+
     public UIRoundBoxRenderTask frame;
 
     public UIListViewItem(Vector2 position, Vector2 size, BoxFilter filter) {
@@ -32,9 +35,10 @@ public class UIListViewItem extends UIItem {
         Vector2 movedPosition = position.add(posOnScreen);
         Vector2 topLeft = movedPosition.subtract(frame.size.divide(new Vector2(2, 2)));
 
-        UIRoundBoxRenderTask item = new UIRoundBoxRenderTask(topLeft, new Vector2(200, 200), 0.2f, 10, DARKGRAY);
-        addTask(item);
-        item.lines = true;
+        int offset = 0;
+        for (UIListViewItemItem item : items) {
+            item.update(movedPosition);
+        }
 
         frame.position = movedPosition;
     }
@@ -42,5 +46,10 @@ public class UIListViewItem extends UIItem {
     @Override
     public void loadUIValues(Vector2 position, Vector2 size) {
 
+    }
+
+    public void addListItem(UIListViewItemItem item) {
+        items.add(item);
+        item.init();
     }
 }

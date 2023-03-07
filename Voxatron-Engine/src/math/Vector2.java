@@ -26,6 +26,7 @@ public class Vector2 {
     public Vector2 add(float x, float y) {
         return new Vector2(this.x + x, this.y + y);
     }
+
     public Vector2 subtract(Vector2 other) {
         return new Vector2(x - other.x, y - other.y);
     }
@@ -37,7 +38,16 @@ public class Vector2 {
     public Vector2 multiply(float other) {
         return new Vector2(x * other, y * other);
     }
+
     public Vector2 divide(Vector2 other) {
         return new Vector2(x / other.x, y / other.y);
+    }
+
+    @Override
+    public String toString() {
+        return "Vector2{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 }

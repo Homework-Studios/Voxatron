@@ -5,6 +5,7 @@ import debug.DebugDraw;
 import math.Vector2;
 import render.scene.SceneManager;
 import render.scene.SceneType;
+import render.task.ui.UIRoundBoxRenderTask;
 import render.ui.UIScreen;
 import render.ui.box.BoxFilter;
 import render.ui.item.image.UIImageItem;
@@ -12,6 +13,7 @@ import render.ui.item.input.UIButtonItem;
 import render.ui.item.input.UISliderItem;
 import render.ui.item.input.UISwitchItem;
 import render.ui.item.view.UIListViewItem;
+import render.ui.item.view.UIListViewItemItem;
 import window.Window;
 
 import static com.raylib.Jaylib.*;
@@ -73,7 +75,20 @@ public class MainMenuUIScreen extends UIScreen {
 
         UIListViewItem configList = new UIListViewItem(new Vector2(0, 0), new Vector2(1000, 1000), BoxFilter.CENTER);
         configList.hidden = true;
-        
+
+        UIListViewItemItem item = new UIListViewItemItem(new Vector2(20, 20), new Vector2(1200, 100)) {
+            @Override
+            public void init() {
+                UIRoundBoxRenderTask task = new UIRoundBoxRenderTask(new Vector2(0, 0), new Vector2(600, 100), 0.2f, 10, WHITE);
+                addTask(task);
+                task.lines = true;
+            }
+        };
+
+        for (int i = 0; i < 15; i++) {
+            configList.addListItem(item);
+        }
+
         addItem(configList);
         addItem(new UIButtonItem(settings, new Vector2(425, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, () -> {
             configList.hidden = !configList.hidden;
