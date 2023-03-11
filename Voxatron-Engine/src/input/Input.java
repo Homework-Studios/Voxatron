@@ -1,12 +1,9 @@
 package input;
 
 import com.raylib.Jaylib;
-import com.raylib.Raylib;
 import input.map.Mapping;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.security.Key;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,10 +20,11 @@ public class Input {
     public void loadMappings() {
         mappings.put(Mapping.TOGGLE_SCENE, KeyEvent.VK_SPACE);
         mappings.put(Mapping.TOGGLE_DEBUG, KeyEvent.VK_P);
+        mappings.put(Mapping.RELOAD_ASSETS, KeyEvent.VK_F9);
     }
 
     public int findMapping(Mapping mapping) {
-        if(mappings.containsKey(mapping)) {
+        if (mappings.containsKey(mapping)) {
             return mappings.get(mapping);
         }
 
@@ -40,7 +38,7 @@ public class Input {
     public boolean isKeyPressed(Mapping mapping) {
         int key = findMapping(mapping);
 
-        if(key == -1) return false;
+        if (key == -1) return false;
 
         return Jaylib.IsKeyPressed(key);
     }

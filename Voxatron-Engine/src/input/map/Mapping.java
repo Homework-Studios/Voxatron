@@ -2,5 +2,6 @@ package input.map;
 
 public enum Mapping {
     TOGGLE_SCENE,
-    TOGGLE_DEBUG
+    TOGGLE_DEBUG,
+    RELOAD_ASSETS,
 }
