@@ -5,11 +5,12 @@ import assets.Assets;
 
 import java.awt.*;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class ImageAsset extends Asset {
-    public List<Image> images;
+    public List<Image> images = new ArrayList<>();
 
     public ImageAsset(String assetName, String assetPath) {
         super(assetName, assetPath, Assets.IMAGE_ASSET);
@@ -27,7 +28,6 @@ public class ImageAsset extends Asset {
 
     @Override
     public void onCreateAsset() {
-        setVersion(1);
-        setAssetValue("asset_type", assetType.name());
+
     }
 }

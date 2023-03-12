@@ -3,9 +3,9 @@ package assets.allAssets;
 import assets.Asset;
 import assets.Assets;
 
-public class LoadingAsset extends Asset {
-    public LoadingAsset(String assetName, String assetPath) {
-        super(assetName, assetPath, Assets.NULL);
+public class UIAsset extends Asset {
+    public UIAsset(String assetName, String assetPath) {
+        super(assetName, assetPath, Assets.UI_ASSET);
     }
 
     @Override

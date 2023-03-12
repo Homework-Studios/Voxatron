@@ -2,6 +2,7 @@ package assets;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 
 public abstract class Asset {
@@ -115,7 +116,7 @@ public abstract class Asset {
     }
 
     public boolean exists() {
-        return Files.exists(new File(FOLDER_PATH + "\\" + ASSET_NAME + ".asset").toPath());
+        return Files.exists(Path.of(FOLDER_PATH + "\\" + ASSET_NAME + ".asset"));
     }
 
     public void createAsset() {
@@ -123,6 +124,8 @@ public abstract class Asset {
             System.out.println("\u001B[31m" + "Asset: " + ASSET_NAME + " already exists!" + "\u001B[0m");
             return;
         }
+        setVersion(1);
+        setAssetValue("asset_type", assetType.name());
         onCreateAsset();
     }
 
