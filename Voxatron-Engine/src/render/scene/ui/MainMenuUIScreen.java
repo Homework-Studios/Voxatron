@@ -1,5 +1,7 @@
 package render.scene.ui;
 
+import assets.Assets;
+import assets.allAssets.ImageAsset;
 import com.raylib.Raylib;
 import debug.DebugDraw;
 import math.Vector2;
@@ -25,7 +27,10 @@ public class MainMenuUIScreen extends UIScreen {
 
         String path = System.getProperty("user.dir") + "\\Voxatron-Engine\\src\\resources\\";
 
-        Raylib.Texture texture = LoadTexture(path + "VTBanner.png");
+
+        new ImageAsset("VTBanner", "MainMenu/").createAsset().saveAsset();
+        // load the VTBanner.png Texture
+        Raylib.Texture texture = Assets.getImageAsset("VTBanner").getTexture("VTBanner");
         texture = texture.width(1300);
         texture = texture.height(600);
 

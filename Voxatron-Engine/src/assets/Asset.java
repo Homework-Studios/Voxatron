@@ -1,14 +1,21 @@
 package assets;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 
 public abstract class Asset {
     public final String ASSET_NAME;
-    public final String FOLDER_PATH;
+    public String FOLDER_PATH;
 
+    public List<String> relatedAssets = new ArrayList<>();
     public File dir;
     public int version = 0;
     public Assets assetType = Assets.NULL;
@@ -40,6 +47,12 @@ public abstract class Asset {
                 reader.close();
                 version = getAssetValueAsInt("version");
                 assetType = Assets.valueOf(getAssetValue("asset_type"));
+
+                String related_assets = getAssetValue("related_assets");
+                if (related_assets != null)
+                    Collections.addAll(relatedAssets, related_assets.split(","));
+                relatedAssets.add(ASSET_NAME + ".asset");
+
                 onLoad();
             } catch (IOException e) {
                 System.out.println("\u001B[31m" + "File " + ASSET_NAME + " read error!" + "\u001B[0m");
@@ -119,15 +132,38 @@ public abstract class Asset {
         return Files.exists(Path.of(FOLDER_PATH + "\\" + ASSET_NAME + ".asset"));
     }
 
-    public void createAsset() {
+    public Asset createAsset() {
         if (exists()) {
             System.out.println("\u001B[31m" + "Asset: " + ASSET_NAME + " already exists!" + "\u001B[0m");
-            return;
+            return this;
         }
         setVersion(1);
         setAssetValue("asset_type", assetType.name());
+        for (File file : Objects.requireNonNull(dir.listFiles())) {
+            if (!file.getName().endsWith(".asset")) {
+                relatedAssets.add(file.getName());
+            }
+        }
+
         onCreateAsset();
+        return this;
     }
 
     public abstract void onCreateAsset();
+
+    public void pullFromHost() {
+        for (String relatedAsset : relatedAssets) {
+            //TODO: Fix this but not like that
+            relatedAsset = relatedAsset.replace("version", "");
+            String surl = Assets.hostedServer + FOLDER_PATH.replace(Assets.assetPath, "").replace("\\\\", "/").replace("\\", "/") + "/" + relatedAsset;
+            try {
+                URL url = new URL(surl);
+                InputStream stream = url.openStream();
+                Files.copy(stream, Path.of(FOLDER_PATH + "\\" + relatedAsset), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+    }
 }
