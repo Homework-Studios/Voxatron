@@ -1,11 +1,20 @@
 package assets.allAssets;
 
 import assets.Asset;
-import assets.Assets;
 
 public class UIAsset extends Asset {
     public UIAsset(String assetName, String assetPath) {
-        super(assetName, assetPath, Assets.UI_ASSET);
+        super(assetName, assetPath);
+    }
+
+    @Override
+    public void onCreate() {
+
+    }
+
+    @Override
+    public void afterCreate() {
+
     }
 
     @Override
@@ -14,7 +23,17 @@ public class UIAsset extends Asset {
     }
 
     @Override
-    public void onCreateAsset() {
+    public void afterLoad() {
+
+    }
+
+    @Override
+    public void onUnload() {
+
+    }
+
+    @Override
+    public void afterUnload() {
 
     }
 }

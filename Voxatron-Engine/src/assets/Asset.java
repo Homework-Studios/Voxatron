@@ -1,169 +1,199 @@
 package assets;
 
+import assets.allAssets.ImageAsset;
+
 import java.io.*;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-
 public abstract class Asset {
-    public final String ASSET_NAME;
-    public String FOLDER_PATH;
+    public static Asset instance = new ImageAsset("test", "test");
+    public static List<String> allAssets = new ArrayList<>();
+    public static HashMap<String, String> assetLoadData = new HashMap<>();
+    public static HashMap<String, Asset> loadedAssets = new HashMap<>();
+    public static HashMap<String, String> assetPaths = new HashMap<>();
+    public static String ASSET_DIR = System.getenv("APPDATA") + "\\Voxatron\\Assets\\";
 
+    public String name;
+    public String dir;
+    public boolean isLoaded = false;
     public List<String> relatedAssets = new ArrayList<>();
-    public File dir;
-    public int version = 0;
-    public Assets assetType = Assets.NULL;
 
-    public String file_content = "";
-
-    public Asset(String assetName, String assetPath, Assets assetType) {
-        ASSET_NAME = assetName;
-        FOLDER_PATH = getPath(assetPath + "\\" + assetName);
-        this.assetType = assetType;
-        //loadAsset();
+    public Asset(String name, String dir) {
+        this.name = name;
+        this.dir = dir;
     }
 
-    public abstract void onLoad();
+    public static void init() {
+        for (File file : getAllSubFiles(new File(ASSET_DIR))) {
+            if (file.getName().endsWith(".asset")) {
+                allAssets.add(file.getName().replace(".asset", ""));
+                String assetData = "";
+                try {
+                    BufferedReader reader = new BufferedReader(new FileReader(file));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        assetData += line;
+                    }
+                    reader.close();
+                    String name = file.getName().replace(".asset", "");
+                    assetLoadData.put(name, assetData);
+                    assetPaths.put(name, file.getAbsolutePath().replace(file.getName(), ""));
 
-    public void loadAsset() {
-        dir = new File(FOLDER_PATH);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        File asset = new File(FOLDER_PATH + "\\" + ASSET_NAME + ".asset");
-        if (asset.exists()) {
-            try {
-                BufferedReader reader = new BufferedReader(new FileReader(asset));
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    file_content += line;
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-                reader.close();
-                version = getAssetValueAsInt("version");
-                assetType = Assets.valueOf(getAssetValue("asset_type"));
-
-                String related_assets = getAssetValue("related_assets");
-                if (related_assets != null)
-                    Collections.addAll(relatedAssets, related_assets.split(","));
-                relatedAssets.add(ASSET_NAME + ".asset");
-
-                onLoad();
-            } catch (IOException e) {
-                System.out.println("\u001B[31m" + "File " + ASSET_NAME + " read error!" + "\u001B[0m");
             }
-        } else {
-            System.out.println("\u001B[31m" + "File " + ASSET_NAME + " does not exist! or path: " + FOLDER_PATH + " is wrong!\u001B[0m");
         }
     }
 
-    public void setVersion(int version) {
-        this.version = version;
-        setAssetValueAsInt("version", version);
+    public static List<File> getAllSubFiles(File file) {
+        List<File> files = new ArrayList<>();
+        for (File f : Objects.requireNonNull(file.listFiles())) {
+            if (f.isDirectory()) {
+                files.addAll(getAllSubFiles(f));
+            } else {
+                files.add(f);
+            }
+        }
+        return files;
     }
 
-    public int getAssetValueAsInt(String key) {
-        if (getAssetValue(key) != null)
-            return Integer.parseInt(getAssetValue(key));
-        return 0;
+    public static HashMap<String, Integer> getHostedAssets() {
+        HashMap<String, Integer> hostedAssets = new HashMap<>();
+        try {
+            //get content of https://raw.githubusercontent.com/Homework-Studios/github-storage/main/Voxatron/Assets/AssetMaster
+            URL url = new URL("hostedServer" + "AssetMaster");
+            InputStreamReader inputStreamReader = new InputStreamReader(url.openStream());
+            BufferedReader reader = new BufferedReader(inputStreamReader);
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] split = line.split(":");
+                hostedAssets.put(split[0], Integer.parseInt(split[1]));
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return hostedAssets;
     }
 
-    public String getAssetValue(String key) {
-        String[] lines = file_content.split(";");
-        for (String line : lines) {
-            String[] split = line.split("=");
-            if (split[0].equals(key)) {
-                return split[1];
+    /**
+     * @see #getAsset(String)
+     */
+    public static ImageAsset getImageAsset(String name) {
+        return (ImageAsset) instance.getAsset(name);
+    }
+
+    /**
+     * use {@link #load()} to load all the data e.g. images
+     *
+     * @return the asset if it is loaded, else it loads the asset and returns it
+     */
+    public Asset getAsset(String name) {
+        if (loadedAssets.containsKey(name))
+            return loadedAssets.get(name);
+        else return loadAsset(name);
+    }
+
+    /**
+     * Loads the assetFile into ram
+     * use {@link #load()} to load all the data e.g. images
+     *
+     * @param name
+     * @return
+     */
+    public Asset loadAsset(String name) {
+        if (assetLoadData.containsKey(name)) {
+            String assetData = assetLoadData.get(name);
+            //TODO: extract
+            for (String s : assetData.replace(System.lineSeparator(), "").split(";;")) {
+                String[] split = s.split("=");
+                if (split[0].equals("asset_type")) {
+                    String type = split[1];
+                    switch (type) {
+                        case "ImageAsset":
+                            ImageAsset asset = new ImageAsset(name, assetPaths.get(name));
+                            loadedAssets.put(name, asset);
+                            return asset;
+                        case "UIAsset":
+
+                            break;
+                    }
+                }
             }
         }
         return null;
     }
 
-    public void setAssetValue(String key, String value) {
-        String[] lines = file_content.split(";");
-        boolean found = false;
-        for (int i = 0; i < lines.length; i++) {
-            String[] split = lines[i].split("=");
-            if (split[0].equals(key)) {
-                lines[i] = key + "=" + value;
-                found = true;
+    /**
+     * Loads the asset and calls the methods in the order of:
+     * <li>{@link #onLoad()}</li>
+     * <li>{@link #midLoad()} (in MasterAsset)</li>
+     * <li>{@link #afterLoad()}</li>
+     */
+    public void load() {
+        if (isLoaded) return;
+        onLoad();
+        midLoad();
+        afterLoad();
+        isLoaded = true;
+    }
+
+    /**
+     * loads {@link #relatedAssets} identifiers into ram
+     *
+     * @see #load()
+     */
+    void midLoad() {
+        for (File file : Objects.requireNonNull(new File(dir).listFiles())) {
+            if (!file.getName().endsWith(".asset")) relatedAssets.add(file.getName());
+        }
+    }
+
+    /**
+     * gets all the assets that end with the given ending
+     * <p>
+     * example:
+     * <li>getRelatedAssetsByEnding(".png")</li>
+     * <li>getRelatedAssetsByEnding(".txt")</li>
+     *
+     * @param ending
+     * @return all assets that end with the given ending excluding the ending
+     * @see #relatedAssets
+     */
+    public List<String> getRelatedAssetsByEnding(String ending) {
+        List<String> assets = new ArrayList<>();
+        for (String asset : relatedAssets) {
+            if (asset.endsWith(ending)) {
+                assets.add(asset.replace(ending, ""));
             }
         }
-        file_content = "";
-        for (String line : lines) {
-            if (!line.equals(""))
-                file_content += line + ";";
-        }
-        if (!found) {
-            file_content += key + "=" + value + ";";
-        }
+        return assets;
     }
 
-    public void setAssetValueAsInt(String key, int value) {
-        setAssetValue(key, String.valueOf(value));
+    public abstract void onCreate();
+
+    public abstract void afterCreate();
+
+    /**
+     * @see #load()
+     */
+    public abstract void onLoad();
+
+    /**
+     * @see #load()
+     */
+
+    public abstract void afterLoad();
+
+    public abstract void onUnload();
+
+    public void midUnload() {
+        loadedAssets.remove(name);
     }
 
-    public String getPath(String path) {
-        return Assets.assetPath + path;
-    }
-
-    public void saveAsset() {
-        File dir = new File(FOLDER_PATH);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        File asset = new File(FOLDER_PATH + "\\" + ASSET_NAME + ".asset");
-        try {
-            if (!asset.exists()) asset.createNewFile();
-            FileWriter writer = new FileWriter(asset, true);
-            writer.write(file_content);
-            writer.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public boolean exists() {
-        return Files.exists(Path.of(FOLDER_PATH + "\\" + ASSET_NAME + ".asset"));
-    }
-
-    public Asset createAsset() {
-        if (exists()) {
-            System.out.println("\u001B[31m" + "Asset: " + ASSET_NAME + " already exists!" + "\u001B[0m");
-            return this;
-        }
-        setVersion(1);
-        setAssetValue("asset_type", assetType.name());
-        for (File file : Objects.requireNonNull(dir.listFiles())) {
-            if (!file.getName().endsWith(".asset")) {
-                relatedAssets.add(file.getName());
-            }
-        }
-
-        onCreateAsset();
-        return this;
-    }
-
-    public abstract void onCreateAsset();
-
-    public void pullFromHost() {
-        for (String relatedAsset : relatedAssets) {
-            //TODO: Fix this but not like that
-            relatedAsset = relatedAsset.replace("version", "");
-            String surl = Assets.hostedServer + FOLDER_PATH.replace(Assets.assetPath, "").replace("\\\\", "/").replace("\\", "/") + "/" + relatedAsset;
-            try {
-                URL url = new URL(surl);
-                InputStream stream = url.openStream();
-                Files.copy(stream, Path.of(FOLDER_PATH + "\\" + relatedAsset), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-        }
-    }
+    public abstract void afterUnload();
 }
