@@ -1,7 +1,6 @@
 package render.ui.item.input;
 
 import com.raylib.Jaylib;
-import com.raylib.Raylib;
 import math.LerpUtil;
 import math.Vector2;
 import render.task.ui.UIRoundBoxRenderTask;
@@ -10,24 +9,39 @@ import render.ui.box.BoxFilter;
 import render.ui.item.UIItem;
 import util.BoxLayoutUtil;
 
-import static com.raylib.Jaylib.DARKGRAY;
+import static com.raylib.Jaylib.*;
 
-public class UIButtonItem extends UIItem {
+public abstract class UIClickableItem extends UIItem implements Runnable {
 
-    public Raylib.Texture texture;
+    private final UIRoundBoxRenderTask toggledTask;
+    private final UITextureRenderTask textureTask;
+    private final boolean isSwitch;
+    public Texture texture;
     public Vector2 position;
     public Vector2 size;
     public Vector2 currentSize;
     public BoxFilter filter;
     public int minWidth;
     public int minHeight;
-
-    public Runnable onClick;
-
+    public boolean toggled;
     private float hoverTime = 0;
     private float pushedTime = 0;
 
-    public UIButtonItem(Raylib.Texture texture, Vector2 position, Vector2 size, BoxFilter filter, int minWidth, int minHeight, Runnable onClick) {
+    /**
+     * Creates a new UIClickableItem
+     * Constructor contating all parameters
+     * use this if you want to set all parameters
+     *
+     * @param texture
+     * @param position
+     * @param size
+     * @param filter
+     * @param minWidth
+     * @param minHeight
+     * @param toggled
+     * @param isSwitch
+     */
+    public UIClickableItem(Texture texture, Vector2 position, Vector2 size, BoxFilter filter, int minWidth, int minHeight, boolean toggled, boolean isSwitch) {
         this.texture = texture;
         this.position = position;
         this.size = size;
@@ -35,11 +49,39 @@ public class UIButtonItem extends UIItem {
         this.filter = filter;
         this.minWidth = minWidth;
         this.minHeight = minHeight;
-        this.onClick = onClick;
+        this.toggled = toggled;
+        this.isSwitch = isSwitch;
 
-        addTask(new UIRoundBoxRenderTask(position, currentSize, 0.2f, 10, DARKGRAY));
+        this.toggledTask = new UIRoundBoxRenderTask(position, currentSize, 0.2f, 10, DARKGRAY);
+        if (toggled && isSwitch) toggledTask.color = GREEN;
+        addTask(toggledTask);
         ((UIRoundBoxRenderTask) tasks.get(0)).lines = true;
-        addTask(new UITextureRenderTask(position, texture));
+        textureTask = new UITextureRenderTask(position, texture);
+        addTask(textureTask);
+    }
+
+    /**
+     * When
+     *
+     * @param toggled is set, the button will act as a switch
+     */
+    public UIClickableItem(Texture texture, Vector2 position, Vector2 size, BoxFilter filter, int minWidth, int minHeight, boolean toggled) {
+        this(texture, position, size, filter, minWidth, minHeight, toggled, true);
+    }
+
+    /**
+     * Creates a new UIClickableItem
+     * this is a button
+     *
+     * @param texture
+     * @param position
+     * @param size
+     * @param filter
+     * @param minWidth
+     * @param minHeight
+     */
+    public UIClickableItem(Texture texture, Vector2 position, Vector2 size, BoxFilter filter, int minWidth, int minHeight) {
+        this(texture, position, size, filter, minWidth, minHeight, false, false);
     }
 
     @Override
@@ -50,8 +92,14 @@ public class UIButtonItem extends UIItem {
         if (isMouseOver(movedPosition, currentSize)) {
             if (Jaylib.IsMouseButtonPressed(0)) {
                 pushedTime = 1f;
-                onClick.run();
+                if (isSwitch) {
+                    toggled = !toggled;
+                    if (toggled) toggledTask.color = GREEN;
+                    else toggledTask.color = DARKGRAY;
+                }
+                run();
             }
+
             if (pushedTime > 0) {
                 pushedTime -= 0.1f;
                 if (pushedTime < 0) pushedTime = 0;
@@ -78,6 +126,8 @@ public class UIButtonItem extends UIItem {
         currentSize = new Vector2(LerpUtil.cubic(size.x, minWidth, hoverTime - pushedTime), LerpUtil.cubic(size.y, minHeight, hoverTime));
         ((UIRoundBoxRenderTask) tasks.get(0)).position = movedPosition;
         ((UIRoundBoxRenderTask) tasks.get(0)).size = currentSize;
+        textureTask.texture = texture;
+
 
         // change the size of the texture
         texture = texture.width((int) currentSize.x).height((int) currentSize.y);

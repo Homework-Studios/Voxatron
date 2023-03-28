@@ -184,6 +184,8 @@ public abstract class Asset {
     public abstract void onLoad();
 
     /**
+     * is called after {@link #load()}
+     *
      * @see #load()
      */
 

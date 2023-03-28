@@ -12,7 +12,6 @@ public class ImageAsset extends Asset {
     HashMap<String, Raylib.Image> loadedImages = new HashMap<>();
     HashMap<String, Raylib.Texture> loadedTextures = new HashMap<>();
 
-
     public ImageAsset(String assetName, String assetDir) {
         super(assetName, assetDir);
 

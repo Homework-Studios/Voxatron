@@ -9,9 +9,8 @@ import render.task.ui.UIRoundBoxRenderTask;
 import render.ui.UIScreen;
 import render.ui.box.BoxFilter;
 import render.ui.item.image.UIImageItem;
-import render.ui.item.input.UIButtonItem;
+import render.ui.item.input.UIClickableItem;
 import render.ui.item.input.UISliderItem;
-import render.ui.item.input.UISwitchItem;
 import render.ui.item.view.UIListViewItem;
 import render.ui.item.view.UIListViewItemItem;
 import window.Window;
@@ -53,28 +52,38 @@ public class MainMenuUIScreen extends UIScreen {
 
         addItem(new UIImageItem(texture, new Vector2(0, -300), BoxFilter.CENTER));
 
-        addItem(new UIButtonItem(play, new Vector2(0, 20), new Vector2(950, 100), BoxFilter.CENTER, 900, 95, () -> {
-            SceneManager.instance.setCurrentScene(SceneType.LEVEL_SELECTOR);
-        }));
+        addItem(new UIClickableItem(play, new Vector2(0, 20), new Vector2(950, 100), BoxFilter.CENTER, 900, 95) {
+            @Override
+            public void run() {
+                SceneManager.instance.setCurrentScene(SceneType.LEVEL_SELECTOR);
+            }
+        });
 
-        addItem(new UIButtonItem(credits, new Vector2(0, 140), new Vector2(950, 100), BoxFilter.CENTER, 900, 95, () -> {
-            DebugDraw.instance.print("Clicked Credits");
-        }));
+        addItem(new UIClickableItem(credits, new Vector2(0, 140), new Vector2(950, 100), BoxFilter.CENTER, 900, 95) {
+            @Override
+            public void run() {
+                DebugDraw.instance.print("Clicked Credits");
+            }
+        });
 
-        addItem(new UIButtonItem(leave, new Vector2(0, 260), new Vector2(950, 100), BoxFilter.CENTER, 900, 95, () -> {
-            Window.instance.stop();
-        }));
+        addItem(new UIClickableItem(leave, new Vector2(0, 260), new Vector2(950, 100), BoxFilter.CENTER, 900, 95) {
+            @Override
+            public void run() {
+                Window.instance.stop();
+            }
+        });
 
-        addItem(new UISwitchItem(music, new Vector2(-425, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, true) {
+        addItem(new UIClickableItem(music, new Vector2(-425, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, true) {
             @Override
             public void run() {
 
             }
         });
 
-        addItem(new UISwitchItem(sound, new Vector2(-305, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, true) {
+        addItem(new UIClickableItem(sound, new Vector2(-305, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, true) {
             @Override
             public void run() {
+                DebugDraw.instance.print("Clicked Sound");
                 if (toggled) this.texture = sound;
                 else this.texture = soundOff;
             }
@@ -101,8 +110,11 @@ public class MainMenuUIScreen extends UIScreen {
         }
 
         addItem(configList);
-        addItem(new UIButtonItem(settings, new Vector2(425, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95, () -> {
-            configList.hidden = !configList.hidden;
-        }));
+        addItem(new UIClickableItem(settings, new Vector2(425, 380), new Vector2(100, 100), BoxFilter.CENTER, 95, 95) {
+            @Override
+            public void run() {
+                configList.hidden = !configList.hidden;
+            }
+        });
     }
 }
