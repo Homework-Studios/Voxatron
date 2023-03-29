@@ -1,6 +1,8 @@
 package math;
 
-public class Vector2 {
+import com.raylib.Raylib;
+
+public class Vector2 extends Raylib.Vector2 {
 
     public float x;
     public float y;

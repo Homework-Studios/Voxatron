@@ -3,6 +3,8 @@ package window;
 
 import render.Renderer;
 
+import java.awt.*;
+
 import static com.raylib.Raylib.*;
 
 public class Window {
@@ -13,14 +15,18 @@ public class Window {
         instance = this;
     }
 
-    public void init() {
+    public void init(Point position, Dimension size) {
 
         SetConfigFlags(FLAG_MSAA_4X_HINT);
         SetConfigFlags(FLAG_WINDOW_MAXIMIZED);
         SetConfigFlags(FLAG_WINDOW_UNDECORATED);
+        //TODO: Remove Focus when needed
+        SetConfigFlags(FLAG_WINDOW_TOPMOST);
 
         // Init window
-        InitWindow(GetScreenWidth(), GetScreenHeight(), "Voxatron");
+        System.out.println("Initializing window with size: " + size + " and position: " + position);
+        InitWindow(size.width, size.height, "Voxatron");
+        SetWindowPosition(position.x, position.y);
         SetTargetFPS(60);
 
 

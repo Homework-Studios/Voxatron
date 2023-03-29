@@ -6,8 +6,8 @@ import java.awt.*;
 
 public class EngineForm extends JFrame {
 
+    public JPanel Game;
     private JPanel MainPanel;
-    private JPanel Game;
     private JTree AssetTree;
     private JTree ObjectsTree;
     private JTabbedPane tabbedPane1;
@@ -16,6 +16,7 @@ public class EngineForm extends JFrame {
 
     public EngineForm() {
         setContentPane(MainPanel);
+
 
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setName("Voxatron Engine");
