@@ -6,8 +6,6 @@ public class Main {
         //new Input();
 
         EngineForm form = new EngineForm();
-
-        form.pack();
         form.setVisible(true);
         //init assets and create a test asset
         if (args.length > 0 && !args[0].equals("")) {
