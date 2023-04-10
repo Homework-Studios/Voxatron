@@ -1,46 +1,64 @@
+import com.raylib.Raylib;
+
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 
 public class EngineForm extends JFrame {
 
     public JPanel Game;
     private JPanel MainPanel;
-    private JTree AssetTree;
     private JTree ObjectsTree;
     private JTabbedPane tabbedPane1;
     private JPanel Inspector;
     private JPanel CurrentlyEmpty;
+    private JScrollPane AssetPanel;
+
 
     public EngineForm() {
         setContentPane(MainPanel);
-
+        Raylib.SetConfigFlags(Raylib.FLAG_WINDOW_TOPMOST);
 
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setName("Voxatron Engine");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         //Action Listeners
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowIconified(WindowEvent e) {
+                Raylib.MinimizeWindow();
+                super.windowIconified(e);
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+                Raylib.MaximizeWindow();
+                super.windowDeiconified(e);
+            }
+        });
 
         //set sizing
         Game.setPreferredSize(new Dimension((int) (500 * 1.7), 500));
 
         //set colors because it does not work with editor,
         Color background = new Color(43, 45, 48);
-        Color foreground = new Color(255, 255, 255);
         Color highlightArea = new Color(101, 101, 101);
+        Color foreground = new Color(255, 255, 255);
+        Color foreground2 = new Color(37, 255, 151, 255);
 
         MainPanel.setBackground(background);
         Game.setBackground(highlightArea);
         tabbedPane1.setBackground(background);
-        AssetTree.setBackground(background);
         ObjectsTree.setBackground(background);
+        AssetPanel.setBackground(background);
 
         ObjectsTree.setForeground(foreground);
         tabbedPane1.setForeground(foreground);
-        AssetTree.setForeground(foreground);
+        AssetPanel.setForeground(foreground);
 
         //Trees
         TreeCellRenderer renderer = ObjectsTree.getCellRenderer();
@@ -48,19 +66,16 @@ public class EngineForm extends JFrame {
         ((DefaultTreeCellRenderer) renderer).setBackgroundSelectionColor(highlightArea);
         ((DefaultTreeCellRenderer) renderer).setTextNonSelectionColor(foreground);
         ((DefaultTreeCellRenderer) renderer).setTextSelectionColor(foreground);
-        renderer = AssetTree.getCellRenderer();
-        ((DefaultTreeCellRenderer) renderer).setBackgroundNonSelectionColor(background);
-        ((DefaultTreeCellRenderer) renderer).setBackgroundSelectionColor(highlightArea);
-        ((DefaultTreeCellRenderer) renderer).setTextNonSelectionColor(foreground);
-        ((DefaultTreeCellRenderer) renderer).setTextSelectionColor(foreground);
 
         ObjectsTree.setEditable(true);
-        AssetTree.setEditable(true);
+
+        //Assets
 
         //Tabs
         for (Component component : tabbedPane1.getComponents()) {
             component.setBackground(background);
         }
+
 
         //Part original Native Java code but changed to fit style
         tabbedPane1.setUI(new BasicTabbedPaneUI() {
@@ -144,7 +159,7 @@ public class EngineForm extends JFrame {
             @Override
             protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
                 if (isSelected) {
-                    g.setColor(new Color(37, 255, 151, 255));
+                    g.setColor(foreground2);
                 } else {
                     g.setColor(background);
                 }

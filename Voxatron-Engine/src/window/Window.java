@@ -20,10 +20,11 @@ public class Window {
         SetConfigFlags(FLAG_MSAA_4X_HINT);
         SetConfigFlags(FLAG_WINDOW_MAXIMIZED);
         SetConfigFlags(FLAG_WINDOW_UNDECORATED);
-        //TODO: Remove Focus when needed
-        SetConfigFlags(FLAG_WINDOW_TOPMOST);
+
 
         // Init window
+        if (size.width == 0 || size.height == 0)
+            size = new Dimension(GetScreenWidth(), GetScreenHeight());
         System.out.println("Initializing window with size: " + size + " and position: " + position);
         InitWindow(size.width, size.height, "Voxatron");
         SetWindowPosition(position.x, position.y);
