@@ -1,6 +1,7 @@
 import com.raylib.Raylib;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
@@ -15,7 +16,10 @@ public class EngineForm extends JFrame {
     private JTabbedPane tabbedPane1;
     private JPanel Inspector;
     private JPanel CurrentlyEmpty;
-    private JScrollPane AssetPanel;
+    private JPanel AssetPanel;
+    private JPanel BottomSpacingPane;
+    private JPanel LeftSpacingPane;
+    private JPanel TopSpacing;
 
 
     public EngineForm() {
@@ -43,12 +47,15 @@ public class EngineForm extends JFrame {
 
         //set sizing
         Game.setPreferredSize(new Dimension((int) (500 * 1.7), 500));
+        tabbedPane1.setPreferredSize(new Dimension(200, 500));
+        ObjectsTree.setPreferredSize(new Dimension(200, 500));
+        AssetPanel.setPreferredSize(new Dimension(1, 150));
 
         //set colors because it does not work with editor,
         Color background = new Color(43, 45, 48);
         Color highlightArea = new Color(101, 101, 101);
         Color foreground = new Color(255, 255, 255);
-        Color foreground2 = new Color(37, 255, 151, 255);
+        Color importantHighlight = new Color(37, 255, 151, 255);
 
         MainPanel.setBackground(background);
         Game.setBackground(highlightArea);
@@ -76,7 +83,7 @@ public class EngineForm extends JFrame {
             component.setBackground(background);
         }
 
-
+        //region Render Changing
         //Part original Native Java code but changed to fit style
         tabbedPane1.setUI(new BasicTabbedPaneUI() {
             //can be changed if wanted makes the tabs split form each other
@@ -159,7 +166,7 @@ public class EngineForm extends JFrame {
             @Override
             protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex, int x, int y, int w, int h, boolean isSelected) {
                 if (isSelected) {
-                    g.setColor(foreground2);
+                    g.setColor(importantHighlight);
                 } else {
                     g.setColor(background);
                 }
@@ -199,7 +206,11 @@ public class EngineForm extends JFrame {
 
 
         });
+        AssetPanel.setBorder(new LineBorder(highlightArea, 1, true));
+        ObjectsTree.setBorder(new LineBorder(highlightArea, 1, true));
+        //endregion
 
+        //Asset Rendering
 
     }
 
