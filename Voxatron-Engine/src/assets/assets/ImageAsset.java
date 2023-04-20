@@ -1,4 +1,4 @@
-package assets.allAssets;
+package assets.assets;
 
 import assets.Asset;
 import com.raylib.Raylib;

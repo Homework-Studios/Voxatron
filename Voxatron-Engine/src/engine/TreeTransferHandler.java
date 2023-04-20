@@ -53,36 +53,40 @@ class TreeTransferHandler extends TransferHandler {
         TreePath[] paths = tree.getSelectionPaths();
         if (paths != null) {
             List<DefaultMutableTreeNode> copies = new ArrayList<>();
-            List<DefaultMutableTreeNode> toRemove = new ArrayList<>();
             DefaultMutableTreeNode node =
                     (DefaultMutableTreeNode) paths[0].getLastPathComponent();
             DefaultMutableTreeNode copy = copy(node);
+            if (node == tree.getModel().getRoot()) return null;
+            addChildrenToNode(node, copy);
             copies.add(copy);
-            toRemove.add(node);
-            for (int i = 1; i < paths.length; i++) {
-                DefaultMutableTreeNode next =
-                        (DefaultMutableTreeNode) paths[i].getLastPathComponent();
-                // Do not allow higher le55vel nodes to be added to list.
-                if (next.getLevel() < node.getLevel()) {
-                    break;
-                } else if (next.getLevel() > node.getLevel()) {  // child node
-                    copy.add(copy(next));
-                    // node already contains child
-                } else {                                        // sibling
-                    copies.add(copy(next));
-                    toRemove.add(next);
-                }
-            }
+
             DefaultMutableTreeNode[] nodes =
                     copies.toArray(new DefaultMutableTreeNode[copies.size()]);
-            nodesToRemove =
-                    toRemove.toArray(new DefaultMutableTreeNode[toRemove.size()]);
 
-            //TODO: Fix removing old when wanted
+            node.removeAllChildren();
+            ((DefaultMutableTreeNode) node.getParent()).remove(node);
+            ((DefaultTreeModel) tree.getModel()).reload();
+
             return new NodesTransferable(nodes);
         }
         return null;
     }
+
+    /**
+     * @param node
+     * @param copy Adds All children of node to copy
+     */
+    private void addChildrenToNode(DefaultMutableTreeNode node, DefaultMutableTreeNode copy) {
+        if (node.getChildCount() == 0) return;
+        node.children().asIterator().forEachRemaining(child -> {
+            DefaultMutableTreeNode childCopy = copy(child);
+            copy.add(childCopy);
+            if (child.getChildCount() > 0) {
+                addChildrenToNode((DefaultMutableTreeNode) child, childCopy);
+            }
+        });
+    }
+
 
     /**
      * Defensive copy used in createTransferable.
@@ -133,6 +137,7 @@ class TreeTransferHandler extends TransferHandler {
             // ArrayIndexOutOfBoundsException
             model.insertNodeInto(nodes[i], parent, index++);
         }
+        model.reload();
         return true;
     }
 

@@ -1,6 +1,6 @@
 package assets;
 
-import assets.allAssets.ImageAsset;
+import assets.assets.ImageAsset;
 import engine.EngineForm;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -50,11 +50,28 @@ public abstract class Asset {
                 }
             }
         }
+        onReloadTreeModel();
 
+    }
+
+    public static void onReloadTreeModel() {
         DefaultMutableTreeNode root = EngineForm.root;
-        root.add(new DefaultMutableTreeNode("Test1"));
-        root.add(new DefaultMutableTreeNode("Test2"));
-
+        root.removeAllChildren();
+        HashMap<String, DefaultMutableTreeNode> nodes = new HashMap<>();
+        for (String asset : allAssets) {
+            String[] split = asset.split("/");
+            String path = "";
+            DefaultMutableTreeNode node = root;
+            for (String s : split) {
+                path += s + "/";
+                if (!nodes.containsKey(path)) {
+                    DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(s);
+                    node.add(newNode);
+                    nodes.put(path, newNode);
+                }
+                node = nodes.get(path);
+            }
+        }
     }
 
     public static List<File> getAllSubFiles(File file) {

@@ -1,5 +1,6 @@
 package engine;
 
+import assets.Asset;
 import com.raylib.Raylib;
 
 import javax.swing.*;
@@ -19,6 +20,7 @@ import java.io.PrintStream;
 public class EngineForm extends JFrame {
 
     public static DefaultMutableTreeNode root = new DefaultMutableTreeNode("Assets");
+    public static DefaultTreeModel model;
     public static EngineForm instance;
     public JTree AssetTree;
     public JPanel Game;
@@ -264,11 +266,20 @@ public class EngineForm extends JFrame {
 
 
         //Assets
+        model = new DefaultTreeModel(root) {
+            @Override
+            public void reload() {
+                Asset.onReloadTreeModel();
+                reload(root);
+            }
+        };
+
         AssetTree.setTransferHandler(new TreeTransferHandler());
         AssetTree.setDropMode(DropMode.ON_OR_INSERT);
         AssetTree.setEditable(true);
         AssetTree.setDragEnabled(true);
-        AssetTree.setModel(new DefaultTreeModel(root));
+        AssetTree.setModel(model);
+
 
     }
 

@@ -1,10 +1,10 @@
-package assets.allAssets;
+package assets.assets.UI;
 
 import assets.Asset;
 
-public class UIAsset extends Asset {
-    public UIAsset(String assetName, String assetPath) {
-        super(assetName, assetPath);
+public class ClickableAsset extends Asset {
+    public ClickableAsset(String name, String dir) {
+        super(name, dir);
     }
 
     @Override
@@ -36,4 +36,6 @@ public class UIAsset extends Asset {
     public void afterUnload() {
 
     }
+
+
 }
