@@ -51,6 +51,7 @@ class TreeTransferHandler extends TransferHandler {
     protected Transferable createTransferable(JComponent c) {
         JTree tree = (JTree) c;
         TreePath[] paths = tree.getSelectionPaths();
+        boolean isAsset = tree.getModel().getRoot() == EngineForm.root;
         if (paths != null) {
             List<DefaultMutableTreeNode> copies = new ArrayList<>();
             DefaultMutableTreeNode node =
@@ -64,9 +65,9 @@ class TreeTransferHandler extends TransferHandler {
                     copies.toArray(new DefaultMutableTreeNode[copies.size()]);
 
             node.removeAllChildren();
-            ((DefaultMutableTreeNode) node.getParent()).remove(node);
-            ((DefaultTreeModel) tree.getModel()).reload();
 
+            if (!isAsset) ((DefaultMutableTreeNode) node.getParent()).remove(node);
+            //((DefaultTreeModel) tree.getModel()).reload();
             return new NodesTransferable(nodes);
         }
         return null;
@@ -138,6 +139,7 @@ class TreeTransferHandler extends TransferHandler {
             model.insertNodeInto(nodes[i], parent, index++);
         }
         model.reload();
+        tree.expandPath(dest);
         return true;
     }
 

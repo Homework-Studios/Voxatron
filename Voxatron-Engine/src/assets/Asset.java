@@ -65,7 +65,11 @@ public abstract class Asset {
             for (String s : split) {
                 path += s + "/";
                 if (!nodes.containsKey(path)) {
-                    DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(s);
+                    DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(s + ".asset");
+                    for (String relatedAsset : getAsset(asset).relatedAssets) {
+                        DefaultMutableTreeNode related = new DefaultMutableTreeNode(relatedAsset);
+                        newNode.add(related);
+                    }
                     node.add(newNode);
                     nodes.put(path, newNode);
                 }
@@ -108,7 +112,7 @@ public abstract class Asset {
      * @see #getAsset(String)
      */
     public static ImageAsset getImageAsset(String name) {
-        return (ImageAsset) instance.getAsset(name);
+        return (ImageAsset) getAsset(name);
     }
 
     /**
@@ -116,7 +120,7 @@ public abstract class Asset {
      *
      * @return the asset if it is loaded, else it loads the asset and returns it
      */
-    public Asset getAsset(String name) {
+    public static Asset getAsset(String name) {
         if (loadedAssets.containsKey(name))
             return loadedAssets.get(name);
         else return loadAsset(name);
@@ -129,7 +133,7 @@ public abstract class Asset {
      * @param name
      * @return
      */
-    public Asset loadAsset(String name) {
+    public static Asset loadAsset(String name) {
         if (assetLoadData.containsKey(name)) {
             String assetData = assetLoadData.get(name);
             //TODO: extract

@@ -1,6 +1,5 @@
 package engine;
 
-import assets.Asset;
 import com.raylib.Raylib;
 
 import javax.swing.*;
@@ -34,6 +33,8 @@ public class EngineForm extends JFrame {
     private JPanel LeftSpacingPane;
     private JPanel TopSpacing;
     private JTextPane Debugger;
+    private JPanel AssetTreeButtonPanel;
+    private JButton NewAssetButton;
 
 
     public EngineForm() {
@@ -69,8 +70,51 @@ public class EngineForm extends JFrame {
         //set colors because it does not work with editor,
         Color background = new Color(43, 45, 48);
         Color highlightArea = new Color(101, 101, 101);
-        Color foreground = new Color(255, 255, 255);
+        Color highlight = new Color(255, 255, 255);
         Color importantHighlight = new Color(37, 255, 151, 255);
+        TreeCellRenderer treeCellRenderer = new DefaultTreeCellRenderer() {
+            @Override
+            public Component getTreeCellRendererComponent(JTree tree,
+                                                          Object value, boolean selected, boolean expanded,
+                                                          boolean leaf, int row, boolean hasFocus) {
+                String stringValue = tree.convertValueToText(value, selected,
+                        expanded, leaf, row, hasFocus);
+                setBackgroundSelectionColor(background);
+                setBackgroundNonSelectionColor(background);
+                setTextSelectionColor(highlight);
+                setTextNonSelectionColor(highlight);
+                setBorderSelectionColor(importantHighlight);
+
+                super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
+
+                /*
+                if (tree.getModel().getRoot().equals(node)) {
+                    //setIcon(root);
+                } else if (node.getChildCount() > 0) {
+                    //setIcon(parent);
+                } else {
+                    //setIcon(text);
+                }
+
+                 */
+                /*
+                switch (stringValue.split(".")[1]) {
+                    case ".asset":
+                        setIcon();
+                        break;
+                    case ".png":
+                        setIcon();
+                        break;
+                     }
+                 */
+
+
+                System.out.println(stringValue);
+
+                return this;
+            }
+        };
 
         MainPanel.setBackground(background);
         Game.setBackground(highlightArea);
@@ -79,27 +123,32 @@ public class EngineForm extends JFrame {
         DebuggerPanel.setBackground(background);
         Debugger.setBackground(background);
         AssetTree.setBackground(background);
+        AssetTreeButtonPanel.setBackground(background);
+        NewAssetButton.setBackground(background);
 
-        ObjectsTree.setForeground(foreground);
-        tabbedPane1.setForeground(foreground);
-        DebuggerPanel.setForeground(foreground);
-        Debugger.setForeground(foreground);
-        AssetTree.setForeground(foreground);
+        AssetTreeButtonPanel.setForeground(highlight);
+        NewAssetButton.setForeground(highlight);
+        ObjectsTree.setForeground(highlight);
+        tabbedPane1.setForeground(highlight);
+        DebuggerPanel.setForeground(highlight);
+        Debugger.setForeground(highlight);
+        AssetTree.setForeground(highlight);
 
         //Trees
         TreeCellRenderer renderer = ObjectsTree.getCellRenderer();
         ((DefaultTreeCellRenderer) renderer).setBackgroundNonSelectionColor(background);
         ((DefaultTreeCellRenderer) renderer).setBackgroundSelectionColor(highlightArea);
-        ((DefaultTreeCellRenderer) renderer).setTextNonSelectionColor(foreground);
-        ((DefaultTreeCellRenderer) renderer).setTextSelectionColor(foreground);
+        ((DefaultTreeCellRenderer) renderer).setTextNonSelectionColor(highlight);
+        ((DefaultTreeCellRenderer) renderer).setTextSelectionColor(highlight);
 
         renderer = AssetTree.getCellRenderer();
         ((DefaultTreeCellRenderer) renderer).setBackgroundNonSelectionColor(background);
         ((DefaultTreeCellRenderer) renderer).setBackgroundSelectionColor(highlightArea);
-        ((DefaultTreeCellRenderer) renderer).setTextNonSelectionColor(foreground);
-        ((DefaultTreeCellRenderer) renderer).setTextSelectionColor(foreground);
+        ((DefaultTreeCellRenderer) renderer).setTextNonSelectionColor(highlight);
+        ((DefaultTreeCellRenderer) renderer).setTextSelectionColor(highlight);
 
         ObjectsTree.setTransferHandler(new TreeTransferHandler());
+        ObjectsTree.setCellRenderer(treeCellRenderer);
         ObjectsTree.setDragEnabled(true);
         ObjectsTree.setDropMode(DropMode.ON_OR_INSERT);
         ObjectsTree.setEditable(true);
@@ -121,7 +170,7 @@ public class EngineForm extends JFrame {
                 int width = tabPane.getWidth();
                 int height = tabPane.getHeight();
                 Insets insets = tabPane.getInsets();
-                Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
+                //Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
 
                 int x = insets.left;
                 int y = insets.top;
@@ -269,7 +318,7 @@ public class EngineForm extends JFrame {
         model = new DefaultTreeModel(root) {
             @Override
             public void reload() {
-                Asset.onReloadTreeModel();
+                //Asset.onReloadTreeModel();
                 reload(root);
             }
         };
@@ -279,6 +328,7 @@ public class EngineForm extends JFrame {
         AssetTree.setEditable(true);
         AssetTree.setDragEnabled(true);
         AssetTree.setModel(model);
+        AssetTree.setCellRenderer(treeCellRenderer);
 
 
     }

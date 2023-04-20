@@ -27,7 +27,8 @@ public class Main {
             Asset.ASSET_DIR = args[0];
         }
         Asset.init();
-        EngineForm.model.reload();
+        if (DEVELOPER_MODE)
+            EngineForm.model.reload();
 
 
         p.move(p.x * 2 + 1, p.y * 2 + 1);
