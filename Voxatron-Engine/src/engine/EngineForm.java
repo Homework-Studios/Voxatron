@@ -1,28 +1,41 @@
+package engine;
+
 import com.raylib.Raylib;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.StyledDocument;
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 import java.awt.event.WindowEvent;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 public class EngineForm extends JFrame {
 
+    public static DefaultMutableTreeNode root = new DefaultMutableTreeNode("Assets");
+    public static EngineForm instance;
+    public JTree AssetTree;
     public JPanel Game;
     private JPanel MainPanel;
     private JTree ObjectsTree;
     private JTabbedPane tabbedPane1;
     private JPanel Inspector;
-    private JPanel CurrentlyEmpty;
     private JPanel AssetPanel;
+    private JPanel DebuggerPanel;
     private JPanel BottomSpacingPane;
     private JPanel LeftSpacingPane;
     private JPanel TopSpacing;
+    private JTextPane Debugger;
 
 
     public EngineForm() {
+        instance = this;
         setContentPane(MainPanel);
         Raylib.SetConfigFlags(Raylib.FLAG_WINDOW_TOPMOST);
 
@@ -49,7 +62,7 @@ public class EngineForm extends JFrame {
         Game.setPreferredSize(new Dimension((int) (500 * 1.7), 500));
         tabbedPane1.setPreferredSize(new Dimension(200, 500));
         ObjectsTree.setPreferredSize(new Dimension(200, 500));
-        AssetPanel.setPreferredSize(new Dimension(1, 150));
+        DebuggerPanel.setPreferredSize(new Dimension(1, 150));
 
         //set colors because it does not work with editor,
         Color background = new Color(43, 45, 48);
@@ -61,11 +74,15 @@ public class EngineForm extends JFrame {
         Game.setBackground(highlightArea);
         tabbedPane1.setBackground(background);
         ObjectsTree.setBackground(background);
-        AssetPanel.setBackground(background);
+        DebuggerPanel.setBackground(background);
+        Debugger.setBackground(background);
+        AssetTree.setBackground(background);
 
         ObjectsTree.setForeground(foreground);
         tabbedPane1.setForeground(foreground);
-        AssetPanel.setForeground(foreground);
+        DebuggerPanel.setForeground(foreground);
+        Debugger.setForeground(foreground);
+        AssetTree.setForeground(foreground);
 
         //Trees
         TreeCellRenderer renderer = ObjectsTree.getCellRenderer();
@@ -74,9 +91,17 @@ public class EngineForm extends JFrame {
         ((DefaultTreeCellRenderer) renderer).setTextNonSelectionColor(foreground);
         ((DefaultTreeCellRenderer) renderer).setTextSelectionColor(foreground);
 
+        renderer = AssetTree.getCellRenderer();
+        ((DefaultTreeCellRenderer) renderer).setBackgroundNonSelectionColor(background);
+        ((DefaultTreeCellRenderer) renderer).setBackgroundSelectionColor(highlightArea);
+        ((DefaultTreeCellRenderer) renderer).setTextNonSelectionColor(foreground);
+        ((DefaultTreeCellRenderer) renderer).setTextSelectionColor(foreground);
+
+        ObjectsTree.setTransferHandler(new TreeTransferHandler());
+        ObjectsTree.setDragEnabled(true);
+        ObjectsTree.setDropMode(DropMode.ON_OR_INSERT);
         ObjectsTree.setEditable(true);
 
-        //Assets
 
         //Tabs
         for (Component component : tabbedPane1.getComponents()) {
@@ -206,11 +231,44 @@ public class EngineForm extends JFrame {
 
 
         });
-        AssetPanel.setBorder(new LineBorder(highlightArea, 1, true));
+        DebuggerPanel.setBorder(new LineBorder(highlightArea, 1, true));
         ObjectsTree.setBorder(new LineBorder(highlightArea, 1, true));
         //endregion
 
-        //Asset Rendering
+        //Debugging
+
+        StyledDocument document = Debugger.getStyledDocument();
+        try {
+            document.insertString(0, "Start of debugging" + System.lineSeparator(), null);
+        } catch (BadLocationException e) {
+            throw new RuntimeException(e);
+        }
+
+        new Thread(() -> {
+            while (true) {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                PrintStream printStream = new PrintStream(baos, true);
+                PrintStream old = System.out;
+                System.setOut(printStream);
+                try {
+                    System.out.flush();
+                    if (baos.toString().length() > 0) {
+                        document.insertString(document.getLength(), baos + System.lineSeparator(), null);
+                    }
+                    System.setOut(old);
+                } catch (BadLocationException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+        //Assets
+        AssetTree.setTransferHandler(new TreeTransferHandler());
+        AssetTree.setDropMode(DropMode.ON_OR_INSERT);
+        AssetTree.setEditable(true);
+        AssetTree.setDragEnabled(true);
+        AssetTree.setModel(new DefaultTreeModel(root));
 
     }
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="EngineForm">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="engine.EngineForm">
   <grid id="27dc6" binding="MainPanel" layout-manager="GridLayoutManager" row-count="5" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="510" height="400"/>
     </constraints>
     <properties>
       <foreground color="-13947600"/>
@@ -45,18 +45,27 @@
             <border type="none"/>
             <children/>
           </grid>
-          <grid id="a9865" binding="CurrentlyEmpty" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="a9865" binding="AssetPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
-              <tabbedpane title="Empty">
-                <tooltip value="Currently Not Implemented"/>
+              <tabbedpane title="AssetTree">
+                <tooltip value="This holds a tree of the Asset System"/>
               </tabbedpane>
             </constraints>
             <properties/>
             <border type="none">
               <title-color color="-2104859"/>
             </border>
-            <children/>
+            <children>
+              <component id="cc1a7" class="javax.swing.JTree" binding="AssetTree">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="50"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+            </children>
           </grid>
         </children>
       </tabbedpane>
@@ -68,14 +77,23 @@
         </constraints>
         <properties/>
       </component>
-      <grid id="f1f42" binding="AssetPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+      <grid id="f1f42" binding="DebuggerPanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>
         <constraints>
           <grid row="3" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="line"/>
-        <children/>
+        <children>
+          <component id="9407d" class="javax.swing.JTextPane" binding="Debugger">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="50"/>
+              </grid>
+            </constraints>
+            <properties/>
+          </component>
+        </children>
       </grid>
       <grid id="9a57a" binding="BottomSpacingPane" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
         <margin top="0" left="0" bottom="0" right="0"/>

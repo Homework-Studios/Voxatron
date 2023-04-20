@@ -1,7 +1,9 @@
 package assets;
 
 import assets.allAssets.ImageAsset;
+import engine.EngineForm;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
@@ -48,6 +50,11 @@ public abstract class Asset {
                 }
             }
         }
+
+        DefaultMutableTreeNode root = EngineForm.root;
+        root.add(new DefaultMutableTreeNode("Test1"));
+        root.add(new DefaultMutableTreeNode("Test2"));
+
     }
 
     public static List<File> getAllSubFiles(File file) {
