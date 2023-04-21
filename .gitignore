@@ -2,3 +2,4 @@ out
 .idea
 Voxatron.iml
 .gitignore
+hs_err_pid*

@@ -50,8 +50,16 @@ public abstract class Asset {
                 }
             }
         }
+        preloadAssets();
         onReloadTreeModel();
 
+    }
+
+    public static void preloadAssets() {
+        for (int i = 0; i < allAssets.size(); i++) {
+            String assetName = allAssets.get(i);
+            getAsset(assetName).preload();
+        }
     }
 
     public static void onReloadTreeModel() {
@@ -171,14 +179,24 @@ public abstract class Asset {
     }
 
     /**
-     * loads {@link #relatedAssets} identifiers into ram
-     *
      * @see #load()
      */
     void midLoad() {
+
+    }
+
+    /**
+     * is called on first initialization
+     * loads {@link #relatedAssets} identifiers into ram
+     */
+    public void preload() {
         for (File file : Objects.requireNonNull(new File(dir).listFiles())) {
             if (!file.getName().endsWith(".asset")) relatedAssets.add(file.getName());
         }
+    }
+
+    void registerRelated() {
+
     }
 
     /**
