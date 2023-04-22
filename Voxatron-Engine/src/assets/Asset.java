@@ -4,8 +4,10 @@ import assets.assets.ImageAsset;
 import engine.EngineForm;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.io.*;
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +34,8 @@ public abstract class Asset {
     public static void init() {
         for (File file : getAllSubFiles(new File(ASSET_DIR))) {
             if (file.getName().endsWith(".asset")) {
-                allAssets.add(file.getName().replace(".asset", ""));
+                String path = file.getPath().replace(ASSET_DIR, "").replaceAll("\\\\", "/").replace("/" + file.getName(), "");
+                allAssets.add(path);
                 String assetData = "";
                 try {
                     BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -41,9 +44,9 @@ public abstract class Asset {
                         assetData += line;
                     }
                     reader.close();
-                    String name = file.getName().replace(".asset", "");
-                    assetLoadData.put(name, assetData);
-                    assetPaths.put(name, file.getAbsolutePath().replace(file.getName(), ""));
+
+                    assetLoadData.put(path, assetData);
+                    assetPaths.put(path, file.getAbsolutePath().replace(file.getName(), ""));
 
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -57,31 +60,39 @@ public abstract class Asset {
 
     public static void preloadAssets() {
         for (int i = 0; i < allAssets.size(); i++) {
-            String assetName = allAssets.get(i);
-            getAsset(assetName).preload();
+            String assetPath = allAssets.get(i);
+            getAsset(assetPath).preload();
         }
     }
 
     public static void onReloadTreeModel() {
         DefaultMutableTreeNode root = EngineForm.root;
         root.removeAllChildren();
-        HashMap<String, DefaultMutableTreeNode> nodes = new HashMap<>();
-        for (String asset : allAssets) {
-            String[] split = asset.split("/");
-            String path = "";
-            DefaultMutableTreeNode node = root;
-            for (String s : split) {
-                path += s + "/";
-                if (!nodes.containsKey(path)) {
-                    DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(s + ".asset");
-                    for (String relatedAsset : getAsset(asset).relatedAssets) {
-                        DefaultMutableTreeNode related = new DefaultMutableTreeNode(relatedAsset);
-                        newNode.add(related);
+        //get from folder structure
+        File file = new File(ASSET_DIR);
+        addSubFilesToTree(root, file);
+    }
+
+    public static void addSubFilesToTree(DefaultMutableTreeNode root, File file) {
+        for (File f : Objects.requireNonNull(file.listFiles())) {
+            if (f.isDirectory()) {
+                for (File listFile : Objects.requireNonNull(f.listFiles())) {
+                    if (listFile.getName().endsWith(".asset")) {
+                        DefaultMutableTreeNode node = new DefaultMutableTreeNode(f.getName() + ".asset");
+                        for (File listedFile : Objects.requireNonNull(f.listFiles())) {
+                            if (!listedFile.getName().equals(listFile.getName())) {
+                                node.add(new DefaultMutableTreeNode(listedFile.getName()));
+                            }
+                        }
+                        root.add(node);
+                        return;
                     }
-                    node.add(newNode);
-                    nodes.put(path, newNode);
                 }
-                node = nodes.get(path);
+                DefaultMutableTreeNode node = new DefaultMutableTreeNode(f.getName());
+                root.add(node);
+                addSubFilesToTree(node, f);
+            } else {
+                root.add(new DefaultMutableTreeNode(f.getName()));
             }
         }
     }
@@ -98,29 +109,17 @@ public abstract class Asset {
         return files;
     }
 
-    public static HashMap<String, Integer> getHostedAssets() {
-        HashMap<String, Integer> hostedAssets = new HashMap<>();
-        try {
-            //get content of https://raw.githubusercontent.com/Homework-Studios/github-storage/main/Voxatron/Assets/AssetMaster
-            URL url = new URL("hostedServer" + "AssetMaster");
-            InputStreamReader inputStreamReader = new InputStreamReader(url.openStream());
-            BufferedReader reader = new BufferedReader(inputStreamReader);
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] split = line.split(":");
-                hostedAssets.put(split[0], Integer.parseInt(split[1]));
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return hostedAssets;
-    }
 
     /**
      * @see #getAsset(String)
      */
-    public static ImageAsset getImageAsset(String name) {
-        return (ImageAsset) getAsset(name);
+    public static ImageAsset getImageAsset(String path) {
+        return (ImageAsset) getAssetFromFormatted(path);
+    }
+
+    public static Asset getAssetFromFormatted(String path) {
+        path = "/" + path;
+        return getAsset(path);
     }
 
     /**

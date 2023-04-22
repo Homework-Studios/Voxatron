@@ -14,7 +14,6 @@ public class ImageAsset extends Asset {
 
     public ImageAsset(String assetName, String assetDir) {
         super(assetName, assetDir);
-
     }
 
 

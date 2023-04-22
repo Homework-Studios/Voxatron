@@ -27,7 +27,7 @@ public class MainMenuUIScreen extends UIScreen {
 
 
         // load the VTBanner.png Texture
-        Raylib.Texture texture = getImageAsset("VTBanner").getTexture("VTBanner");
+        Raylib.Texture texture = getImageAsset("MainMenu/VTBanner").getTexture("VTBanner");
         texture = texture.width(1300);
         texture = texture.height(600);
 

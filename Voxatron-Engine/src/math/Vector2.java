@@ -17,12 +17,25 @@ public class Vector2 extends Raylib.Vector2 {
         this.y = y;
     }
 
+    public Vector2(String string) {
+        for (String s : new String[]{"Vector2{", "x=", " y=", "}"}) {
+            string = string.replace(s, "");
+        }
+        String[] split = string.split(",");
+        this.x = Float.parseFloat(split[0]);
+        this.y = Float.parseFloat(split[1]);
+    }
+
     public Vector2 add(Vector2 other) {
         return new Vector2(x + other.x, y + other.y);
     }
 
     public Vector2 add(float other) {
         return new Vector2(x + other, y + other);
+    }
+
+    public Vector2 add(int x, int y) {
+        return new Vector2(this.x + x, this.y + y);
     }
 
     public Vector2 add(float x, float y) {
@@ -33,8 +46,20 @@ public class Vector2 extends Raylib.Vector2 {
         return new Vector2(x - other.x, y - other.y);
     }
 
+    public Vector2 subtract(int other) {
+        return new Vector2(x - other, y - other);
+    }
+
+    public Vector2 subtract(float other) {
+        return new Vector2(x - other, y - other);
+    }
+
     public Vector2 multiply(Vector2 other) {
         return new Vector2(x * other.x, y * other.y);
+    }
+
+    public Vector2 multiply(int other) {
+        return new Vector2(x * other, y * other);
     }
 
     public Vector2 multiply(float other) {
@@ -43,6 +68,14 @@ public class Vector2 extends Raylib.Vector2 {
 
     public Vector2 divide(Vector2 other) {
         return new Vector2(x / other.x, y / other.y);
+    }
+
+    public Vector2 divide(int other) {
+        return new Vector2(x / other, y / other);
+    }
+
+    public Vector2 divide(float other) {
+        return new Vector2(x / other, y / other);
     }
 
     @Override

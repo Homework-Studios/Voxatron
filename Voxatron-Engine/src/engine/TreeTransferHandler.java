@@ -64,10 +64,14 @@ class TreeTransferHandler extends TransferHandler {
             DefaultMutableTreeNode[] nodes =
                     copies.toArray(new DefaultMutableTreeNode[copies.size()]);
 
-            node.removeAllChildren();
+            if (!isAsset) {
+                DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+                for (DefaultMutableTreeNode nodeToRemove : nodes) {
+                    if (nodeToRemove.getParent() != null)
+                        model.removeNodeFromParent(nodeToRemove);
+                }
+            }
 
-            if (!isAsset) ((DefaultMutableTreeNode) node.getParent()).remove(node);
-            //((DefaultTreeModel) tree.getModel()).reload();
             return new NodesTransferable(nodes);
         }
         return null;
@@ -138,8 +142,6 @@ class TreeTransferHandler extends TransferHandler {
             // ArrayIndexOutOfBoundsException
             model.insertNodeInto(nodes[i], parent, index++);
         }
-        model.reload();
-        tree.expandPath(dest);
         return true;
     }
 

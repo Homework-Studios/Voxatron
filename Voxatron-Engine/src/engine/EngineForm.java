@@ -1,5 +1,6 @@
 package engine;
 
+import assets.Asset;
 import com.raylib.Raylib;
 
 import javax.swing.*;
@@ -33,8 +34,6 @@ public class EngineForm extends JFrame {
     private JPanel LeftSpacingPane;
     private JPanel TopSpacing;
     private JTextPane Debugger;
-    private JPanel AssetTreeButtonPanel;
-    private JButton NewAssetButton;
 
 
     public EngineForm() {
@@ -98,19 +97,15 @@ public class EngineForm extends JFrame {
                 }
 
                  */
-                /*
-                switch (stringValue.split(".")[1]) {
-                    case ".asset":
-                        setIcon();
-                        break;
-                    case ".png":
-                        setIcon();
-                        break;
-                     }
-                 */
 
+                //TODO: Make work
+                String[] split = stringValue.split("\\.");
+                if (split.length == 2)
+                    switch (split[1]) {
+                        case "asset" -> setIcon(new ImageIcon());
+                        case "png" -> setIcon(new ImageIcon());
+                    }
 
-                System.out.println(stringValue);
 
                 return this;
             }
@@ -123,11 +118,7 @@ public class EngineForm extends JFrame {
         DebuggerPanel.setBackground(background);
         Debugger.setBackground(background);
         AssetTree.setBackground(background);
-        AssetTreeButtonPanel.setBackground(background);
-        NewAssetButton.setBackground(background);
 
-        AssetTreeButtonPanel.setForeground(highlight);
-        NewAssetButton.setForeground(highlight);
         ObjectsTree.setForeground(highlight);
         tabbedPane1.setForeground(highlight);
         DebuggerPanel.setForeground(highlight);
@@ -318,11 +309,12 @@ public class EngineForm extends JFrame {
         model = new DefaultTreeModel(root) {
             @Override
             public void reload() {
-                //Asset.onReloadTreeModel();
+                Asset.onReloadTreeModel();
                 reload(root);
             }
         };
 
+        AssetTree.addMouseListener(new TreePopup());
         AssetTree.setTransferHandler(new TreeTransferHandler());
         AssetTree.setDropMode(DropMode.ON_OR_INSERT);
         AssetTree.setEditable(true);
