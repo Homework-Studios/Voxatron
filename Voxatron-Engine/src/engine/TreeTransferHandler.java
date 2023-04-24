@@ -138,6 +138,7 @@ class TreeTransferHandler extends TransferHandler {
             index = parent.getChildCount();
         }
         // Add data to model.
+        if (tree.getModel().getRoot() == EngineForm.root) return false;
         for (int i = 0; i < nodes.length; i++) {
             // ArrayIndexOutOfBoundsException
             model.insertNodeInto(nodes[i], parent, index++);

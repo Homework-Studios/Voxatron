@@ -1,6 +1,7 @@
 package assets;
 
-import assets.assets.ImageAsset;
+import assets.assets.UI.ClickableAsset;
+import assets.assets.UI.ImageAsset;
 import engine.EngineForm;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -44,7 +45,6 @@ public abstract class Asset {
                         assetData += line;
                     }
                     reader.close();
-
                     assetLoadData.put(path, assetData);
                     assetPaths.put(path, file.getAbsolutePath().replace(file.getName(), ""));
 
@@ -76,8 +76,10 @@ public abstract class Asset {
     public static void addSubFilesToTree(DefaultMutableTreeNode root, File file) {
         for (File f : Objects.requireNonNull(file.listFiles())) {
             if (f.isDirectory()) {
+                boolean hasAsset = false;
                 for (File listFile : Objects.requireNonNull(f.listFiles())) {
                     if (listFile.getName().endsWith(".asset")) {
+                        hasAsset = true;
                         DefaultMutableTreeNode node = new DefaultMutableTreeNode(f.getName() + ".asset");
                         for (File listedFile : Objects.requireNonNull(f.listFiles())) {
                             if (!listedFile.getName().equals(listFile.getName())) {
@@ -85,9 +87,9 @@ public abstract class Asset {
                             }
                         }
                         root.add(node);
-                        return;
                     }
                 }
+                if (hasAsset) continue;
                 DefaultMutableTreeNode node = new DefaultMutableTreeNode(f.getName());
                 root.add(node);
                 addSubFilesToTree(node, f);
@@ -133,6 +135,7 @@ public abstract class Asset {
         else return loadAsset(name);
     }
 
+
     /**
      * Loads the assetFile into ram
      * use {@link #load()} to load all the data e.g. images
@@ -147,14 +150,15 @@ public abstract class Asset {
             for (String s : assetData.replace(System.lineSeparator(), "").split(";;")) {
                 String[] split = s.split("=");
                 if (split[0].equals("asset_type")) {
-                    String type = split[1];
+                    AssetType type = AssetType.valueOf(split[1]);
                     switch (type) {
-                        case "ImageAsset":
+                        case ImageAsset:
                             ImageAsset asset = new ImageAsset(name, assetPaths.get(name));
                             loadedAssets.put(name, asset);
                             return asset;
-                        case "UIAsset":
-
+                        case ClickableAsset:
+                            ClickableAsset uiAsset = new ClickableAsset(name, assetPaths.get(name));
+                            loadedAssets.put(name, uiAsset);
                             break;
                     }
                 }
@@ -243,4 +247,18 @@ public abstract class Asset {
     }
 
     public abstract void afterUnload();
+
+    public void create() {
+        onCreate();
+        afterCreate();
+    }
+
+    public enum AssetType {
+        //Utility Asset Types (no actual asset)
+        Directory,
+
+        ImageAsset,
+        ClickableAsset,
+
+    }
 }

@@ -22,6 +22,10 @@ public class EngineForm extends JFrame {
     public static DefaultMutableTreeNode root = new DefaultMutableTreeNode("Assets");
     public static DefaultTreeModel model;
     public static EngineForm instance;
+    public static Color background = new Color(43, 45, 48);
+    public static Color highlightArea = new Color(101, 101, 101);
+    public static Color highlight = new Color(255, 255, 255);
+    public static Color importantHighlight = new Color(37, 255, 151, 255);
     public JTree AssetTree;
     public JPanel Game;
     private JPanel MainPanel;
@@ -67,10 +71,6 @@ public class EngineForm extends JFrame {
         DebuggerPanel.setPreferredSize(new Dimension(1, 150));
 
         //set colors because it does not work with editor,
-        Color background = new Color(43, 45, 48);
-        Color highlightArea = new Color(101, 101, 101);
-        Color highlight = new Color(255, 255, 255);
-        Color importantHighlight = new Color(37, 255, 151, 255);
         TreeCellRenderer treeCellRenderer = new DefaultTreeCellRenderer() {
             @Override
             public Component getTreeCellRendererComponent(JTree tree,
@@ -99,7 +99,7 @@ public class EngineForm extends JFrame {
                  */
 
                 //TODO: Make work
-                String[] split = stringValue.split("\\.");
+                String[] split = stringValue.split("\\(")[0].split("\\.");
                 if (split.length == 2)
                     switch (split[1]) {
                         case "asset" -> setIcon(new ImageIcon());
