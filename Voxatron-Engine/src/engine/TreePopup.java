@@ -14,8 +14,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -166,29 +164,7 @@ class TreePopup extends MouseAdapter {
             target.setVisible(false);
             String text = textField.getText();
             if (text != null && !text.isEmpty()) {
-                TreeNode[] nodes = rightClickedNode.getPath();
-                StringBuilder path = new StringBuilder();
-                for (int i = 1; i < nodes.length; i++) {
-                    TreeNode node = nodes[i];
-                    path.append(node.toString() + "/");
-                }
-                File assetParent = new File(Asset.ASSET_DIR + "/" + path + "/" + text);
-                try {
-                    if (!assetParent.exists()) {
-                        assetParent.mkdirs();
-                    }
-                    if (assetType != Asset.AssetType.Directory) {
-                        File createdAsset = new File(assetParent, text + ".asset");
-                        if (!createdAsset.isDirectory()) {
-                            FileWriter writer = new FileWriter(createdAsset);
-                            writer.write("asset_type=" + assetType + System.lineSeparator());
-                            writer.close();
-                        }
-                    }
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-                model.reload();
+                Asset.createOrLoadAsset(text, Asset.getPathByNode(rightClickedNode), assetType, true);
             }
         }
     }

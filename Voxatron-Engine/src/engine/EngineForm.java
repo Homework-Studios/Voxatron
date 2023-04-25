@@ -13,6 +13,8 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -41,6 +43,7 @@ public class EngineForm extends JFrame {
 
 
     public EngineForm() {
+        Asset.tree = AssetTree;
         instance = this;
         setContentPane(MainPanel);
         Raylib.SetConfigFlags(Raylib.FLAG_WINDOW_TOPMOST);
@@ -306,23 +309,34 @@ public class EngineForm extends JFrame {
 
 
         //Assets
-        model = new DefaultTreeModel(root) {
-            @Override
-            public void reload() {
-                Asset.onReloadTreeModel();
-                reload(root);
-            }
-        };
+        model = new DefaultTreeModel(root);
 
+        AssetTree.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                switch (e.getKeyChar()) {
+                    case '' -> Asset.getSelectedAsset().delete();
+                    case ' ' -> Asset.getSelectedAsset().rename("Test");
+                }
+                System.out.println("e.getKeyChar() = " + e.getKeyChar());
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
         AssetTree.addMouseListener(new TreePopup());
         AssetTree.setTransferHandler(new TreeTransferHandler());
         AssetTree.setDropMode(DropMode.ON_OR_INSERT);
-        AssetTree.setEditable(true);
         AssetTree.setDragEnabled(true);
         AssetTree.setModel(model);
         AssetTree.setCellRenderer(treeCellRenderer);
-
-
     }
 
     private void createUIComponents() {
