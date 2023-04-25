@@ -2,263 +2,242 @@ package assets;
 
 import assets.assets.UI.ClickableAsset;
 import assets.assets.UI.ImageAsset;
-import engine.EngineForm;
+import util.FileUtils;
 
+import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import java.io.BufferedReader;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 public abstract class Asset {
-    public static Asset instance = new ImageAsset("test", "test");
-    public static List<String> allAssets = new ArrayList<>();
-    public static HashMap<String, String> assetLoadData = new HashMap<>();
-    public static HashMap<String, Asset> loadedAssets = new HashMap<>();
-    public static HashMap<String, String> assetPaths = new HashMap<>();
-    public static String ASSET_DIR = System.getenv("APPDATA") + "\\Voxatron\\Assets\\";
+    public static final HashMap<String, Asset> path_assets = new HashMap<>();
+    public static final HashMap<String, DefaultMutableTreeNode> path_nodes = new HashMap<>();
+    //Master Class related
+    public static boolean DevMode = true;
+    public static String ASSET_DIR = System.getenv("APPDATA") + "\\Voxatron\\Assets";
+    public static JTree tree;
 
-    public String name;
-    public String dir;
-    public boolean isLoaded = false;
-    public List<String> relatedAssets = new ArrayList<>();
+    //Asset related
+    String name;
+    String path;
+    AssetType type;
+    File directory;
+    File assetFile;
+    HashMap<String, AssetValue> valueHashMap;
 
-    public Asset(String name, String dir) {
+    public Asset(String name, String path, AssetType type, boolean createAsset) {
         this.name = name;
-        this.dir = dir;
+        this.path = path;
+        this.type = type;
+        this.directory = new File(ASSET_DIR + "/" + path + "/" + name);
+        this.assetFile = new File(directory, type + ".asset");
+        this.valueHashMap = new HashMap<>();
+        if (createAsset) createAsset();
+        path_assets.put(path + "\\" + name, this);
+
+        updateTreeNodes();
     }
 
-    public static void init() {
-        for (File file : getAllSubFiles(new File(ASSET_DIR))) {
-            if (file.getName().endsWith(".asset")) {
-                String path = file.getPath().replace(ASSET_DIR, "").replaceAll("\\\\", "/").replace("/" + file.getName(), "");
-                allAssets.add(path);
-                String assetData = "";
+    public static void createOrLoadAsset(String name, String path, AssetType type, boolean createAsset) {
+        switch (type) {
+            case Directory -> {
+                new File(ASSET_DIR + "\\" + path + "\\" + name).mkdirs();
+                createNodeLevelUp(path + "\\" + name);
+            }
+            case File -> {
                 try {
-                    BufferedReader reader = new BufferedReader(new FileReader(file));
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        assetData += line;
-                    }
-                    reader.close();
-                    assetLoadData.put(path, assetData);
-                    assetPaths.put(path, file.getAbsolutePath().replace(file.getName(), ""));
-
+                    new File(ASSET_DIR + "\\" + path + "\\" + name).createNewFile();
+                    createNodeLevelUp(path + "\\" + name);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
-        }
-        preloadAssets();
-        onReloadTreeModel();
 
-    }
-
-    public static void preloadAssets() {
-        for (int i = 0; i < allAssets.size(); i++) {
-            String assetPath = allAssets.get(i);
-            getAsset(assetPath).preload();
+            case ImageAsset -> new ImageAsset(name, path, type, createAsset);
+            case ClickableAsset -> new ClickableAsset(name, path, type, createAsset);
         }
     }
 
-    public static void onReloadTreeModel() {
-        DefaultMutableTreeNode root = EngineForm.root;
-        root.removeAllChildren();
-        //get from folder structure
-        File file = new File(ASSET_DIR);
-        addSubFilesToTree(root, file);
-    }
-
-    public static void addSubFilesToTree(DefaultMutableTreeNode root, File file) {
-        for (File f : Objects.requireNonNull(file.listFiles())) {
-            if (f.isDirectory()) {
-                boolean hasAsset = false;
-                for (File listFile : Objects.requireNonNull(f.listFiles())) {
-                    if (listFile.getName().endsWith(".asset")) {
-                        hasAsset = true;
-                        DefaultMutableTreeNode node = new DefaultMutableTreeNode(f.getName() + ".asset");
-                        for (File listedFile : Objects.requireNonNull(f.listFiles())) {
-                            if (!listedFile.getName().equals(listFile.getName())) {
-                                node.add(new DefaultMutableTreeNode(listedFile.getName()));
-                            }
-                        }
-                        root.add(node);
-                    }
-                }
-                if (hasAsset) continue;
-                DefaultMutableTreeNode node = new DefaultMutableTreeNode(f.getName());
-                root.add(node);
-                addSubFilesToTree(node, f);
-            } else {
-                root.add(new DefaultMutableTreeNode(f.getName()));
+    public static String getPathByNode(DefaultMutableTreeNode node) {
+        String path = "";
+        TreeNode[] paths = node.getPath();
+        for (int i = 1; i < paths.length; i++) {
+            path += paths[i].toString();
+            if (i != paths.length - 1) {
+                path += "\\";
             }
         }
+        return path;
     }
 
-    public static List<File> getAllSubFiles(File file) {
-        List<File> files = new ArrayList<>();
-        for (File f : Objects.requireNonNull(file.listFiles())) {
-            if (f.isDirectory()) {
-                files.addAll(getAllSubFiles(f));
-            } else {
-                files.add(f);
+    public static void init() {
+        path_nodes.put("", (DefaultMutableTreeNode) tree.getModel().getRoot());
+        File assetDir = new File(ASSET_DIR);
+        if (!assetDir.exists()) {
+            assetDir.mkdirs();
+        }
+        for (File subFile : FileUtils.getSubFiles(assetDir)) {
+            if (subFile.isDirectory()) continue;
+            if (subFile.getName().endsWith(".asset")) {
+                loadAsset(subFile);
             }
         }
-        return files;
+
     }
 
-
-    /**
-     * @see #getAsset(String)
-     */
-    public static ImageAsset getImageAsset(String path) {
-        return (ImageAsset) getAssetFromFormatted(path);
+    public static void loadAsset(File assetFile) {
+        if (assetFile.exists()) {
+            createOrLoadAsset(assetFile.getParentFile().getName(), assetFile.getParentFile().getParentFile().getPath().replace(ASSET_DIR, ""), AssetType.valueOf(assetFile.getName().replace(".asset", "")), false);
+        }
     }
 
-    public static Asset getAssetFromFormatted(String path) {
-        path = "/" + path;
-        return getAsset(path);
+    public static Asset getSelectedAsset() {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent();
+        return path_assets.get(getPathByNode(node));
     }
 
-    /**
-     * use {@link #load()} to load all the data e.g. images
-     *
-     * @return the asset if it is loaded, else it loads the asset and returns it
-     */
-    public static Asset getAsset(String name) {
-        if (loadedAssets.containsKey(name))
-            return loadedAssets.get(name);
-        else return loadAsset(name);
+    public static void updateTreeNodes() {
+        for (File file : FileUtils.getAllFiles(new File(ASSET_DIR))) {
+            String path = file.getAbsolutePath().replace(ASSET_DIR, "");
+            createNodeLevelUp(path);
+        }
+
+        path_assets.values().forEach(asset ->
+                asset.updateAssetNodeName(asset.getName(), asset.getAbsolutePath(), asset.getType()));
     }
 
+    public static void createNodeLevelUp(String path) {
+        if (!path.startsWith("\\")) path = "\\" + path;
+        String parentPath = path.substring(0, path.lastIndexOf("\\"));
+        DefaultMutableTreeNode child = path_nodes.get(path);
+        if (child == null) {
+            child = new DefaultMutableTreeNode(path.substring(path.lastIndexOf("\\") + 1));
+            path_nodes.put(path, child);
+        }
 
-    /**
-     * Loads the assetFile into ram
-     * use {@link #load()} to load all the data e.g. images
-     *
-     * @param name
-     * @return
-     */
-    public static Asset loadAsset(String name) {
-        if (assetLoadData.containsKey(name)) {
-            String assetData = assetLoadData.get(name);
-            //TODO: extract
-            for (String s : assetData.replace(System.lineSeparator(), "").split(";;")) {
-                String[] split = s.split("=");
-                if (split[0].equals("asset_type")) {
-                    AssetType type = AssetType.valueOf(split[1]);
-                    switch (type) {
-                        case ImageAsset:
-                            ImageAsset asset = new ImageAsset(name, assetPaths.get(name));
-                            loadedAssets.put(name, asset);
-                            return asset;
-                        case ClickableAsset:
-                            ClickableAsset uiAsset = new ClickableAsset(name, assetPaths.get(name));
-                            loadedAssets.put(name, uiAsset);
-                            break;
-                    }
-                }
+        DefaultMutableTreeNode parent = path_nodes.get(parentPath);
+        if (parent == null) {
+            String parentName = parentPath.substring(parentPath.lastIndexOf("\\") + 1);
+            parent = new DefaultMutableTreeNode(parentName);
+            path_nodes.put(parentPath, parent);
+        }
+
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        model.insertNodeInto(child, parent, 0);
+    }
+
+    public void updateValues() {
+        //Todo: implement
+    }
+
+    public void updateAssetNodeName(String name, String path, AssetType type) {
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        DefaultMutableTreeNode node = path_nodes.get(path);
+        if (node == null) {
+            return;
+        }
+        DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
+        List<DefaultMutableTreeNode> children = new ArrayList<>();
+        model.removeNodeFromParent(node);
+        while (node.getChildCount() != 0) {
+            children.add((DefaultMutableTreeNode) node.getFirstChild());
+            model.removeNodeFromParent((DefaultMutableTreeNode) node.getFirstChild());
+        }
+        node = new DefaultMutableTreeNode(name + " (" + type + ")");
+
+        path_nodes.put(path, node);
+        for (DefaultMutableTreeNode child : children) {
+            model.insertNodeInto(child, node, 0);
+            System.out.println(child);
+        }
+        model.insertNodeInto(node, parent, 0);
+    }
+
+    public void rename(String test) {
+        updateAssetNodeName(test, path, type);
+    }
+
+    public abstract void load();
+
+    public void createAsset() {
+        try {
+            if (!directory.exists()) {
+                directory.mkdirs();
             }
-        }
-        return null;
-    }
-
-    /**
-     * Loads the asset and calls the methods in the order of:
-     * <li>{@link #onLoad()}</li>
-     * <li>{@link #midLoad()} (in MasterAsset)</li>
-     * <li>{@link #afterLoad()}</li>
-     */
-    public void load() {
-        if (isLoaded) return;
-        onLoad();
-        midLoad();
-        afterLoad();
-        isLoaded = true;
-    }
-
-    /**
-     * @see #load()
-     */
-    void midLoad() {
-
-    }
-
-    /**
-     * is called on first initialization
-     * loads {@link #relatedAssets} identifiers into ram
-     */
-    public void preload() {
-        for (File file : Objects.requireNonNull(new File(dir).listFiles())) {
-            if (!file.getName().endsWith(".asset")) relatedAssets.add(file.getName());
-        }
-    }
-
-    void registerRelated() {
-
-    }
-
-    /**
-     * gets all the assets that end with the given ending
-     * <p>
-     * example:
-     * <li>getRelatedAssetsByEnding(".png")</li>
-     * <li>getRelatedAssetsByEnding(".txt")</li>
-     *
-     * @param ending
-     * @return all assets that end with the given ending excluding the ending
-     * @see #relatedAssets
-     */
-    public List<String> getRelatedAssetsByEnding(String ending) {
-        List<String> assets = new ArrayList<>();
-        for (String asset : relatedAssets) {
-            if (asset.endsWith(ending)) {
-                assets.add(asset.replace(ending, ""));
+            if (!assetFile.exists()) {
+                assetFile.createNewFile();
             }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return assets;
     }
 
-    public abstract void onCreate();
-
-    public abstract void afterCreate();
-
-    /**
-     * @see #load()
-     */
-    public abstract void onLoad();
-
-    /**
-     * is called after {@link #load()}
-     *
-     * @see #load()
-     */
-
-    public abstract void afterLoad();
-
-    public abstract void onUnload();
-
-    public void midUnload() {
-        loadedAssets.remove(name);
+    public void delete() {
+        directory.delete();
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        model.removeNodeFromParent(path_nodes.get(path));
     }
 
-    public abstract void afterUnload();
-
-    public void create() {
-        onCreate();
-        afterCreate();
+    //region Getter/Setter
+    public File getDirectory() {
+        return directory;
     }
+
+    public String getAbsolutePath() {
+        return path + "\\" + name;
+    }
+
+    public File getAssetFile() {
+        return assetFile;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public AssetType getType() {
+        return type;
+    }
+
+    public HashMap<String, AssetValue> getValueHashMap() {
+        return valueHashMap;
+    }
+
 
     public enum AssetType {
         //Utility Asset Types (no actual asset)
-        Directory,
-
-        ImageAsset,
-        ClickableAsset,
+        Directory(),
+        File(),
+        //Assets
+        ImageAsset(),
+        ClickableAsset(),
 
     }
+
+
+    public static class AssetValue {
+        String value;
+
+        public AssetValue(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
+//endregion
 }

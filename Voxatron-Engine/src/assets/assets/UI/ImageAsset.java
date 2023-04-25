@@ -12,74 +12,48 @@ public class ImageAsset extends Asset {
     HashMap<String, Raylib.Image> loadedImages = new HashMap<>();
     HashMap<String, Raylib.Texture> loadedTextures = new HashMap<>();
 
-    public ImageAsset(String assetName, String assetDir) {
-        super(assetName, assetDir);
-    }
-
-
-    @Override
-    public void onCreate() {
-
-    }
-
-    @Override
-    public void afterCreate() {
-
-    }
-
-    @Override
-    public void onLoad() {
-
-    }
-
-
-    @Override
-    public void afterLoad() {
-        for (String file : relatedAssets) {
-            if (file.endsWith(".png")) {
-                images.add(file.replace(".png", ""));
-            }
-        }
-    }
-
-    @Override
-    public void onUnload() {
-
-    }
-
-    @Override
-    public void afterUnload() {
-        loadedTextures.clear();
-        loadedImages.clear();
-    }
-
-    public void onCreateAsset() {
-
+    public ImageAsset(String name, String path, AssetType type, boolean create) {
+        super(name, path, type, create);
     }
 
     Raylib.Image loadImage(String name) {
         System.out.println("loading image: " + name);
-        Raylib.Image image = Raylib.LoadImage(dir + name + ".png");
+        Raylib.Image image = Raylib.LoadImage(getDirectory() + "/" + name + ".png");
         loadedImages.put(name, image);
         return image;
     }
 
     Raylib.Texture loadTexture(String name) {
         System.out.println("loading texture: " + name);
-        Raylib.Texture image = Raylib.LoadTexture(dir + name + ".png");
+        Raylib.Texture image = Raylib.LoadTexture(getDirectory().getAbsolutePath() + "\\" + name + ".png");
         loadedTextures.put(name, image);
         return image;
     }
 
 
     public Raylib.Texture getTexture(String name) {
+        ensureMapsInitialized();
         if (loadedTextures.containsKey(name)) return loadedTextures.get(name);
         return loadTexture(name);
     }
 
 
     public Raylib.Image getImage(String name) {
+        ensureMapsInitialized();
         if (loadedImages.containsKey(name)) return loadedImages.get(name);
         return loadImage(name);
+    }
+
+    @Override
+    public void load() {
+    }
+
+    public void ensureMapsInitialized() {
+        if (loadedImages == null) {
+            loadedImages = new HashMap<>();
+        }
+        if (loadedTextures == null) {
+            loadedTextures = new HashMap<>();
+        }
     }
 }

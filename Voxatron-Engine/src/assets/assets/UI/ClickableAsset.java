@@ -15,39 +15,13 @@ import assets.Asset;
  */
 
 public class ClickableAsset extends Asset {
-    public ClickableAsset(String name, String dir) {
-        super(name, dir);
+
+    public ClickableAsset(String name, String path, AssetType type, boolean create) {
+        super(name, path, type, create);
     }
 
     @Override
-    public void onCreate() {
+    public void load() {
 
     }
-
-    @Override
-    public void afterCreate() {
-
-    }
-
-    @Override
-    public void onLoad() {
-
-    }
-
-    @Override
-    public void afterLoad() {
-
-    }
-
-    @Override
-    public void onUnload() {
-
-    }
-
-    @Override
-    public void afterUnload() {
-
-    }
-
-
 }
