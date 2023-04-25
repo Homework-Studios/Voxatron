@@ -33,4 +33,30 @@ public class FileUtils {
         return files;
     }
 
+    public static void deleteExistingDirectory(File file) {
+        if (file.exists() && file.isDirectory()) {
+            for (File listFile : Objects.requireNonNull(file.listFiles())) {
+                if (listFile.isDirectory()) {
+                    deleteExistingDirectory(listFile);
+                } else {
+                    deleteExistingFile(listFile);
+                }
+            }
+            file.delete();
+        }
+    }
+
+    public static void deleteExistingFile(File file) {
+        if (file.exists()) {
+            file.delete();
+        }
+    }
+
+    public static void deleteFileOrDirectory(File file) {
+        if (file.isDirectory()) {
+            deleteExistingDirectory(file);
+        } else {
+            deleteExistingFile(file);
+        }
+    }
 }

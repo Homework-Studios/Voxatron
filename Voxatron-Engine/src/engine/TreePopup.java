@@ -13,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,15 +92,13 @@ class TreePopup extends MouseAdapter {
         deleteMenuItem.addActionListener(ev -> {
             DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
 
-
             TreeNode[] nodes = rightClickedNode.getPath();
             StringBuilder assetPath = new StringBuilder();
             for (int i = 1; i < nodes.length; i++) {
                 TreeNode node = nodes[i];
                 assetPath.append(node.toString() + "/");
             }
-            File assetParent = new File(Asset.ASSET_DIR + "/" + assetPath);
-            assetParent.delete();
+            Asset.removeFileByNode(rightClickedNode);
 
             model.removeNodeFromParent(rightClickedNode);
         });

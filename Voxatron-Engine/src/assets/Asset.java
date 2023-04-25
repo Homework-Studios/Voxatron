@@ -111,6 +111,12 @@ public abstract class Asset {
                 asset.updateAssetNodeName(asset.getName(), asset.getAbsolutePath(), asset.getType()));
     }
 
+    public static void removeFileByNode(DefaultMutableTreeNode node) {
+        String path = getPathByNode(node);
+        File file = new File(ASSET_DIR + "\\" + path);
+        FileUtils.deleteFileOrDirectory(file);
+    }
+
     public static void createNodeLevelUp(String path) {
         if (!path.startsWith("\\")) path = "\\" + path;
         String parentPath = path.substring(0, path.lastIndexOf("\\"));
@@ -129,6 +135,7 @@ public abstract class Asset {
 
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         model.insertNodeInto(child, parent, 0);
+        tree.expandPath(tree.getSelectionPath());
     }
 
     public void updateValues() {
