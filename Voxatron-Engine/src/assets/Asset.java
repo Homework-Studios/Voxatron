@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -80,7 +81,9 @@ public abstract class Asset {
                 path += "\\";
             }
         }
-        return path;
+        path = path.replaceAll("\\<.*?\\>", "");
+        String[] split = path.split(" ");
+        return split[0];
     }
 
     public static void init() {
@@ -105,8 +108,14 @@ public abstract class Asset {
     }
 
     public static Asset getSelectedAsset() {
-        DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getSelectionPath().getLastPathComponent();
-        return path_assets.get(getPathByNode(node));
+        TreePath selectionPath = tree.getSelectionPath();
+        if (selectionPath != null) {
+            DefaultMutableTreeNode node = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
+            if (node != null) {
+                return path_assets.get(getPathByNode(node));
+            }
+        }
+        return null;
     }
 
     public static void updateTreeNodes() {
@@ -118,8 +127,11 @@ public abstract class Asset {
 
     public static void removeFileByNode(DefaultMutableTreeNode node) {
         String path = getPathByNode(node);
-        File file = new File(ASSET_DIR + "\\" + path);
+        path = path.replaceAll("\\<.*?\\>", "");
+        String[] split = path.split(" ");
+        File file = new File(ASSET_DIR + "\\" + split[0]);
         FileUtils.deleteFileOrDirectory(file);
+        ((DefaultTreeModel) tree.getModel()).removeNodeFromParent(node);
     }
 
     public static void createNodeLevelUp(String path) {
@@ -149,6 +161,7 @@ public abstract class Asset {
         DefaultMutableTreeNode node = path_nodes.get(path);
         if (node == null) {
             return;
+
         }
         DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
         List<DefaultMutableTreeNode> children = new ArrayList<>();
@@ -158,7 +171,7 @@ public abstract class Asset {
             model.removeNodeFromParent((DefaultMutableTreeNode) node.getFirstChild());
         }
         Color highlight = EngineForm.highlight;
-        node = new DefaultMutableTreeNode(new Text().writeText(name + " ").setItalic(true).setColor(highlightArea).writeText("(" + type + ")"));
+        node = new DefaultMutableTreeNode(new Text().writeText(name + " ").setItalic(true).setSize(10).setColor(highlightArea).writeText("(" + type + ")"));
         path_nodes.put(path, node);
         for (DefaultMutableTreeNode child : children) {
             model.insertNodeInto(child, node, 0);
@@ -194,7 +207,7 @@ public abstract class Asset {
     }
 
     public void delete() {
-        directory.delete();
+        FileUtils.deleteFileOrDirectory(directory);
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         model.removeNodeFromParent(path_nodes.get(path));
     }

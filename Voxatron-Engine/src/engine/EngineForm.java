@@ -16,6 +16,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Objects;
 
 public class EngineForm extends JFrame {
 
@@ -100,23 +101,14 @@ public class EngineForm extends JFrame {
                 super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
 
-                /*
-                if (tree.getModel().getRoot().equals(node)) {
-                    //setIcon(root);
-                } else if (node.getChildCount() > 0) {
-                    //setIcon(parent);
-                } else {
-                    //setIcon(text);
-                }
-
-                 */
-
-                //TODO: Make work
+                setIcon(new ImageIcon());
                 String[] split = stringValue.split("\\(")[0].split("\\.");
                 if (split.length == 2)
                     switch (split[1]) {
-                        case "asset" -> setIcon(finalIcon);
+                        case "asset" -> setIcon(new ImageIcon());
                         case "png" -> setIcon(new ImageIcon());
+
+                        default -> setIcon(new ImageIcon());
                     }
 
 
@@ -305,7 +297,22 @@ public class EngineForm extends JFrame {
                                               int row, boolean isExpanded,
                                               boolean hasBeenExpanded,
                                               boolean isLeaf) {
+                Object value = path.getLastPathComponent();
 
+                // Draw icons if not a leaf and either hasn't been loaded,
+                // or the model child count is > 0.
+                if (!isLeaf && (!hasBeenExpanded ||
+                        treeModel.getChildCount(value) > 0)) {
+                    int middleXOfKnob;
+                    middleXOfKnob = bounds.x - getRightChildIndent() + 1;
+                    int middleYOfKnob = bounds.y + (bounds.height / 2);
+
+
+                    Icon expandedIcon = getExpandedIcon();
+                    if (expandedIcon != null)
+                        g.fillRoundRect(middleXOfKnob - 2, middleYOfKnob - 2, 3, 3, 1, 1);
+
+                }
             }
         };
         //ObjectsTree.setUI(treeUI);
@@ -351,7 +358,9 @@ public class EngineForm extends JFrame {
             @Override
             public void keyTyped(KeyEvent e) {
                 switch (e.getKeyChar()) {
-                    case '' -> Asset.getSelectedAsset().delete();
+                    case '' -> {
+                        Asset.removeFileByNode((DefaultMutableTreeNode) Objects.requireNonNull(AssetTree.getSelectionPath()).getLastPathComponent());
+                    }
                     case ' ' -> Asset.getSelectedAsset().rename("Test");
                 }
                 System.out.println("e.getKeyChar() = " + e.getKeyChar());
