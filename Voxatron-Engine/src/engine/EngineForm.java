@@ -6,12 +6,10 @@ import com.raylib.Raylib;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
+import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.StyledDocument;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeCellRenderer;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -41,12 +39,23 @@ public class EngineForm extends JFrame {
     private JPanel TopSpacing;
     private JTextPane Debugger;
 
-
+    //TODO: F11 Für Toogle Fullscreen / Engine Form
     public EngineForm() {
         Asset.tree = AssetTree;
         instance = this;
         setContentPane(MainPanel);
         Raylib.SetConfigFlags(Raylib.FLAG_WINDOW_TOPMOST);
+        String resourceDir = "/resources/";
+        ImageIcon icon = new ImageIcon(EngineForm.class.getResource(resourceDir + "icon.png"));
+        setIconImage(icon.getImage());
+        //TODO: Move to utils
+        int desiredWidth = 16;
+        int desiredHeight = 16;
+        if (icon.getIconWidth() > desiredWidth || icon.getIconHeight() > desiredHeight) {
+            Image img = icon.getImage().getScaledInstance(desiredWidth, desiredHeight, Image.SCALE_SMOOTH);
+            icon = new ImageIcon(img);
+        }
+
 
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setName("Voxatron Engine");
@@ -74,6 +83,7 @@ public class EngineForm extends JFrame {
         DebuggerPanel.setPreferredSize(new Dimension(1, 150));
 
         //set colors because it does not work with editor,
+        ImageIcon finalIcon = icon;
         TreeCellRenderer treeCellRenderer = new DefaultTreeCellRenderer() {
             @Override
             public Component getTreeCellRendererComponent(JTree tree,
@@ -105,7 +115,7 @@ public class EngineForm extends JFrame {
                 String[] split = stringValue.split("\\(")[0].split("\\.");
                 if (split.length == 2)
                     switch (split[1]) {
-                        case "asset" -> setIcon(new ImageIcon());
+                        case "asset" -> setIcon(finalIcon);
                         case "png" -> setIcon(new ImageIcon());
                     }
 
@@ -155,7 +165,7 @@ public class EngineForm extends JFrame {
 
         //region Render Changing
         //Part original Native Java code but changed to fit style
-        tabbedPane1.setUI(new BasicTabbedPaneUI() {
+        BasicTabbedPaneUI tabbedPaneUI = new BasicTabbedPaneUI() {
             //can be changed if wanted makes the tabs split form each other
             final int tabSizeShift = 0;
 
@@ -254,28 +264,54 @@ public class EngineForm extends JFrame {
                 //Only top is changed to fit style
                 switch (tabPlacement) {
                     case LEFT:
-                        g.drawLine(x + 1, y + h - 2, x + 1, y + h - 2); // bottom-left highlight
-                        g.drawLine(x, y + 2, x, y + h - 3); // left highlight
-                        g.drawLine(x + 1, y + 1, x + 1, y + 1); // top-left highlight
-                        g.drawLine(x + 2, y, x + w - 1, y); // top highlight
+                        g.drawLine(x, y, x, y + h); // left highlight
+                        g.drawLine(x, y + h - 1, x + 1, y + h - 1); // bottom-left highlight
+                        g.drawLine(x + 1, y, x + w - 1, y); // top highlight
                         break;
                     case RIGHT:
-                        g.drawLine(x, y, x + w - 3, y); // top highlight
+                        g.drawLine(x + w - 2, y, x + w - 2, y + h - 1); // right highlight
                         break;
                     case BOTTOM:
-                        g.drawLine(x, y, x, y + h - 3); // left highlight
-                        g.drawLine(x + 1, y + h - 2, x + 1, y + h - 2); // bottom-left highlight
+                        g.drawLine(x, y + h - 2, x + w - 1, y + h - 2); // bottom highlight
+                        g.drawLine(x, y, x, y + h - 2); // left highlight
                         break;
                     case TOP:
                     default:
-                        g.drawLine(x + tabSizeShift, y, x + tabSizeShift, y + h); // left highlight
-                        g.drawLine(x + tabSizeShift, y, x + w - tabSizeShift, y); // top highlight
-                        g.drawLine(x + w - tabSizeShift, y, x + w - tabSizeShift, y + h); // right highlight
+                        g.drawLine(x, y, x + w - 1, y); // top highlight
+                        g.drawLine(x, y, x, y + h - 1); // left highlight
+                        g.drawLine(x + w - 1, y, x + w - 1, y + h - 1); // right highlight
                 }
             }
 
 
-        });
+        };
+        BasicTreeUI treeUI = new BasicTreeUI() {
+            @Override
+            protected void paintVerticalLine(Graphics g, JComponent c, int x, int top, int bottom) {
+                g.setColor(highlightArea);
+                g.drawLine(x, top, x, bottom);
+            }
+
+            @Override
+            protected void paintHorizontalLine(Graphics g, JComponent c, int y, int left, int right) {
+                g.setColor(highlightArea);
+                g.drawLine(left, y, right, y);
+            }
+
+            @Override
+            protected void paintExpandControl(Graphics g,
+                                              Rectangle clipBounds, Insets insets,
+                                              Rectangle bounds, TreePath path,
+                                              int row, boolean isExpanded,
+                                              boolean hasBeenExpanded,
+                                              boolean isLeaf) {
+
+            }
+        };
+        //ObjectsTree.setUI(treeUI);
+        AssetTree.setUI(treeUI);
+
+        tabbedPane1.setUI(tabbedPaneUI);
         DebuggerPanel.setBorder(new LineBorder(highlightArea, 1, true));
         ObjectsTree.setBorder(new LineBorder(highlightArea, 1, true));
         //endregion

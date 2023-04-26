@@ -2,17 +2,22 @@ package assets;
 
 import assets.assets.UI.ClickableAsset;
 import assets.assets.UI.ImageAsset;
+import engine.EngineForm;
 import util.FileUtils;
+import util.Text;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static engine.EngineForm.highlightArea;
 
 public abstract class Asset {
     public static final HashMap<String, Asset> path_assets = new HashMap<>();
@@ -39,8 +44,11 @@ public abstract class Asset {
         this.valueHashMap = new HashMap<>();
         if (createAsset) createAsset();
         path_assets.put(path + "\\" + name, this);
-
-        updateTreeNodes();
+        createNodeLevelUp(path + "\\" + name);
+        for (File file : directory.listFiles()) {
+            createNodeLevelUp(path + "\\" + name + "\\" + file.getName());
+        }
+        updateNaming();
     }
 
     public static void createOrLoadAsset(String name, String path, AssetType type, boolean createAsset) {
@@ -87,7 +95,7 @@ public abstract class Asset {
                 loadAsset(subFile);
             }
         }
-
+        updateTreeNodes();
     }
 
     public static void loadAsset(File assetFile) {
@@ -106,9 +114,6 @@ public abstract class Asset {
             String path = file.getAbsolutePath().replace(ASSET_DIR, "");
             createNodeLevelUp(path);
         }
-
-        path_assets.values().forEach(asset ->
-                asset.updateAssetNodeName(asset.getName(), asset.getAbsolutePath(), asset.getType()));
     }
 
     public static void removeFileByNode(DefaultMutableTreeNode node) {
@@ -138,11 +143,8 @@ public abstract class Asset {
         tree.expandPath(tree.getSelectionPath());
     }
 
-    public void updateValues() {
-        //Todo: implement
-    }
-
-    public void updateAssetNodeName(String name, String path, AssetType type) {
+    public static void updateAssetNodeName(String name, String path, AssetType type) {
+        if (!path.startsWith("\\")) path = "\\" + path;
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         DefaultMutableTreeNode node = path_nodes.get(path);
         if (node == null) {
@@ -155,14 +157,21 @@ public abstract class Asset {
             children.add((DefaultMutableTreeNode) node.getFirstChild());
             model.removeNodeFromParent((DefaultMutableTreeNode) node.getFirstChild());
         }
-        node = new DefaultMutableTreeNode(name + " (" + type + ")");
-
+        Color highlight = EngineForm.highlight;
+        node = new DefaultMutableTreeNode(new Text().writeText(name + " ").setItalic(true).setColor(highlightArea).writeText("(" + type + ")"));
         path_nodes.put(path, node);
         for (DefaultMutableTreeNode child : children) {
             model.insertNodeInto(child, node, 0);
-            System.out.println(child);
         }
         model.insertNodeInto(node, parent, 0);
+    }
+
+    public void updateNaming() {
+        updateAssetNodeName(getName(), getAbsolutePath(), getType());
+    }
+
+    public void updateValues() {
+        //Todo: implement
     }
 
     public void rename(String test) {
