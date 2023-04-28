@@ -1,6 +1,6 @@
-package assets.assets.UI;
+package engine.assets.assets.UI;
 
-import assets.Asset;
+import engine.assets.Asset;
 
 /**
  * settings format:

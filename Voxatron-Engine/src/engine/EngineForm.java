@@ -1,7 +1,7 @@
 package engine;
 
-import assets.Asset;
 import com.raylib.Raylib;
+import engine.assets.Asset;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -103,13 +103,6 @@ public class EngineForm extends JFrame {
 
                 setIcon(new ImageIcon());
                 String[] split = stringValue.split("\\(")[0].split("\\.");
-                if (split.length == 2)
-                    switch (split[1]) {
-                        case "asset" -> setIcon(new ImageIcon());
-                        case "png" -> setIcon(new ImageIcon());
-
-                        default -> setIcon(new ImageIcon());
-                    }
 
 
                 return this;
@@ -358,10 +351,12 @@ public class EngineForm extends JFrame {
             @Override
             public void keyTyped(KeyEvent e) {
                 switch (e.getKeyChar()) {
-                    case '' -> {
+                    case '':
                         Asset.removeFileByNode((DefaultMutableTreeNode) Objects.requireNonNull(AssetTree.getSelectionPath()).getLastPathComponent());
-                    }
-                    case ' ' -> Asset.getSelectedAsset().rename("Test");
+                        break;
+                    case ' ':
+                        Asset.getSelectedAsset().rename("Test");
+                        break;
                 }
                 System.out.println("e.getKeyChar() = " + e.getKeyChar());
             }

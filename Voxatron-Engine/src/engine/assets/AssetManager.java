@@ -1,4 +1,4 @@
-package assets;
+package engine.assets;
 
 public class AssetManager<Type> {
 

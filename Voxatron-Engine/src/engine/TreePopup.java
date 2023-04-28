@@ -1,6 +1,6 @@
 package engine;
 
-import assets.Asset;
+import engine.assets.Asset;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;

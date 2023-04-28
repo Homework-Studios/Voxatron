@@ -1,5 +1,5 @@
-import assets.Asset;
 import engine.EngineForm;
+import engine.assets.Asset;
 import input.Input;
 import render.Renderer;
 import window.Window;
@@ -22,7 +22,7 @@ public class Main {
             dim = form.Game.getSize();
         }
 
-        //init assets and create a test asset
+        //init engine.assets and create a test asset
         if (args.length > 0 && !args[0].equals("")) {
             Asset.ASSET_DIR = args[0];
         }

@@ -1,8 +1,8 @@
-package assets;
+package engine.assets;
 
-import assets.assets.UI.ClickableAsset;
-import assets.basic.TextureAsset;
 import engine.EngineForm;
+import engine.assets.assets.UI.ClickableAsset;
+import engine.assets.basic.TextureAsset;
 import util.FileUtils;
 import util.Text;
 
@@ -59,21 +59,26 @@ public abstract class Asset {
 
     public static void createOrLoadAsset(String name, String path, AssetType type, boolean createAsset) {
         switch (type) {
-            case Directory -> {
+            case Directory:
                 new File(ASSET_DIR + "\\" + path + "\\" + name).mkdirs();
                 createNodeLevelUp(path + "\\" + name);
-            }
-            case File -> {
+                break;
+            case File:
                 try {
                     new File(ASSET_DIR + "\\" + path + "\\" + name).createNewFile();
                     createNodeLevelUp(path + "\\" + name);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-            }
+                break;
 
-            case TextureAsset -> new TextureAsset(name, path, type, createAsset);
-            case ClickableAsset -> new ClickableAsset(name, path, type, createAsset);
+            case TextureAsset:
+                new TextureAsset(name, path, type, createAsset);
+                break;
+            case ClickableAsset:
+                new ClickableAsset(name, path, type, createAsset);
+                break;
+            default:
         }
     }
 

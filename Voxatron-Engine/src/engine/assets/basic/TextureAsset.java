@@ -1,7 +1,7 @@
-package assets.basic;
+package engine.assets.basic;
 
-import assets.Asset;
 import com.raylib.Raylib;
+import engine.assets.Asset;
 
 import java.util.HashMap;
 

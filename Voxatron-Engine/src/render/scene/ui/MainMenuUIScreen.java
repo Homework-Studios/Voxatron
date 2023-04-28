@@ -1,9 +1,9 @@
 package render.scene.ui;
 
-import assets.AssetManager;
-import assets.basic.TextureAsset;
 import com.raylib.Raylib;
 import debug.DebugDraw;
+import engine.assets.AssetManager;
+import engine.assets.basic.TextureAsset;
 import math.Vector2;
 import render.scene.SceneManager;
 import render.scene.SceneType;
