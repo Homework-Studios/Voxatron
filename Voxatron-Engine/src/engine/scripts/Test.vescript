@@ -1,0 +1,32 @@
+package engine.scripts;
+
+/*
+    This Engine Was Created For A School Project
+    Voxatron
+    Test Script
+    created 28.04.2023 by timon
+ */
+
+
+import engine.scripting.BaseScript;
+
+public class Test extends BaseScript {
+//Inspector Variables
+
+//End Inspector Variables
+
+    @Override
+    public void start() {
+
+    }
+
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public void FixedUpdate() {
+
+    }
+}
