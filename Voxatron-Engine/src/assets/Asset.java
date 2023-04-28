@@ -1,7 +1,7 @@
 package assets;
 
 import assets.assets.UI.ClickableAsset;
-import assets.assets.UI.ImageAsset;
+import assets.basic.TextureAsset;
 import engine.EngineForm;
 import util.FileUtils;
 import util.Text;
@@ -12,11 +12,14 @@ import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.awt.*;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import static engine.EngineForm.highlightArea;
 
@@ -50,6 +53,8 @@ public abstract class Asset {
             createNodeLevelUp(path + "\\" + name + "\\" + file.getName());
         }
         updateNaming();
+        updateValues();
+        load();
     }
 
     public static void createOrLoadAsset(String name, String path, AssetType type, boolean createAsset) {
@@ -67,7 +72,7 @@ public abstract class Asset {
                 }
             }
 
-            case ImageAsset -> new ImageAsset(name, path, type, createAsset);
+            case TextureAsset -> new TextureAsset(name, path, type, createAsset);
             case ClickableAsset -> new ClickableAsset(name, path, type, createAsset);
         }
     }
@@ -184,7 +189,19 @@ public abstract class Asset {
     }
 
     public void updateValues() {
-        //Todo: implement
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(assetFile));
+            String line;
+            while (reader.ready()) {
+                line = reader.readLine();
+                if (!Objects.equals(line, "") && line.contains("=") && !line.startsWith("#")) {
+                    String[] split = line.split("=");
+                    valueHashMap.put(split[0], new AssetValue(split[1]));
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void rename(String test) {
@@ -210,6 +227,24 @@ public abstract class Asset {
         FileUtils.deleteFileOrDirectory(directory);
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         model.removeNodeFromParent(path_nodes.get(path));
+    }
+
+    @Override
+    public String toString() {
+        String[] parameters = new String[]{
+                "path=" + path,
+                "type=" + type,
+                "directory=" + directory,
+                "assetFile=" + assetFile,
+                "valueHashMap=" + valueHashMap
+        };
+        String result = name + "{";
+        for (String parameter : parameters) {
+            result += parameter + ", ";
+        }
+        result = result.substring(0, result.length() - 2) + "}";
+        return result;
+
     }
 
     //region Getter/Setter
@@ -247,7 +282,7 @@ public abstract class Asset {
         Directory(),
         File(),
         //Assets
-        ImageAsset(),
+        TextureAsset(),
         ClickableAsset(),
 
     }
@@ -268,5 +303,6 @@ public abstract class Asset {
             this.value = value;
         }
     }
+
 //endregion
 }

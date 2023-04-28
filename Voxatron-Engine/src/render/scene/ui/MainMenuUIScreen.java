@@ -1,7 +1,7 @@
 package render.scene.ui;
 
 import assets.AssetManager;
-import assets.assets.UI.ImageAsset;
+import assets.basic.TextureAsset;
 import com.raylib.Raylib;
 import debug.DebugDraw;
 import math.Vector2;
@@ -29,7 +29,8 @@ public class MainMenuUIScreen extends UIScreen {
 
         // load the VTBanner.png Texture
 
-        Raylib.Texture texture = new AssetManager<ImageAsset>().getAsset("MainMenu\\VTBanner").getTexture("VTBanner");
+        Raylib.Texture texture = new AssetManager<TextureAsset>().getAsset("MainMenu\\VTBanner").getTexture("VTBanner");
+
 
         texture = texture.width(1300);
         texture = texture.height(600);
