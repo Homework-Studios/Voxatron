@@ -1,5 +1,6 @@
 package engine.assets;
 
+import engine.DevelopmentConstants;
 import engine.EngineForm;
 import engine.assets.assets.UI.ClickableAsset;
 import engine.assets.basic.TextureAsset;
@@ -27,7 +28,6 @@ public abstract class Asset {
     public static final HashMap<String, Asset> path_assets = new HashMap<>();
     public static final HashMap<String, DefaultMutableTreeNode> path_nodes = new HashMap<>();
     //Master Class related
-    public static boolean DevMode = true;
     public static String ASSET_DIR = System.getenv("APPDATA") + "\\Voxatron\\Assets";
     public static JTree tree;
 
@@ -48,11 +48,13 @@ public abstract class Asset {
         this.valueHashMap = new HashMap<>();
         if (createAsset) createAsset();
         path_assets.put(path + "\\" + name, this);
-        createNodeLevelUp(path + "\\" + name);
-        for (File file : directory.listFiles()) {
-            createNodeLevelUp(path + "\\" + name + "\\" + file.getName());
+        if (DevelopmentConstants.DEVELOPMENT_MODE) {
+            createNodeLevelUp(path + "\\" + name);
+            for (File file : directory.listFiles()) {
+                createNodeLevelUp(path + "\\" + name + "\\" + file.getName());
+            }
+            updateNaming();
         }
-        updateNaming();
         updateValues();
         load();
     }
@@ -97,7 +99,8 @@ public abstract class Asset {
     }
 
     public static void init() {
-        path_nodes.put("", (DefaultMutableTreeNode) tree.getModel().getRoot());
+        if (DevelopmentConstants.DEVELOPMENT_MODE)
+            path_nodes.put("", (DefaultMutableTreeNode) tree.getModel().getRoot());
         File assetDir = new File(ASSET_DIR);
         if (!assetDir.exists()) {
             assetDir.mkdirs();
@@ -145,6 +148,7 @@ public abstract class Asset {
     }
 
     public static void createNodeLevelUp(String path) {
+        if (!DevelopmentConstants.DEVELOPMENT_MODE) return;
         if (!path.startsWith("\\")) path = "\\" + path;
         String parentPath = path.substring(0, path.lastIndexOf("\\"));
         DefaultMutableTreeNode child = path_nodes.get(path);

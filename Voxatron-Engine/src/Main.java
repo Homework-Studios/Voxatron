@@ -1,3 +1,4 @@
+import engine.DevelopmentConstants;
 import engine.EngineForm;
 import engine.assets.Asset;
 import engine.scripting.ScriptingManager;
@@ -11,15 +12,11 @@ import java.io.IOException;
 
 
 public class Main {
-    public static boolean DEVELOPER_MODE = true;
-
     public static void main(String[] args) {
         new Input();
         Point p = new Point(0, 0);
         Dimension dim = new Dimension(0, 0);
-        if (args.length > 0 && !args[0].equals("")) {
-            Asset.ASSET_DIR = args[0];
-        }
+        Asset.ASSET_DIR = DevelopmentConstants.ASSET_DIR;
         try {
             new ScriptingManager();
         } catch (ScriptException | IOException e) {
@@ -27,9 +24,9 @@ public class Main {
         }
 
         //Testing used to skip the engine and only test scripts if(true) return; cause of intellij errors
-        if (true) return;
+        if (false) return;
 
-        if (DEVELOPER_MODE) {
+        if (DevelopmentConstants.DEVELOPMENT_MODE) {
             EngineForm form = new EngineForm();
             form.setVisible(true);
             p = form.Game.getLocationOnScreen();
@@ -37,8 +34,6 @@ public class Main {
         }
 
         //init engine.assets and create a test asset
-
-        Asset.DevMode = DEVELOPER_MODE;
         Asset.init();
 
 

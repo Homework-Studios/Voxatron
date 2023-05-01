@@ -1,12 +1,5 @@
 package engine.scripting;
 
-/*
-    This Engine Was Created For A School Project
-    Voxatron
-    Script Script
-    created 28.04.2023 by timon
- */
-
 import ch.obermuhlner.scriptengine.java.JavaCompiledScript;
 import ch.obermuhlner.scriptengine.java.execution.MethodExecutionStrategy;
 import util.StringUtils;
