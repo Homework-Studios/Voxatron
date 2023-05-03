@@ -36,9 +36,9 @@ class TreeTransferHandler extends TransferHandler {
     //TransferHandler
     @Override
     public boolean canImport(JComponent comp, DataFlavor[] flavor) {
-        for (int i = 0, n = flavor.length; i < n; i++) {
-            for (int j = 0, m = flavors.length; j < m; j++) {
-                if (flavor[i].equals(flavors[j])) {
+        for (DataFlavor dataFlavor : flavor) {
+            for (DataFlavor value : flavors) {
+                if (dataFlavor.equals(value)) {
                     return true;
                 }
             }
@@ -51,7 +51,7 @@ class TreeTransferHandler extends TransferHandler {
     protected Transferable createTransferable(JComponent c) {
         JTree tree = (JTree) c;
         TreePath[] paths = tree.getSelectionPaths();
-        boolean isAsset = tree.getModel().getRoot() == EngineForm.root;
+        boolean isAsset = tree.getModel().getRoot() == EngineForm.assetsRoot;
         if (paths != null) {
             List<DefaultMutableTreeNode> copies = new ArrayList<>();
             DefaultMutableTreeNode node =
@@ -62,7 +62,7 @@ class TreeTransferHandler extends TransferHandler {
             copies.add(copy);
 
             DefaultMutableTreeNode[] nodes =
-                    copies.toArray(new DefaultMutableTreeNode[copies.size()]);
+                    copies.toArray(new DefaultMutableTreeNode[0]);
 
             if (!isAsset) {
                 DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
@@ -78,7 +78,6 @@ class TreeTransferHandler extends TransferHandler {
     }
 
     /**
-     * @param node
      * @param copy Adds All children of node to copy
      */
     private void addChildrenToNode(DefaultMutableTreeNode node, DefaultMutableTreeNode copy) {
@@ -128,6 +127,7 @@ class TreeTransferHandler extends TransferHandler {
             JTree tree = (JTree) support.getComponent();
             dest = tree.getSelectionPath();
         }
+        assert dest != null;
         DefaultMutableTreeNode parent
                 = (DefaultMutableTreeNode) dest.getLastPathComponent();
         JTree tree = (JTree) support.getComponent();
@@ -138,10 +138,11 @@ class TreeTransferHandler extends TransferHandler {
             index = parent.getChildCount();
         }
         // Add data to model.
-        if (tree.getModel().getRoot() == EngineForm.root) return false;
-        for (int i = 0; i < nodes.length; i++) {
+        if (tree.getModel().getRoot() == EngineForm.assetsRoot) return false;
+        assert nodes != null;
+        for (DefaultMutableTreeNode node : nodes) {
             // ArrayIndexOutOfBoundsException
-            model.insertNodeInto(nodes[i], parent, index++);
+            model.insertNodeInto(node, parent, index++);
         }
         return true;
     }

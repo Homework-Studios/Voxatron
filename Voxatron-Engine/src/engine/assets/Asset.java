@@ -4,8 +4,10 @@ import engine.DevelopmentConstants;
 import engine.EngineForm;
 import engine.assets.assets.UI.ClickableAsset;
 import engine.assets.basic.TextureAsset;
+import engine.scripting.Script;
 import util.FileUtils;
 import util.Text;
+import util.TreeUtils;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -38,6 +40,7 @@ public abstract class Asset {
     File directory;
     File assetFile;
     HashMap<String, AssetValue> valueHashMap;
+    List<Script> scripts = new ArrayList<>();
 
     public Asset(String name, String path, AssetType type, boolean createAsset) {
         this.name = name;
@@ -50,7 +53,7 @@ public abstract class Asset {
         path_assets.put(path + "\\" + name, this);
         if (DevelopmentConstants.DEVELOPMENT_MODE) {
             createNodeLevelUp(path + "\\" + name);
-            for (File file : directory.listFiles()) {
+            for (File file : Objects.requireNonNull(directory.listFiles())) {
                 createNodeLevelUp(path + "\\" + name + "\\" + file.getName());
             }
             updateNaming();
@@ -93,14 +96,15 @@ public abstract class Asset {
                 path += "\\";
             }
         }
-        path = path.replaceAll("\\<.*?\\>", "");
+        path = path.replaceAll("<.*?>", "");
         String[] split = path.split(" ");
         return split[0];
     }
 
     public static void init() {
-        if (DevelopmentConstants.DEVELOPMENT_MODE)
+        if (DevelopmentConstants.DEVELOPMENT_MODE) {
             path_nodes.put("", (DefaultMutableTreeNode) tree.getModel().getRoot());
+        }
         File assetDir = new File(ASSET_DIR);
         if (!assetDir.exists()) {
             assetDir.mkdirs();
@@ -112,6 +116,9 @@ public abstract class Asset {
             }
         }
         updateTreeNodes();
+        if (DevelopmentConstants.DEVELOPMENT_MODE) {
+            tree.expandPath(new TreePath(path_nodes.get("").getPath()));
+        }
     }
 
     public static void loadAsset(File assetFile) {
@@ -140,7 +147,7 @@ public abstract class Asset {
 
     public static void removeFileByNode(DefaultMutableTreeNode node) {
         String path = getPathByNode(node);
-        path = path.replaceAll("\\<.*?\\>", "");
+        path = path.replaceAll("<.*?>", "");
         String[] split = path.split(" ");
         File file = new File(ASSET_DIR + "\\" + split[0]);
         FileUtils.deleteFileOrDirectory(file);
@@ -149,24 +156,7 @@ public abstract class Asset {
 
     public static void createNodeLevelUp(String path) {
         if (!DevelopmentConstants.DEVELOPMENT_MODE) return;
-        if (!path.startsWith("\\")) path = "\\" + path;
-        String parentPath = path.substring(0, path.lastIndexOf("\\"));
-        DefaultMutableTreeNode child = path_nodes.get(path);
-        if (child == null) {
-            child = new DefaultMutableTreeNode(path.substring(path.lastIndexOf("\\") + 1));
-            path_nodes.put(path, child);
-        }
-
-        DefaultMutableTreeNode parent = path_nodes.get(parentPath);
-        if (parent == null) {
-            String parentName = parentPath.substring(parentPath.lastIndexOf("\\") + 1);
-            parent = new DefaultMutableTreeNode(parentName);
-            path_nodes.put(parentPath, parent);
-        }
-
-        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-        model.insertNodeInto(child, parent, 0);
-        tree.expandPath(tree.getSelectionPath());
+        TreeUtils.genTreeNodesLevelUp(path, path_nodes, tree);
     }
 
     public static void updateAssetNodeName(String name, String path, AssetType type) {

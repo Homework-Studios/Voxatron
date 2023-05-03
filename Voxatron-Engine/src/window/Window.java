@@ -1,8 +1,10 @@
 package window;
 
 
+import engine.DevelopmentConstants;
 import render.Renderer;
 
+import javax.swing.*;
 import java.awt.*;
 
 import static com.raylib.Raylib.*;
@@ -10,6 +12,8 @@ import static com.raylib.Raylib.*;
 public class Window {
 
     public static Window instance;
+
+    boolean isFullscreen = false;
 
     public Window() {
         instance = this;
@@ -34,6 +38,7 @@ public class Window {
         String path = System.getProperty("user.dir") + "\\Voxatron-Engine\\src\\window\\icon.png";
         SetWindowIcon(LoadImage(path));
 
+
         //WARNING: HERE IS NOT THE PLACE TO RENDER ANYTHING. NO WHILE LOOP OR ANYTHING
     }
 
@@ -43,5 +48,21 @@ public class Window {
 
     public void finish() {
         CloseWindow();
+    }
+
+    public void resize() {
+        if (DevelopmentConstants.DEVELOPMENT_MODE) {
+            System.out.println("Resizing window  " + isFullscreen);
+            JPanel panel = DevelopmentConstants.ENGINE_FORM.Game;
+            if (isFullscreen) {
+                SetWindowSize(panel.getWidth(), panel.getHeight());
+                SetWindowPosition(0, 0);
+                isFullscreen = false;
+            } else {
+                SetWindowSize(GetMonitorWidth(0), GetMonitorHeight(0));
+                SetWindowPosition(0, 0);
+                isFullscreen = true;
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@ import util.Text;
 public class Test extends BaseScript {
     //Inspector Variables
     public String testString = "Test";
+    public int testInt = 0;
     public Text text = new Text();
 //End Inspector Variables
 

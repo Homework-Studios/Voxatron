@@ -1,6 +1,5 @@
 package render;
 
-import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import debug.DebugDraw;
 import input.Input;

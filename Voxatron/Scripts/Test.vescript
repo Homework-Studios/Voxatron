@@ -1,24 +1,19 @@
 package engine.scripts;
 
-/*
-    This Engine Was Created For A School Project
-    Voxatron
-    Test Script
-    created 28.04.2023 by timon
- */
-
 
 import engine.scripting.BaseScript;
+import util.Text;
 
 public class Test extends BaseScript {
     //Inspector Variables
     public String testString = "Test";
-    public String testsString = "Test2";
-    //End Inspector Variables
+    public int testInt = 0;
+    public Text text = new Text();
+//End Inspector Variables
 
     @Override
     public void start() {
-        System.out.println("Test");
+
     }
 
     @Override

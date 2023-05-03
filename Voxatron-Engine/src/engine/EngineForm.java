@@ -2,6 +2,7 @@ package engine;
 
 import com.raylib.Raylib;
 import engine.assets.Asset;
+import engine.scripting.ScriptingManager;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -20,7 +21,7 @@ import java.util.Objects;
 
 public class EngineForm extends JFrame {
 
-    public static DefaultMutableTreeNode root = new DefaultMutableTreeNode("Assets");
+    public static DefaultMutableTreeNode assetsRoot = new DefaultMutableTreeNode("Assets");
     public static DefaultTreeModel model;
     public static EngineForm instance;
     public static Color background = new Color(43, 45, 48);
@@ -30,7 +31,7 @@ public class EngineForm extends JFrame {
     public JTree AssetTree;
     public JPanel Game;
     private JPanel MainPanel;
-    private JTree ObjectsTree;
+    private JTree WorldObjectsTree;
     private JTabbedPane tabbedPane1;
     private JPanel Inspector;
     private JPanel AssetPanel;
@@ -39,17 +40,31 @@ public class EngineForm extends JFrame {
     private JPanel LeftSpacingPane;
     private JPanel TopSpacing;
     private JTextPane Debugger;
+    private JPanel ScriptsPanel;
+    private JPanel ObjectsPanel;
+    private JTree ScriptsTree;
+    private JTree ObjectsTree;
 
-    //TODO: F11 Für Toogle Fullscreen / Engine Form
+
     public EngineForm() {
         Asset.tree = AssetTree;
+        ScriptingManager.tree = ScriptsTree;
+
+
+        ScriptsTree.setRootVisible(false);
+
+
+        ((DefaultTreeModel) ScriptsTree.getModel()).setRoot(new DefaultMutableTreeNode("Scripts"));
+        ((DefaultTreeModel) ObjectsTree.getModel()).setRoot(new DefaultMutableTreeNode("Objects"));
+        ((DefaultTreeModel) WorldObjectsTree.getModel()).setRoot(new DefaultMutableTreeNode("WorldObjects"));
+
         instance = this;
         setContentPane(MainPanel);
         Raylib.SetConfigFlags(Raylib.FLAG_WINDOW_TOPMOST);
         String resourceDir = "/resources/";
-        ImageIcon icon = new ImageIcon(EngineForm.class.getResource(resourceDir + "icon.png"));
+        ImageIcon icon = new ImageIcon(Objects.requireNonNull(EngineForm.class.getResource(resourceDir + "icon.png")));
         setIconImage(icon.getImage());
-        //TODO: Move to utils
+
         int desiredWidth = 16;
         int desiredHeight = 16;
         if (icon.getIconWidth() > desiredWidth || icon.getIconHeight() > desiredHeight) {
@@ -80,7 +95,7 @@ public class EngineForm extends JFrame {
         //set sizing
         Game.setPreferredSize(new Dimension((int) (500 * 1.7), 500));
         tabbedPane1.setPreferredSize(new Dimension(200, 500));
-        ObjectsTree.setPreferredSize(new Dimension(200, 500));
+        WorldObjectsTree.setPreferredSize(new Dimension(200, 500));
         DebuggerPanel.setPreferredSize(new Dimension(1, 150));
 
         //set colors because it does not work with editor,
@@ -112,35 +127,33 @@ public class EngineForm extends JFrame {
         MainPanel.setBackground(background);
         Game.setBackground(highlightArea);
         tabbedPane1.setBackground(background);
-        ObjectsTree.setBackground(background);
+        WorldObjectsTree.setBackground(background);
         DebuggerPanel.setBackground(background);
         Debugger.setBackground(background);
         AssetTree.setBackground(background);
+        Inspector.setBackground(background);
+        ScriptsTree.setBackground(background);
+        ObjectsTree.setBackground(background);
 
-        ObjectsTree.setForeground(highlight);
+        WorldObjectsTree.setForeground(highlight);
         tabbedPane1.setForeground(highlight);
         DebuggerPanel.setForeground(highlight);
         Debugger.setForeground(highlight);
         AssetTree.setForeground(highlight);
+        ScriptsTree.setForeground(highlight);
+        ObjectsTree.setForeground(highlight);
 
         //Trees
-        TreeCellRenderer renderer = ObjectsTree.getCellRenderer();
-        ((DefaultTreeCellRenderer) renderer).setBackgroundNonSelectionColor(background);
-        ((DefaultTreeCellRenderer) renderer).setBackgroundSelectionColor(highlightArea);
-        ((DefaultTreeCellRenderer) renderer).setTextNonSelectionColor(highlight);
-        ((DefaultTreeCellRenderer) renderer).setTextSelectionColor(highlight);
-
-        renderer = AssetTree.getCellRenderer();
-        ((DefaultTreeCellRenderer) renderer).setBackgroundNonSelectionColor(background);
-        ((DefaultTreeCellRenderer) renderer).setBackgroundSelectionColor(highlightArea);
-        ((DefaultTreeCellRenderer) renderer).setTextNonSelectionColor(highlight);
-        ((DefaultTreeCellRenderer) renderer).setTextSelectionColor(highlight);
-
-        ObjectsTree.setTransferHandler(new TreeTransferHandler());
+        WorldObjectsTree.setCellRenderer(treeCellRenderer);
+        AssetTree.setCellRenderer(treeCellRenderer);
+        ScriptsTree.setCellRenderer(treeCellRenderer);
         ObjectsTree.setCellRenderer(treeCellRenderer);
-        ObjectsTree.setDragEnabled(true);
-        ObjectsTree.setDropMode(DropMode.ON_OR_INSERT);
-        ObjectsTree.setEditable(true);
+
+        WorldObjectsTree.setTransferHandler(new TreeTransferHandler());
+        WorldObjectsTree.setCellRenderer(treeCellRenderer);
+        WorldObjectsTree.setDragEnabled(true);
+        WorldObjectsTree.setDropMode(DropMode.ON_OR_INSERT);
+        WorldObjectsTree.setEditable(true);
 
 
         //Tabs
@@ -270,7 +283,7 @@ public class EngineForm extends JFrame {
 
 
         };
-        BasicTreeUI treeUI = new BasicTreeUI() {
+        BasicTreeUI worldObjectsUI = new BasicTreeUI() {
             @Override
             protected void paintVerticalLine(Graphics g, JComponent c, int x, int top, int bottom) {
                 g.setColor(highlightArea);
@@ -308,12 +321,129 @@ public class EngineForm extends JFrame {
                 }
             }
         };
-        //ObjectsTree.setUI(treeUI);
-        AssetTree.setUI(treeUI);
+        BasicTreeUI objectsUI = new BasicTreeUI() {
+            @Override
+            protected void paintVerticalLine(Graphics g, JComponent c, int x, int top, int bottom) {
+                g.setColor(highlightArea);
+                g.drawLine(x, top, x, bottom);
+            }
+
+            @Override
+            protected void paintHorizontalLine(Graphics g, JComponent c, int y, int left, int right) {
+                g.setColor(highlightArea);
+                g.drawLine(left, y, right, y);
+            }
+
+            @Override
+            protected void paintExpandControl(Graphics g,
+                                              Rectangle clipBounds, Insets insets,
+                                              Rectangle bounds, TreePath path,
+                                              int row, boolean isExpanded,
+                                              boolean hasBeenExpanded,
+                                              boolean isLeaf) {
+                Object value = path.getLastPathComponent();
+
+                // Draw icons if not a leaf and either hasn't been loaded,
+                // or the model child count is > 0.
+                if (!isLeaf && (!hasBeenExpanded ||
+                        treeModel.getChildCount(value) > 0)) {
+                    int middleXOfKnob;
+                    middleXOfKnob = bounds.x - getRightChildIndent() + 1;
+                    int middleYOfKnob = bounds.y + (bounds.height / 2);
+
+
+                    Icon expandedIcon = getExpandedIcon();
+                    if (expandedIcon != null)
+                        g.fillRoundRect(middleXOfKnob - 2, middleYOfKnob - 2, 3, 3, 1, 1);
+
+                }
+            }
+        };
+        BasicTreeUI scriptsUI = new BasicTreeUI() {
+            @Override
+            protected void paintVerticalLine(Graphics g, JComponent c, int x, int top, int bottom) {
+                g.setColor(highlightArea);
+                g.drawLine(x, top, x, bottom);
+            }
+
+            @Override
+            protected void paintHorizontalLine(Graphics g, JComponent c, int y, int left, int right) {
+                g.setColor(highlightArea);
+                g.drawLine(left, y, right, y);
+            }
+
+            @Override
+            protected void paintExpandControl(Graphics g,
+                                              Rectangle clipBounds, Insets insets,
+                                              Rectangle bounds, TreePath path,
+                                              int row, boolean isExpanded,
+                                              boolean hasBeenExpanded,
+                                              boolean isLeaf) {
+                Object value = path.getLastPathComponent();
+
+                // Draw icons if not a leaf and either hasn't been loaded,
+                // or the model child count is > 0.
+                if (!isLeaf && (!hasBeenExpanded ||
+                        treeModel.getChildCount(value) > 0)) {
+                    int middleXOfKnob;
+                    middleXOfKnob = bounds.x - getRightChildIndent() + 1;
+                    int middleYOfKnob = bounds.y + (bounds.height / 2);
+
+
+                    Icon expandedIcon = getExpandedIcon();
+                    if (expandedIcon != null)
+                        g.fillRoundRect(middleXOfKnob - 2, middleYOfKnob - 2, 3, 3, 1, 1);
+
+                }
+            }
+        };
+        BasicTreeUI assetsUI = new BasicTreeUI() {
+            @Override
+            protected void paintVerticalLine(Graphics g, JComponent c, int x, int top, int bottom) {
+                g.setColor(highlightArea);
+                g.drawLine(x, top, x, bottom);
+            }
+
+            @Override
+            protected void paintHorizontalLine(Graphics g, JComponent c, int y, int left, int right) {
+                g.setColor(highlightArea);
+                g.drawLine(left, y, right, y);
+            }
+
+            @Override
+            protected void paintExpandControl(Graphics g,
+                                              Rectangle clipBounds, Insets insets,
+                                              Rectangle bounds, TreePath path,
+                                              int row, boolean isExpanded,
+                                              boolean hasBeenExpanded,
+                                              boolean isLeaf) {
+                Object value = path.getLastPathComponent();
+
+                // Draw icons if not a leaf and either hasn't been loaded,
+                // or the model child count is > 0.
+                if (!isLeaf && (!hasBeenExpanded ||
+                        treeModel.getChildCount(value) > 0)) {
+                    int middleXOfKnob;
+                    middleXOfKnob = bounds.x - getRightChildIndent() + 1;
+                    int middleYOfKnob = bounds.y + (bounds.height / 2);
+
+
+                    Icon expandedIcon = getExpandedIcon();
+                    if (expandedIcon != null)
+                        g.fillRoundRect(middleXOfKnob - 2, middleYOfKnob - 2, 3, 3, 1, 1);
+
+                }
+            }
+        };
+        WorldObjectsTree.setUI(worldObjectsUI);
+        ObjectsTree.setUI(objectsUI);
+        ScriptsTree.setUI(scriptsUI);
+        AssetTree.setUI(assetsUI);
+
 
         tabbedPane1.setUI(tabbedPaneUI);
         DebuggerPanel.setBorder(new LineBorder(highlightArea, 1, true));
-        ObjectsTree.setBorder(new LineBorder(highlightArea, 1, true));
+        WorldObjectsTree.setBorder(new LineBorder(highlightArea, 1, true));
         //endregion
 
         //Debugging
@@ -345,7 +475,7 @@ public class EngineForm extends JFrame {
 
 
         //Assets
-        model = new DefaultTreeModel(root);
+        model = new DefaultTreeModel(assetsRoot);
 
         AssetTree.addKeyListener(new KeyListener() {
             @Override
@@ -355,7 +485,7 @@ public class EngineForm extends JFrame {
                         Asset.removeFileByNode((DefaultMutableTreeNode) Objects.requireNonNull(AssetTree.getSelectionPath()).getLastPathComponent());
                         break;
                     case ' ':
-                        Asset.getSelectedAsset().rename("Test");
+                        Objects.requireNonNull(Asset.getSelectedAsset()).rename("Test");
                         break;
                 }
                 System.out.println("e.getKeyChar() = " + e.getKeyChar());
