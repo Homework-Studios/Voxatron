@@ -41,8 +41,8 @@ public class Main {
             ScriptingManager.instance.updateScripts();
 
         //TODO: remove this
-        p.move(p.x * 2 + 1, p.y * 2 + 1);
-        dim = new Dimension(dim.width * 2, dim.height * 2);
+        p.move(p.x + 94, p.y + 7);
+        dim = new Dimension(dim.width + 212, dim.height + 159);
         //init engine.assets and create a test asset
         Asset.init();
         Window window = new Window();

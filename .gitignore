@@ -3,3 +3,4 @@ out
 Voxatron.iml
 .gitignore
 hs_err_pid*
+/Voxatron-Engine/src/engine/DevelopmentConstants.java
