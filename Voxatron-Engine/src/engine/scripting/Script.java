@@ -37,7 +37,7 @@ public class Script {
         System.out.println(variableString);
 
         System.out.println("Compiled Script: " + scriptFile.getName());
-        execute("start");
+        // execute("start");
     }
 
     public void setExecutionMethod(String methodName, Object... args) throws ScriptException {

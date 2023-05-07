@@ -49,19 +49,22 @@ public class ScriptingManager {
         path_nodes.put("", (DefaultMutableTreeNode) tree.getModel().getRoot());
         File scriptDir = new File(Asset.ASSET_DIR.replace("Assets", "Scripts"));
         File newScriptDir = new File(DevelopmentConstants.NEW_SCRIPT_DIR);
-        for (File file : Objects.requireNonNull(scriptDir.listFiles())) {
-            FileUtils.deleteFileOrDirectory(file);
+        if (DevelopmentConstants.SCRIPT_UPDATE) {
+            for (File file : Objects.requireNonNull(scriptDir.listFiles())) {
+                FileUtils.deleteFileOrDirectory(file);
+            }
+            FileUtils.copyFiles(newScriptDir, scriptDir);
         }
-        FileUtils.copyFiles(newScriptDir, scriptDir);
+
 
         List<File> scripts = FileUtils.getAllFiles(scriptDir);
         for (File script : scripts) {
+            if (!script.isDirectory() && !script.getName().endsWith(".vescript")) break;
             String path = script.getAbsolutePath().replace(scriptDir.getAbsolutePath(), "");
             createNodeLevelUp(path);
             System.out.println(path);
         }
 
-//        ((DefaultTreeModel) tree.getModel()).insertNodeInto(new DefaultMutableTreeNode("New Script"), path_nodes.get(""), 0);
         tree.expandPath(new TreePath(path_nodes.get("").getPath()));
     }
 

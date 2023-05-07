@@ -17,13 +17,25 @@ public class Vector2 extends Raylib.Vector2 {
         this.y = y;
     }
 
+
     public Vector2(String string) {
-        for (String s : new String[]{"Vector2{", "x=", " y=", "}"}) {
-            string = string.replace(s, "");
-        }
         String[] split = string.split(",");
         this.x = Float.parseFloat(split[0]);
         this.y = Float.parseFloat(split[1]);
+    }
+
+    public Vector2(Raylib.Vector2 vector2) {
+        this.x = vector2.x();
+        this.y = vector2.y();
+    }
+
+    public Vector2 normalize() {
+        float len = (float) Math.sqrt(x * x + y * y);
+        if (len != 0) {
+            return new Vector2(x / len, y / len);
+        } else {
+            return new Vector2(0, 0);
+        }
     }
 
     public Vector2 add(Vector2 other) {
@@ -80,9 +92,6 @@ public class Vector2 extends Raylib.Vector2 {
 
     @Override
     public String toString() {
-        return "Vector2{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
+        return x + "," + y;
     }
 }

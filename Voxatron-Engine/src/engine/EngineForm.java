@@ -3,6 +3,7 @@ package engine;
 import com.raylib.Raylib;
 import engine.assets.Asset;
 import engine.scripting.ScriptingManager;
+import engine.veobjects.ObjectManager;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -49,10 +50,10 @@ public class EngineForm extends JFrame {
     public EngineForm() {
         Asset.tree = AssetTree;
         ScriptingManager.tree = ScriptsTree;
-
+        ObjectManager.tree = ObjectsTree;
+        ObjectManager.worldTree = WorldObjectsTree;
 
         ScriptsTree.setRootVisible(false);
-
 
         ((DefaultTreeModel) ScriptsTree.getModel()).setRoot(new DefaultMutableTreeNode("Scripts"));
         ((DefaultTreeModel) ObjectsTree.getModel()).setRoot(new DefaultMutableTreeNode("Objects"));
@@ -150,7 +151,11 @@ public class EngineForm extends JFrame {
         ObjectsTree.setCellRenderer(treeCellRenderer);
 
         WorldObjectsTree.setTransferHandler(new TreeTransferHandler());
-        WorldObjectsTree.setCellRenderer(treeCellRenderer);
+        WorldObjectsTree.setDragEnabled(true);
+        WorldObjectsTree.setDropMode(DropMode.ON_OR_INSERT);
+        WorldObjectsTree.setEditable(true);
+
+        WorldObjectsTree.setTransferHandler(new TreeTransferHandler());
         WorldObjectsTree.setDragEnabled(true);
         WorldObjectsTree.setDropMode(DropMode.ON_OR_INSERT);
         WorldObjectsTree.setEditable(true);
@@ -502,9 +507,6 @@ public class EngineForm extends JFrame {
             }
         });
         AssetTree.addMouseListener(new TreePopup());
-        AssetTree.setTransferHandler(new TreeTransferHandler());
-        AssetTree.setDropMode(DropMode.ON_OR_INSERT);
-        AssetTree.setDragEnabled(true);
         AssetTree.setModel(model);
         AssetTree.setCellRenderer(treeCellRenderer);
     }

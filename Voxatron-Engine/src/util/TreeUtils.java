@@ -24,6 +24,7 @@ public class TreeUtils {
         }
 
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+//        System.out.println("Inserting " + child + " into " + parent);
         model.insertNodeInto(child, parent, 0);
         tree.expandPath(tree.getSelectionPath());
     }

@@ -1,7 +1,6 @@
 package engine.assets;
 
 import engine.DevelopmentConstants;
-import engine.EngineForm;
 import engine.assets.assets.UI.ClickableAsset;
 import engine.assets.basic.TextureAsset;
 import engine.scripting.Script;
@@ -14,10 +13,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
-import java.awt.*;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +35,6 @@ public abstract class Asset {
     AssetType type;
     File directory;
     File assetFile;
-    HashMap<String, AssetValue> valueHashMap;
     List<Script> scripts = new ArrayList<>();
 
     public Asset(String name, String path, AssetType type, boolean createAsset) {
@@ -48,7 +43,6 @@ public abstract class Asset {
         this.type = type;
         this.directory = new File(ASSET_DIR + "/" + path + "/" + name);
         this.assetFile = new File(directory, type + ".asset");
-        this.valueHashMap = new HashMap<>();
         if (createAsset) createAsset();
         path_assets.put(path + "\\" + name, this);
         if (DevelopmentConstants.DEVELOPMENT_MODE) {
@@ -58,7 +52,6 @@ public abstract class Asset {
             }
             updateNaming();
         }
-        updateValues();
         load();
     }
 
@@ -145,6 +138,7 @@ public abstract class Asset {
         }
     }
 
+
     public static void removeFileByNode(DefaultMutableTreeNode node) {
         String path = getPathByNode(node);
         path = path.replaceAll("<.*?>", "");
@@ -161,47 +155,14 @@ public abstract class Asset {
 
     public static void updateAssetNodeName(String name, String path, AssetType type) {
         if (!path.startsWith("\\")) path = "\\" + path;
-        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
         DefaultMutableTreeNode node = path_nodes.get(path);
-        if (node == null) {
-            return;
-
-        }
-        DefaultMutableTreeNode parent = (DefaultMutableTreeNode) node.getParent();
-        List<DefaultMutableTreeNode> children = new ArrayList<>();
-        model.removeNodeFromParent(node);
-        while (node.getChildCount() != 0) {
-            children.add((DefaultMutableTreeNode) node.getFirstChild());
-            model.removeNodeFromParent((DefaultMutableTreeNode) node.getFirstChild());
-        }
-        Color highlight = EngineForm.highlight;
-        node = new DefaultMutableTreeNode(new Text().writeText(name + " ").setItalic(true).setSize(10).setColor(highlightArea).writeText("(" + type + ")"));
-        path_nodes.put(path, node);
-        for (DefaultMutableTreeNode child : children) {
-            model.insertNodeInto(child, node, 0);
-        }
-        model.insertNodeInto(node, parent, 0);
+        node.setUserObject(new Text().writeText(name + " ").setItalic(true).setSize(10).setColor(highlightArea).writeText("(" + type + ")"));
     }
 
     public void updateNaming() {
         updateAssetNodeName(getName(), getAbsolutePath(), getType());
     }
 
-    public void updateValues() {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(assetFile));
-            String line;
-            while (reader.ready()) {
-                line = reader.readLine();
-                if (!Objects.equals(line, "") && line.contains("=") && !line.startsWith("#")) {
-                    String[] split = line.split("=");
-                    valueHashMap.put(split[0], new AssetValue(split[1]));
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public void rename(String test) {
         updateAssetNodeName(test, path, type);
@@ -230,20 +191,7 @@ public abstract class Asset {
 
     @Override
     public String toString() {
-        String[] parameters = new String[]{
-                "path=" + path,
-                "type=" + type,
-                "directory=" + directory,
-                "assetFile=" + assetFile,
-                "valueHashMap=" + valueHashMap
-        };
-        String result = name + "{";
-        for (String parameter : parameters) {
-            result += parameter + ", ";
-        }
-        result = result.substring(0, result.length() - 2) + "}";
-        return result;
-
+        return path;
     }
 
     //region Getter/Setter
@@ -269,10 +217,6 @@ public abstract class Asset {
 
     public AssetType getType() {
         return type;
-    }
-
-    public HashMap<String, AssetValue> getValueHashMap() {
-        return valueHashMap;
     }
 
 

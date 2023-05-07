@@ -1,0 +1,32 @@
+package engine.scripts;
+
+import engine.assets.basic.TextureAsset;
+import engine.scripting.BaseScript;
+import math.Vector2;
+import render.ui.UIScreen;
+import render.ui.box.BoxFilter;
+import render.ui.item.image.UIImageItem;
+
+public class UiImageScript extends BaseScript {
+    //Inspector Variables
+    public UIScreen screen;
+    public TextureAsset texture;
+    public Vector2 position;
+    public BoxFilter boxFilter;
+    //End Inspector Variables
+
+    @Override
+    public void start() {
+        screen.addItem(new UIImageItem(texture.getTexture(texture.getName()), position, boxFilter));
+    }
+
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public void FixedUpdate() {
+
+    }
+}

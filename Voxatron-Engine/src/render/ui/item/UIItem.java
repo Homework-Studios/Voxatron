@@ -19,6 +19,8 @@ public abstract class UIItem {
 
     public boolean hidden = false;
 
+    Vector2 previousPosition = new Vector2(0, 0);
+
     public UIItem() {
         uuid = UUIDUtil.generateUUID();
     }
@@ -44,7 +46,11 @@ public abstract class UIItem {
     }
 
     public boolean isMouseOver(Vector2 areaPosition, Vector2 areaSize) {
+        return isVectorOver(areaPosition, areaSize, new Vector2(Raylib.GetMouseX(), Raylib.GetMouseY()));
+    }
+
+    public boolean isVectorOver(Vector2 areaPosition, Vector2 areaSize, Vector2 vector) {
         areaPosition = areaPosition.subtract(areaSize.divide(new Vector2(2, 2)));
-        return Raylib.GetMouseX() > areaPosition.x && Raylib.GetMouseX() < areaPosition.x + areaSize.x && Raylib.GetMouseY() > areaPosition.y && Raylib.GetMouseY() < areaPosition.y + areaSize.y;
+        return vector.x > areaPosition.x && vector.x < areaPosition.x + areaSize.x && vector.y > areaPosition.y && vector.y < areaPosition.y + areaSize.y;
     }
 }

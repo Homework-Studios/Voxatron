@@ -22,7 +22,7 @@ import static com.raylib.Jaylib.*;
 public class MainMenuUIScreen extends UIScreen {
 
     public MainMenuUIScreen() {
-        super(new Vector2(), new Vector2(300, 100));
+        super(new Vector2(), new Vector2(GetScreenWidth(), GetScreenHeight()));
 
         String path = System.getProperty("user.dir") + "\\Voxatron-Engine\\src\\resources\\";
 

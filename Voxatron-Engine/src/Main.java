@@ -2,6 +2,7 @@ import engine.DevelopmentConstants;
 import engine.EngineForm;
 import engine.assets.Asset;
 import engine.scripting.ScriptingManager;
+import engine.veobjects.ObjectManager;
 import input.Input;
 import render.Renderer;
 import window.Window;
@@ -41,10 +42,11 @@ public class Main {
             ScriptingManager.instance.updateScripts();
 
         //TODO: remove this
-        p.move(p.x + 94, p.y + 7);
-        dim = new Dimension(dim.width + 212, dim.height + 159);
+        p.move(p.x * 2 + 1, p.y * 2 + 1);
+        dim = new Dimension(dim.width * 2, dim.height * 2);
         //init engine.assets and create a test asset
         Asset.init();
+        ObjectManager.init();
         Window window = new Window();
         window.init(p, dim);
 
