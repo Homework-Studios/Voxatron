@@ -2,15 +2,12 @@ package render.scene.ui;
 
 import com.raylib.Raylib;
 import debug.DebugDraw;
-import engine.assets.AssetManager;
-import engine.assets.basic.TextureAsset;
 import math.Vector2;
 import render.scene.SceneManager;
 import render.scene.SceneType;
 import render.task.ui.UIRoundBoxRenderTask;
 import render.ui.UIScreen;
 import render.ui.box.BoxFilter;
-import render.ui.item.image.UIImageItem;
 import render.ui.item.input.UIClickableItem;
 import render.ui.item.input.UISliderItem;
 import render.ui.item.view.UIListViewItem;
@@ -29,11 +26,11 @@ public class MainMenuUIScreen extends UIScreen {
 
         // load the VTBanner.png Texture
 
-        Raylib.Texture texture = new AssetManager<TextureAsset>().getAsset("MainMenu\\VTBanner").getTexture("VTBanner");
+//        Raylib.Texture texture = new AssetManager<TextureAsset>().getAsset("MainMenu\\VTBanner").getTexture("VTBanner");
 
 
-        texture = texture.width(1300);
-        texture = texture.height(600);
+//        texture = texture.width(1300);
+//        texture = texture.height(600);
 
 
         // load the Play.png image
@@ -55,7 +52,7 @@ public class MainMenuUIScreen extends UIScreen {
         // load the Settings.png image
         Raylib.Texture settings = LoadTexture(path + "Settings.png");
 
-        addItem(new UIImageItem(texture, new Vector2(0, -300), BoxFilter.CENTER));
+//        addItem(new UIImageItem(texture, new Vector2(0, -300), BoxFilter.CENTER));
 
         addItem(new UIClickableItem(play, new Vector2(0, 20), new Vector2(950, 100), BoxFilter.CENTER, 900, 95) {
             @Override

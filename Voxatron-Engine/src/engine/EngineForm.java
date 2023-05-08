@@ -2,7 +2,6 @@ package engine;
 
 import com.raylib.Raylib;
 import engine.assets.Asset;
-import engine.scripting.ScriptingManager;
 import engine.veobjects.ObjectManager;
 
 import javax.swing.*;
@@ -41,21 +40,15 @@ public class EngineForm extends JFrame {
     private JPanel LeftSpacingPane;
     private JPanel TopSpacing;
     private JTextPane Debugger;
-    private JPanel ScriptsPanel;
     private JPanel ObjectsPanel;
-    private JTree ScriptsTree;
     private JTree ObjectsTree;
 
 
     public EngineForm() {
         Asset.tree = AssetTree;
-        ScriptingManager.tree = ScriptsTree;
         ObjectManager.tree = ObjectsTree;
         ObjectManager.worldTree = WorldObjectsTree;
 
-        ScriptsTree.setRootVisible(false);
-
-        ((DefaultTreeModel) ScriptsTree.getModel()).setRoot(new DefaultMutableTreeNode("Scripts"));
         ((DefaultTreeModel) ObjectsTree.getModel()).setRoot(new DefaultMutableTreeNode("Objects"));
         ((DefaultTreeModel) WorldObjectsTree.getModel()).setRoot(new DefaultMutableTreeNode("WorldObjects"));
 
@@ -133,7 +126,6 @@ public class EngineForm extends JFrame {
         Debugger.setBackground(background);
         AssetTree.setBackground(background);
         Inspector.setBackground(background);
-        ScriptsTree.setBackground(background);
         ObjectsTree.setBackground(background);
 
         WorldObjectsTree.setForeground(highlight);
@@ -141,13 +133,11 @@ public class EngineForm extends JFrame {
         DebuggerPanel.setForeground(highlight);
         Debugger.setForeground(highlight);
         AssetTree.setForeground(highlight);
-        ScriptsTree.setForeground(highlight);
         ObjectsTree.setForeground(highlight);
 
         //Trees
         WorldObjectsTree.setCellRenderer(treeCellRenderer);
         AssetTree.setCellRenderer(treeCellRenderer);
-        ScriptsTree.setCellRenderer(treeCellRenderer);
         ObjectsTree.setCellRenderer(treeCellRenderer);
 
         WorldObjectsTree.setTransferHandler(new TreeTransferHandler());
@@ -364,44 +354,7 @@ public class EngineForm extends JFrame {
                 }
             }
         };
-        BasicTreeUI scriptsUI = new BasicTreeUI() {
-            @Override
-            protected void paintVerticalLine(Graphics g, JComponent c, int x, int top, int bottom) {
-                g.setColor(highlightArea);
-                g.drawLine(x, top, x, bottom);
-            }
 
-            @Override
-            protected void paintHorizontalLine(Graphics g, JComponent c, int y, int left, int right) {
-                g.setColor(highlightArea);
-                g.drawLine(left, y, right, y);
-            }
-
-            @Override
-            protected void paintExpandControl(Graphics g,
-                                              Rectangle clipBounds, Insets insets,
-                                              Rectangle bounds, TreePath path,
-                                              int row, boolean isExpanded,
-                                              boolean hasBeenExpanded,
-                                              boolean isLeaf) {
-                Object value = path.getLastPathComponent();
-
-                // Draw icons if not a leaf and either hasn't been loaded,
-                // or the model child count is > 0.
-                if (!isLeaf && (!hasBeenExpanded ||
-                        treeModel.getChildCount(value) > 0)) {
-                    int middleXOfKnob;
-                    middleXOfKnob = bounds.x - getRightChildIndent() + 1;
-                    int middleYOfKnob = bounds.y + (bounds.height / 2);
-
-
-                    Icon expandedIcon = getExpandedIcon();
-                    if (expandedIcon != null)
-                        g.fillRoundRect(middleXOfKnob - 2, middleYOfKnob - 2, 3, 3, 1, 1);
-
-                }
-            }
-        };
         BasicTreeUI assetsUI = new BasicTreeUI() {
             @Override
             protected void paintVerticalLine(Graphics g, JComponent c, int x, int top, int bottom) {
@@ -442,7 +395,6 @@ public class EngineForm extends JFrame {
         };
         WorldObjectsTree.setUI(worldObjectsUI);
         ObjectsTree.setUI(objectsUI);
-        ScriptsTree.setUI(scriptsUI);
         AssetTree.setUI(assetsUI);
 
 

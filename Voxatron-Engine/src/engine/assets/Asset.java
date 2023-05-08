@@ -3,7 +3,6 @@ package engine.assets;
 import engine.DevelopmentConstants;
 import engine.assets.assets.UI.ClickableAsset;
 import engine.assets.basic.TextureAsset;
-import engine.scripting.Script;
 import util.FileUtils;
 import util.Text;
 import util.TreeUtils;
@@ -15,9 +14,7 @@ import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Objects;
 
 import static engine.EngineForm.highlightArea;
@@ -35,7 +32,6 @@ public abstract class Asset {
     AssetType type;
     File directory;
     File assetFile;
-    List<Script> scripts = new ArrayList<>();
 
     public Asset(String name, String path, AssetType type, boolean createAsset) {
         this.name = name;

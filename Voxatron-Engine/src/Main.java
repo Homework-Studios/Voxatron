@@ -1,15 +1,12 @@
 import engine.DevelopmentConstants;
 import engine.EngineForm;
 import engine.assets.Asset;
-import engine.scripting.ScriptingManager;
 import engine.veobjects.ObjectManager;
 import input.Input;
 import render.Renderer;
 import window.Window;
 
-import javax.script.ScriptException;
 import java.awt.*;
-import java.io.IOException;
 import java.util.Objects;
 
 
@@ -22,11 +19,7 @@ public class Main {
         Dimension dim = new Dimension(0, 0);
         Asset.ASSET_DIR = System.getProperty("user.dir") + "\\Voxatron\\Assets";
         System.out.println(Asset.ASSET_DIR);
-        try {
-            new ScriptingManager();
-        } catch (ScriptException | IOException e) {
-            throw new RuntimeException(e);
-        }
+
 
         // if (true) return;
 
@@ -39,8 +32,6 @@ public class Main {
             dim = form.Game.getSize();
             System.out.println(p + " " + dim);
         }
-        if (DevelopmentConstants.DEVELOPMENT_MODE)
-            ScriptingManager.instance.updateScripts();
 
         //TODO: remove this
         p.move(p.x * 2 + 1, p.y * 2 + 1);
