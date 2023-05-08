@@ -34,6 +34,8 @@ public class Window {
         SetWindowPosition(position.x, position.y);
         SetTargetFPS(60);
 
+        ToggleFullscreen();
+
 
         String path = System.getProperty("user.dir") + "\\Voxatron-Engine\\src\\window\\icon.png";
         SetWindowIcon(LoadImage(path));
