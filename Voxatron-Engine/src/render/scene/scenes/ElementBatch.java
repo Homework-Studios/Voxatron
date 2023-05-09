@@ -34,4 +34,12 @@ public class ElementBatch extends Element {
             element.render();
         }
     }
+
+    public void setVisibility(boolean isVisible) {
+        this.isVisible = isVisible;
+    }
+
+    public void toggleVisibility() {
+        isVisible = !isVisible;
+    }
 }

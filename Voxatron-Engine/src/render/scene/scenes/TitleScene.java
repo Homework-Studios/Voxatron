@@ -12,10 +12,13 @@ import window.Window;
 
 public class TitleScene extends Scene {
 
+    ElementBatch titleScreenBatch;
+    public boolean creditsVisible = false;
+
     public TitleScene(){
         super();
 
-        addElement(new ElementBatch(new Element[]{
+        titleScreenBatch = new ElementBatch(new Element[]{
             new ImageElement(
                     Jaylib.LoadImage("Voxatron/Assets/MainMenu/VTBanner/VTBanner.png"),
                     new Vector2(
@@ -99,14 +102,20 @@ public class TitleScene extends Scene {
                     Jaylib.RED,
                     Jaylib.GREEN,
                     () -> {
-                        System.out.println("Credits Button Pressed");
+                        creditsVisible = !creditsVisible;
+                        System.out.println("Credits Button Pressed + " + creditsVisible);
                     }
             )
-        }, false));
+        }, true);
+
+        addElement(titleScreenBatch);
     }
 
     @Override
     public void update() {
+
+        titleScreenBatch.setVisibility(!creditsVisible);
+
         for (Element element : getIterableElements()) {
             element.update();
         }
