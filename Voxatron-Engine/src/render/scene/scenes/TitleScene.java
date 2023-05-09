@@ -102,7 +102,7 @@ public class TitleScene extends Scene {
                         System.out.println("Credits Button Pressed");
                     }
             )
-        }, true));
+        }, false));
     }
 
     @Override

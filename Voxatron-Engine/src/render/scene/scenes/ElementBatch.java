@@ -15,6 +15,9 @@ public class ElementBatch extends Element {
 
     @Override
     public void update() {
+
+        if(!isVisible) return;
+
         // update the elements in the batch
         for (Element element : elements) {
             element.update();
@@ -23,6 +26,9 @@ public class ElementBatch extends Element {
 
     @Override
     public void render() {
+
+        if(!isVisible) return;
+
         // render the elements in the batch
         for (Element element : elements) {
             element.render();
