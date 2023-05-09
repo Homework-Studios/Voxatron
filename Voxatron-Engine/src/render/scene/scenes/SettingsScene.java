@@ -6,6 +6,7 @@ import render.scene.Element;
 import render.scene.Scene;
 import render.scene.SceneManager;
 import render.scene.scenes.uiElements.ButtonElement;
+import render.scene.scenes.uiElements.SliderElement;
 import render.scene.scenes.uiElements.TextElement;
 import render.scene.scenes.uiElements.ToggleElement;
 import util.UiUtil;
@@ -106,6 +107,33 @@ public class SettingsScene extends Scene {
                         Jaylib.RED,
                         () -> {
                             System.out.println("Fullscreen Toggle Pressed");
+                            needToApply = true;
+                        }
+                ),
+                // Text Elements define the area of where the text should be centered in
+                new TextElement(
+                        new Vector2(UiUtil.getWidthPercent(5),
+                                UiUtil.getHeightPercent(55)),
+                        new Vector2(UiUtil.getWidthPercent(10),
+                                UiUtil.getHeightPercent(10)),
+                        "Volume",
+                        50f,
+                        Jaylib.LIGHTGRAY
+                ),
+                new SliderElement(
+                        new Vector2(UiUtil.getWidthPercent(30),
+                                UiUtil.getHeightPercent(60)),
+                        new Vector2(UiUtil.getWidthPercent(27),
+                                UiUtil.getHeightPercent(10)),
+                        new Vector2(UiUtil.getWidthPercent(2),
+                                UiUtil.getHeightPercent(12)),
+                        0,
+                        Jaylib.LIGHTGRAY,
+                        Jaylib.GRAY,
+                        Jaylib.GREEN,
+                        Jaylib.RED,
+                        () -> {
+                            System.out.println("Volume Slider Changed");
                             needToApply = true;
                         }
                 ),
