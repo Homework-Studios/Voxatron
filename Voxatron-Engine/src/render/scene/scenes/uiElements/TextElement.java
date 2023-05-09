@@ -12,6 +12,10 @@ public class TextElement extends Element {
     public float textSize;
     public Raylib.Color color;
 
+    private Raylib.Rectangle textRectangle;
+    private int textWidth;
+    private int textHeight;
+
     public TextElement(Vector2 position, Vector2 size, String text, float textSize, Raylib.Color color) {
         this.position = position;
         this.size = size;
@@ -22,12 +26,16 @@ public class TextElement extends Element {
 
     @Override
     public void update() {
-        // Do nothing because text elements don't need to be updated
+        textRectangle = new Raylib.Rectangle().x(position.x).y(position.y).width(size.x).height(size.y);
+        textWidth = Raylib.MeasureText(text, (int) textSize);
+        textHeight = (int) textSize;
     }
 
     @Override
     public void render() {
-        // There is a imaginary rectangle around the text, the text is centered in the rectangle
-        Raylib.DrawText(text, (int) (position.x - size.x / 2), (int) (position.y - size.y / 2), (int) textSize, color);
+        // draw the text at the center of the rectangle
+        int centerX = (int) (textRectangle.x() + textRectangle.width() / 2);
+        int centerY = (int) (textRectangle.y() + textRectangle.height() / 2);
+        Raylib.DrawText(text, centerX - (textWidth / 2), centerY - (textHeight / 2), (int) textSize, color);
     }
 }

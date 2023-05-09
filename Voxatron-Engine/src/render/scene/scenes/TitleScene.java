@@ -133,7 +133,7 @@ public class TitleScene extends Scene {
                             UiUtil.getHeightPercent(0)),
                     new Vector2(UiUtil.getWidthPercent(100),
                             UiUtil.getHeightPercent(100)),
-                    "Credits will go here",
+                    "Credits will go here\nHello World!",
                     50f,
                     Jaylib.LIGHTGRAY
             ),
