@@ -48,6 +48,7 @@ public class Window {
         Renderer.instance.stop();
     }
 
+    // Will be called after the last frame is rendered so it's the place to clean up things
     public void finish() {
         CloseWindow();
     }
