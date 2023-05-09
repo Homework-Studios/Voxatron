@@ -6,6 +6,7 @@ import render.scene.Element;
 import render.scene.Scene;
 import render.scene.scenes.uiElements.ButtonElement;
 import render.scene.scenes.uiElements.ImageElement;
+import render.scene.scenes.uiElements.TextElement;
 import render.scene.scenes.uiElements.ToggleElement;
 import util.UiUtil;
 import window.Window;
@@ -126,7 +127,16 @@ public class TitleScene extends Scene {
                         creditsVisible = !creditsVisible;
                         System.out.println("Credits Button Pressed + " + creditsVisible);
                     }
-            )
+            ),
+            new TextElement(
+                    new Vector2(UiUtil.getWidthPercent(0),
+                            UiUtil.getHeightPercent(0)),
+                    new Vector2(UiUtil.getWidthPercent(100),
+                            UiUtil.getHeightPercent(100)),
+                    "Credits will go here",
+                    50f,
+                    Jaylib.LIGHTGRAY
+            ),
         }, true);
 
         addElement(titleScreenBatch);
