@@ -36,7 +36,10 @@ public class TitleScene extends Scene {
                 Jaylib.LIGHTGRAY,
                 Jaylib.BLANK,
                 Jaylib.RED,
-                Jaylib.GREEN
+                Jaylib.GREEN,
+                () -> {
+                    System.out.println("Play Button Pressed");
+                }
         ));
         // new ButtonElement below the previous ButtonElement
         addElement(new ButtonElement(
@@ -49,7 +52,10 @@ public class TitleScene extends Scene {
                 Jaylib.LIGHTGRAY,
                 Jaylib.BLANK,
                 Jaylib.RED,
-                Jaylib.GREEN
+                Jaylib.GREEN,
+                () -> {
+                    System.out.println("Settings Button Pressed");
+                }
         ));
         // new ButtonElement below the previous ButtonElement
         addElement(new ButtonElement(
@@ -62,7 +68,10 @@ public class TitleScene extends Scene {
                 Jaylib.LIGHTGRAY,
                 Jaylib.BLANK,
                 Jaylib.RED,
-                Jaylib.GREEN
+                Jaylib.GREEN,
+                () -> {
+                    System.out.println("Quit Button Pressed");
+                }
         ));
 
         // add a mute button to the top right corner
@@ -76,7 +85,10 @@ public class TitleScene extends Scene {
                 Jaylib.LIGHTGRAY,
                 Jaylib.BLANK,
                 Jaylib.RED,
-                Jaylib.GREEN
+                Jaylib.GREEN,
+                () -> {
+                    System.out.println("Mute Button Pressed");
+                }
         ));
         // and a credits button below the mute button
         addElement(new ButtonElement(
@@ -89,7 +101,10 @@ public class TitleScene extends Scene {
                 Jaylib.LIGHTGRAY,
                 Jaylib.BLANK,
                 Jaylib.RED,
-                Jaylib.GREEN
+                Jaylib.GREEN,
+                () -> {
+                    System.out.println("Credits Button Pressed");
+                }
         ));
     }
 

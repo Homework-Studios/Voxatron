@@ -23,7 +23,9 @@ public class ButtonElement extends Element {
 
     private Rectangle buttonRectangle;
 
-    public ButtonElement(Vector2 position, Vector2 size, String text, float textSize, Color color, Color bgColor, Color hlColor, Color hlpColor) {
+    private Runnable onClick;
+
+    public ButtonElement(Vector2 position, Vector2 size, String text, float textSize, Color color, Color bgColor, Color hlColor, Color hlpColor, Runnable onClick) {
         this.position = position;
         this.size = size;
         this.text = text;
@@ -32,6 +34,7 @@ public class ButtonElement extends Element {
         this.bgColor = bgColor;
         this.hlColor = hlColor;
         this.hlpColor = hlpColor;
+        this.onClick = onClick;
     }
 
     @Override
@@ -47,6 +50,11 @@ public class ButtonElement extends Element {
             isPressed = true;
         } else {
             isPressed = false;
+        }
+
+        // check if mouse button left is up
+        if (isHovered && IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
+            onClick.run();
         }
     }
 
