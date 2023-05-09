@@ -1,5 +1,6 @@
 package render.scene;
 
+import render.scene.scenes.SettingsScene;
 import render.scene.scenes.TitleScene;
 
 import java.util.ArrayList;
@@ -10,10 +11,15 @@ public class SceneManager {
 
     public Scene activeScene;
 
+    public static SceneManager instance;
+
     public SceneManager() {
+        instance = this;
+
         scenes = new ArrayList<>();
 
         addScene(new TitleScene());
+        addScene(new SettingsScene());
         setActiveScene(scenes.get(0));
     }
 
@@ -39,6 +45,14 @@ public class SceneManager {
 
     public void setActiveScene(Scene scene) {
         activeScene = scene;
+    }
+
+    public void setActiveScene(Class sceneName) {
+        for (Scene scene : scenes) {
+            if (scene.getClass() == sceneName) {
+                activeScene = scene;
+            }
+        }
     }
 
     public Scene getActiveScene() {

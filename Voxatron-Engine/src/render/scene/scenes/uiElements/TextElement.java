@@ -12,9 +12,9 @@ public class TextElement extends Element {
     public float textSize;
     public Raylib.Color color;
 
-    private Raylib.Rectangle textRectangle;
-    private int textWidth;
-    private int textHeight;
+    private Raylib.Rectangle textRectangle = new Raylib.Rectangle();
+    private int textWidth = 0;
+    private int textHeight = 0;
 
     public TextElement(Vector2 position, Vector2 size, String text, float textSize, Raylib.Color color) {
         this.position = position;

@@ -21,7 +21,7 @@ public class ButtonElement extends Element {
     public boolean isHovered;
     public boolean isPressed;
 
-    private Rectangle buttonRectangle;
+    private Rectangle buttonRectangle = new Rectangle();
 
     private Runnable onClick;
 

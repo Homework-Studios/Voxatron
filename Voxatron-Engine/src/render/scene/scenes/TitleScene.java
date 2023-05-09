@@ -4,6 +4,7 @@ import com.raylib.Jaylib;
 import math.Vector2;
 import render.scene.Element;
 import render.scene.Scene;
+import render.scene.SceneManager;
 import render.scene.scenes.uiElements.ButtonElement;
 import render.scene.scenes.uiElements.ImageElement;
 import render.scene.scenes.uiElements.TextElement;
@@ -59,7 +60,7 @@ public class TitleScene extends Scene {
                     Jaylib.RED,
                     Jaylib.GREEN,
                     () -> {
-                        System.out.println("Settings Button Pressed");
+                        SceneManager.instance.setActiveScene(SettingsScene.class);
                     }
             ),
             new ButtonElement(
@@ -133,11 +134,11 @@ public class TitleScene extends Scene {
                             UiUtil.getHeightPercent(0)),
                     new Vector2(UiUtil.getWidthPercent(100),
                             UiUtil.getHeightPercent(100)),
-                    "Credits will go here\nHello World!",
-                    50f,
+                    "This game was developed by Jonas Fabian Windman and Timon Richter for the 10 grade computer sicence class.\n\nDeveloped with the VoxatronEngine in 2023.",
+                    30f,
                     Jaylib.LIGHTGRAY
             ),
-        }, true);
+        }, false);
 
         addElement(titleScreenBatch);
         addElement(creditsScreenBatch);

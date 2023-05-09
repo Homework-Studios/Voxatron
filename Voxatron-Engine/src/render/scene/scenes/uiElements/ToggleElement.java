@@ -18,9 +18,9 @@ public class ToggleElement extends Element {
     public boolean isHovered;
     public boolean toggle;
 
-    private Raylib.Rectangle toggleRectangle;
+    private Raylib.Rectangle toggleRectangle = new Raylib.Rectangle();
 
-    private Runnable onToggle;
+    private Runnable onToggle = () -> {};
 
     public ToggleElement(Vector2 position, Vector2 size, String text, float textSize, Raylib.Color color, Raylib.Color hlColor, Raylib.Color onColor, Raylib.Color offColor, Runnable onToggle) {
         this.position = position;
