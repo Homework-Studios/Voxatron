@@ -13,6 +13,7 @@ import window.Window;
 public class TitleScene extends Scene {
 
     ElementBatch titleScreenBatch;
+    ElementBatch creditsScreenBatch;
     public boolean creditsVisible = false;
 
     public TitleScene(){
@@ -75,9 +76,25 @@ public class TitleScene extends Scene {
                         Window.instance.stop();
                     }
             ),
-            new ToggleElement(
+            new ButtonElement(
                     new Vector2(UiUtil.getWidthPercent(94),
                             UiUtil.getHeightPercent(5)),
+                    new Vector2(UiUtil.getWidthPercent(10),
+                            UiUtil.getHeightPercent(7)),
+                    "Credits",
+                    40f,
+                    Jaylib.LIGHTGRAY,
+                    Jaylib.BLANK,
+                    Jaylib.RED,
+                    Jaylib.GREEN,
+                    () -> {
+                        creditsVisible = !creditsVisible;
+                        System.out.println("Credits Button Pressed + " + creditsVisible);
+                    }
+            ),
+            new ToggleElement(
+                    new Vector2(UiUtil.getWidthPercent(94),
+                            UiUtil.getHeightPercent(14)),
                     new Vector2(UiUtil.getWidthPercent(10),
                             UiUtil.getHeightPercent(7)),
                     "Mute",
@@ -90,12 +107,16 @@ public class TitleScene extends Scene {
                         System.out.println("Mute Button Pressed");
                     }
             ),
+        }, true);
+
+        // add a credits screen batch but just add the close button for now in the top right corner
+        creditsScreenBatch = new ElementBatch(new Element[]{
             new ButtonElement(
                     new Vector2(UiUtil.getWidthPercent(94),
-                            UiUtil.getHeightPercent(14)),
+                            UiUtil.getHeightPercent(5)),
                     new Vector2(UiUtil.getWidthPercent(10),
                             UiUtil.getHeightPercent(7)),
-                    "Credits",
+                    "Close",
                     40f,
                     Jaylib.LIGHTGRAY,
                     Jaylib.BLANK,
@@ -109,12 +130,14 @@ public class TitleScene extends Scene {
         }, true);
 
         addElement(titleScreenBatch);
+        addElement(creditsScreenBatch);
     }
 
     @Override
     public void update() {
 
         titleScreenBatch.setVisibility(!creditsVisible);
+        creditsScreenBatch.setVisibility(creditsVisible);
 
         for (Element element : getIterableElements()) {
             element.update();
