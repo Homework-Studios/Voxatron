@@ -27,11 +27,9 @@ class TreePopup extends MouseAdapter {
         TreePath path = tree.getPathForLocation(x, y);
         if (path == null)
             return;
-
         DefaultMutableTreeNode rightClickedNode = (DefaultMutableTreeNode) path
                 .getLastPathComponent();
         TreePath[] selectionPaths = tree.getSelectionPaths();
-
         boolean isSelected = false;
         if (selectionPaths != null) {
             for (TreePath selectionPath : selectionPaths) {
