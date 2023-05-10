@@ -61,7 +61,7 @@ public class SettingsScene extends Scene {
                         40f,
                         Jaylib.LIGHTGRAY,
                         Jaylib.BLANK,
-                        Jaylib.RED,
+                        Jaylib.WHITE,
                         Jaylib.GREEN,
                         () -> {
                             SceneManager.instance.setActiveScene(TitleScene.class);
@@ -74,7 +74,7 @@ public class SettingsScene extends Scene {
                         50f,
                         Jaylib.IsWindowFullscreen(),
                         Jaylib.LIGHTGRAY,
-                        Jaylib.GRAY,
+                        Jaylib.WHITE,
                         Jaylib.GREEN,
                         Jaylib.RED,
                         () -> {
@@ -89,7 +89,7 @@ public class SettingsScene extends Scene {
                         50f,
                         false,
                         Jaylib.LIGHTGRAY,
-                        Jaylib.GRAY,
+                        Jaylib.WHITE,
                         Jaylib.GREEN,
                         Jaylib.RED,
                         () -> {
@@ -104,7 +104,7 @@ public class SettingsScene extends Scene {
                         50f,
                         aa,
                         Jaylib.LIGHTGRAY,
-                        Jaylib.GRAY,
+                        Jaylib.WHITE,
                         Jaylib.GREEN,
                         Jaylib.RED,
                         () -> {
@@ -135,7 +135,7 @@ public class SettingsScene extends Scene {
                         50f,
                         false,
                         Jaylib.LIGHTGRAY,
-                        Jaylib.GRAY,
+                        Jaylib.WHITE,
                         Jaylib.GREEN,
                         Jaylib.RED,
                         () -> {
@@ -157,7 +157,7 @@ public class SettingsScene extends Scene {
                         Vector2.byScreenPercent(2, 12),
                         0,
                         Jaylib.LIGHTGRAY,
-                        Jaylib.GRAY,
+                        Jaylib.WHITE,
                         Jaylib.GREEN,
                         Jaylib.RED,
                         () -> {
@@ -176,7 +176,7 @@ public class SettingsScene extends Scene {
                         50f,
                         Jaylib.LIGHTGRAY,
                         Jaylib.BLANK,
-                        Jaylib.RED,
+                        Jaylib.WHITE,
                         Jaylib.GREEN,
                         () -> {
                             System.out.println("Apply Button Pressed");

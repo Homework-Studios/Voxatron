@@ -3,25 +3,33 @@ package render.scene.scenes.uiElements;
 import com.raylib.Raylib;
 import math.Vector2;
 import render.scene.Element;
+import util.UiUtil;
+
+import static com.raylib.Raylib.*;
 
 public class ToggleElement extends Element {
 
+    public final Raylib.Color color;
+    public final Raylib.Color hlColor;
+    public final Raylib.Color onColor;
+    public final Raylib.Color offColor;
     public Vector2 position;
     public Vector2 size;
     public String text;
     public float textSize;
-    public Raylib.Color color;
-    public Raylib.Color hlColor;
-    public Raylib.Color onColor;
-    public Raylib.Color offColor;
-
     public boolean isHovered;
     public boolean toggle;
+    public float scaleFactor = .95f;
+    public boolean isPressed;
 
     private Raylib.Rectangle toggleRectangle = new Raylib.Rectangle();
 
-    private Runnable onToggle = () -> {};
+    private Runnable onToggle = () -> {
+    };
 
+
+    //TODO: Make something like color scheme e.g. ColorPattern.STANDARD or new ColorPattern(Color.WHITE, Color.BLACK, Color.GREEN, Color.RED, Color.BLUE)
+    //TODO: Move constructor Elements to fit standard pattern
     public ToggleElement(Vector2 position, Vector2 size, String text, float textSize, boolean defaultValue, Raylib.Color color, Raylib.Color hlColor, Raylib.Color onColor, Raylib.Color offColor, Runnable onToggle) {
         this.position = position;
         this.size = size;
@@ -37,6 +45,9 @@ public class ToggleElement extends Element {
 
     @Override
     public void update() {
+        // check if mouse button left is down
+        isPressed = isHovered && IsMouseButtonDown(MOUSE_BUTTON_LEFT);
+
         // create the toggle rectangle
         toggleRectangle = new Raylib.Rectangle().x(position.x - size.x / 2).y(position.y - size.y / 2).width(size.x).height(size.y);
 
@@ -52,11 +63,16 @@ public class ToggleElement extends Element {
 
     @Override
     public void render() {
-        // draw the button
-        Raylib.DrawRectangleRounded(toggleRectangle, 0.3f, 5, toggle ? onColor : offColor);
 
-        // draw the outline
-        Raylib.DrawRectangleRoundedLines(toggleRectangle, 0.3f, 0, 5, isHovered ? hlColor : color);
+        if (isHovered) {
+            if (isPressed) {
+                UiUtil.scaleButtonRectangle(size, position, scaleFactor, toggle ? onColor : offColor, toggleRectangle);
+            } else {
+                DrawRectangleRoundedLines(toggleRectangle, 0.3f, 5, 5, hlColor);
+            }
+        } else {
+            DrawRectangleRoundedLines(toggleRectangle, 0.3f, 5, 5, color);
+        }
 
         // draw the text
         Raylib.DrawText(text, (int) (position.x - Raylib.MeasureText(text, (int) textSize) / 2), (int) (position.y - textSize / 2), (int) textSize, color);

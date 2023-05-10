@@ -38,7 +38,7 @@ public class TitleScene extends Scene {
                         50f,
                         Jaylib.LIGHTGRAY,
                         Jaylib.BLANK,
-                        Jaylib.RED,
+                        Jaylib.WHITE,
                         Jaylib.GREEN,
                         () -> {
                             System.out.println("Play Button Pressed");
@@ -51,7 +51,7 @@ public class TitleScene extends Scene {
                         50f,
                         Jaylib.LIGHTGRAY,
                         Jaylib.BLANK,
-                        Jaylib.RED,
+                        Jaylib.WHITE,
                         Jaylib.GREEN,
                         () -> {
                             SceneManager.instance.setActiveScene(SettingsScene.class);
@@ -64,7 +64,7 @@ public class TitleScene extends Scene {
                         50f,
                         Jaylib.LIGHTGRAY,
                         Jaylib.BLANK,
-                        Jaylib.RED,
+                        Jaylib.WHITE,
                         Jaylib.GREEN,
                         () -> {
                             Window.instance.stop();
@@ -77,7 +77,7 @@ public class TitleScene extends Scene {
                         40f,
                         Jaylib.LIGHTGRAY,
                         Jaylib.BLANK,
-                        Jaylib.RED,
+                        Jaylib.WHITE,
                         Jaylib.GREEN,
                         () -> {
                             creditsVisible = !creditsVisible;
@@ -91,7 +91,7 @@ public class TitleScene extends Scene {
                         40f,
                         false,
                         Jaylib.LIGHTGRAY,
-                        Jaylib.GRAY,
+                        Jaylib.WHITE,
                         Jaylib.GREEN,
                         Jaylib.RED,
                         () -> {
@@ -109,7 +109,7 @@ public class TitleScene extends Scene {
                         40f,
                         Jaylib.LIGHTGRAY,
                         Jaylib.BLANK,
-                        Jaylib.RED,
+                        Jaylib.WHITE,
                         Jaylib.GREEN,
                         () -> {
                             creditsVisible = !creditsVisible;
