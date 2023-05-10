@@ -22,11 +22,12 @@ public class ToggleElement extends Element {
 
     private Runnable onToggle = () -> {};
 
-    public ToggleElement(Vector2 position, Vector2 size, String text, float textSize, Raylib.Color color, Raylib.Color hlColor, Raylib.Color onColor, Raylib.Color offColor, Runnable onToggle) {
+    public ToggleElement(Vector2 position, Vector2 size, String text, float textSize, boolean defaultValue, Raylib.Color color, Raylib.Color hlColor, Raylib.Color onColor, Raylib.Color offColor, Runnable onToggle) {
         this.position = position;
         this.size = size;
         this.text = text;
         this.textSize = textSize;
+        this.toggle = defaultValue;
         this.color = color;
         this.hlColor = hlColor;
         this.onColor = onColor;

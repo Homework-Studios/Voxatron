@@ -13,6 +13,9 @@ public class Window {
 
     public static Window instance;
 
+    private Point position;
+    private Dimension size;
+
     boolean isFullscreen = false;
 
     public Window() {
@@ -21,7 +24,14 @@ public class Window {
 
     public void init(Point position, Dimension size) {
 
-        SetConfigFlags(FLAG_MSAA_4X_HINT);
+        new SettingsManager();
+
+        this.position = position;
+        this.size = size;
+
+        if(SettingsManager.instance.getSetting("aa").equals("1")){
+            SetConfigFlags(FLAG_MSAA_4X_HINT);
+        }
         SetConfigFlags(FLAG_WINDOW_MAXIMIZED);
         SetConfigFlags(FLAG_WINDOW_UNDECORATED);
 
@@ -33,8 +43,6 @@ public class Window {
         InitWindow(size.width, size.height, "Voxatron");
         SetWindowPosition(position.x, position.y);
         SetTargetFPS(60);
-
-        ToggleFullscreen();
 
 
         String path = System.getProperty("user.dir") + "\\Voxatron-Engine\\src\\window\\icon.png";
@@ -67,5 +75,10 @@ public class Window {
                 isFullscreen = true;
             }
         }
+    }
+
+    public void reopenWindow() {
+        CloseWindow();
+        init(this.position, this.size);
     }
 }

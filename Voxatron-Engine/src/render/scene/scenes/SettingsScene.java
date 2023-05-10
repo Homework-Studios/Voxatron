@@ -1,6 +1,7 @@
 package render.scene.scenes;
 
 import com.raylib.Jaylib;
+import com.raylib.Raylib;
 import math.Vector2;
 import render.scene.Element;
 import render.scene.Scene;
@@ -10,6 +11,10 @@ import render.scene.scenes.uiElements.SliderElement;
 import render.scene.scenes.uiElements.TextElement;
 import render.scene.scenes.uiElements.ToggleElement;
 import util.UiUtil;
+import window.SettingsManager;
+import window.Window;
+
+import java.io.IOException;
 
 public class SettingsScene extends Scene {
 
@@ -20,6 +25,8 @@ public class SettingsScene extends Scene {
 
     public SettingsScene() {
         super();
+
+        boolean aa = SettingsManager.instance.getSetting("aa").equals("1");
 
         settingsBodyBatch = new ElementBatch(new Element[]{
                 new TextElement(
@@ -53,6 +60,7 @@ public class SettingsScene extends Scene {
                                 UiUtil.getHeightPercent(10)),
                         "Fullscreen",
                         50f,
+                        false,
                         Jaylib.LIGHTGRAY,
                         Jaylib.GRAY,
                         Jaylib.GREEN,
@@ -69,6 +77,7 @@ public class SettingsScene extends Scene {
                                 UiUtil.getHeightPercent(10)),
                         "Particles",
                         50f,
+                        false,
                         Jaylib.LIGHTGRAY,
                         Jaylib.GRAY,
                         Jaylib.GREEN,
@@ -85,6 +94,7 @@ public class SettingsScene extends Scene {
                                 UiUtil.getHeightPercent(10)),
                         "Anti-Aliasing",
                         50f,
+                        aa,
                         Jaylib.LIGHTGRAY,
                         Jaylib.GRAY,
                         Jaylib.GREEN,
@@ -92,6 +102,13 @@ public class SettingsScene extends Scene {
                         () -> {
                             System.out.println("Fullscreen Toggle Pressed");
                             needToApply = true;
+                            if(!aa){
+                                SettingsManager.instance.setSetting("aa", "1");
+                                Window.instance.reopenWindow();
+                            }else{
+                                SettingsManager.instance.setSetting("aa", "0");
+                                Window.instance.reopenWindow();
+                            }
                         }
                 ),
                 new ToggleElement(
@@ -101,6 +118,7 @@ public class SettingsScene extends Scene {
                                 UiUtil.getHeightPercent(10)),
                         "Screen Shake",
                         50f,
+                        false,
                         Jaylib.LIGHTGRAY,
                         Jaylib.GRAY,
                         Jaylib.GREEN,
@@ -155,6 +173,11 @@ public class SettingsScene extends Scene {
                         () -> {
                             System.out.println("Apply Button Pressed");
                             needToApply = false;
+                            try {
+                                SettingsManager.instance.saveSettings();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                 ),
         }, false);

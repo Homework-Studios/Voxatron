@@ -101,6 +101,7 @@ public class TitleScene extends Scene {
                             UiUtil.getHeightPercent(7)),
                     "Mute",
                     40f,
+                    false,
                     Jaylib.LIGHTGRAY,
                     Jaylib.GRAY,
                     Jaylib.GREEN,
@@ -134,7 +135,7 @@ public class TitleScene extends Scene {
                             UiUtil.getHeightPercent(0)),
                     new Vector2(UiUtil.getWidthPercent(100),
                             UiUtil.getHeightPercent(100)),
-                    "This game was developed by Jonas Fabian Windman and Timon Richter for the 10 grade computer sicence class.\n\nDeveloped with the VoxatronEngine in 2023.",
+                    "This game was developed by Jonas Fabian Windmann and Timon Richter for 10 grade computer sicence class.\n\nDeveloped with the VoxatronEngine in 2023.",
                     30f,
                     Jaylib.LIGHTGRAY
             ),
