@@ -37,4 +37,5 @@ public abstract class Scene {
         elements.clear();
         init();
     }
+
 }

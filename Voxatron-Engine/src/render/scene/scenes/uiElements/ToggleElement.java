@@ -7,7 +7,7 @@ import util.UiUtil;
 
 import static com.raylib.Raylib.*;
 
-public class ToggleElement extends Element {
+public abstract class ToggleElement extends Element implements Runnable {
 
     public final Raylib.Color color;
     public final Raylib.Color hlColor;
@@ -24,13 +24,10 @@ public class ToggleElement extends Element {
 
     private Raylib.Rectangle toggleRectangle = new Raylib.Rectangle();
 
-    private Runnable onToggle = () -> {
-    };
-
 
     //TODO: Make something like color scheme e.g. ColorPattern.STANDARD or new ColorPattern(Color.WHITE, Color.BLACK, Color.GREEN, Color.RED, Color.BLUE)
     //TODO: Move constructor Elements to fit standard pattern
-    public ToggleElement(Vector2 position, Vector2 size, String text, float textSize, boolean defaultValue, Raylib.Color color, Raylib.Color hlColor, Raylib.Color onColor, Raylib.Color offColor, Runnable onToggle) {
+    public ToggleElement(Vector2 position, Vector2 size, String text, float textSize, boolean defaultValue, Raylib.Color color, Raylib.Color hlColor, Raylib.Color onColor, Raylib.Color offColor) {
         this.position = position;
         this.size = size;
         this.text = text;
@@ -40,7 +37,6 @@ public class ToggleElement extends Element {
         this.hlColor = hlColor;
         this.onColor = onColor;
         this.offColor = offColor;
-        this.onToggle = onToggle;
     }
 
     @Override
@@ -57,7 +53,7 @@ public class ToggleElement extends Element {
         // check if mouse button left is up
         if (isHovered && Raylib.IsMouseButtonPressed(Raylib.MOUSE_BUTTON_LEFT)) {
             toggle = !toggle;
-            onToggle.run();
+            run();
         }
     }
 
@@ -71,7 +67,7 @@ public class ToggleElement extends Element {
                 DrawRectangleRoundedLines(toggleRectangle, 0.3f, 5, 5, hlColor);
             }
         } else {
-            DrawRectangleRoundedLines(toggleRectangle, 0.3f, 5, 5, color);
+            DrawRectangleRoundedLines(toggleRectangle, 0.3f, 5, 5, toggle ? onColor : offColor);
         }
 
         // draw the text

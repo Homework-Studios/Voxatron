@@ -93,11 +93,13 @@ public class TitleScene extends Scene {
                         Jaylib.LIGHTGRAY,
                         Jaylib.WHITE,
                         Jaylib.GREEN,
-                        Jaylib.RED,
-                        () -> {
-                            System.out.println("Mute Button Pressed");
-                        }
-                ),
+                        Jaylib.RED
+                ) {
+                    @Override
+                    public void run() {
+                        System.out.println("Mute Button Pressed");
+                    }
+                },
         }, true);
 
         // add a credits screen batch but just add the close button for now in the top right corner

@@ -16,10 +16,13 @@ import java.io.IOException;
 
 public class SettingsScene extends Scene {
 
+    public SettingsManager sm;
     public ElementBatch settingsBodyBatch;
     public ElementBatch settingsApplyBatch;
+    public ElementBatch settingsRestartBatch;
 
     public boolean needToApply = false;
+    public boolean needToRestart = false;
 
     public SettingsScene() {
         super();
@@ -29,6 +32,7 @@ public class SettingsScene extends Scene {
     public void update() {
         // Update the settings apply batch if the settings have been changed
         settingsApplyBatch.setVisibility(needToApply);
+        settingsRestartBatch.setVisibility(needToRestart);
 
         for (Element element : getIterableElements()) {
             element.update();
@@ -44,7 +48,12 @@ public class SettingsScene extends Scene {
 
     @Override
     public void init() {
-        boolean aa = SettingsManager.instance.getSetting("aa").equals("1");
+        sm = SettingsManager.instance;
+        boolean aa = sm.getSetting("aa").equals("1");
+        boolean fullscreen = sm.getSetting("fullscreen").equals("1");
+
+        if (Jaylib.IsWindowFullscreen() != fullscreen)
+            Jaylib.ToggleFullscreen();
 
         settingsBodyBatch = new ElementBatch(new Element[]{
                 new TextElement(
@@ -72,16 +81,19 @@ public class SettingsScene extends Scene {
                         Vector2.byScreenPercent(40, 10),
                         "Fullscreen",
                         50f,
-                        Jaylib.IsWindowFullscreen(),
+                        fullscreen,
                         Jaylib.LIGHTGRAY,
                         Jaylib.WHITE,
                         Jaylib.GREEN,
-                        Jaylib.RED,
-                        () -> {
-                            System.out.println("Fullscreen Toggle Pressed");
-                            Jaylib.ToggleFullscreen();
-                        }
-                ),
+                        Jaylib.RED
+                ) {
+                    @Override
+                    public void run() {
+                        System.out.println("Fullscreen Toggle Pressed");
+                        sm.setSetting("fullscreen", fullscreen ? "0" : "1");
+                        needToApply = true;
+                    }
+                },
                 new ToggleElement(
                         Vector2.byScreenPercent(75, 30),
                         Vector2.byScreenPercent(40, 10),
@@ -91,12 +103,15 @@ public class SettingsScene extends Scene {
                         Jaylib.LIGHTGRAY,
                         Jaylib.WHITE,
                         Jaylib.GREEN,
-                        Jaylib.RED,
-                        () -> {
-                            System.out.println("Particles Toggle Pressed");
-                            needToApply = true;
-                        }
-                ),
+                        Jaylib.RED
+
+                ) {
+                    @Override
+                    public void run() {
+                        System.out.println("Particles Toggle Pressed");
+                        needToApply = true;
+                    }
+                },
                 new ToggleElement(
                         Vector2.byScreenPercent(25, 45),
                         Vector2.byScreenPercent(40, 10),
@@ -106,28 +121,15 @@ public class SettingsScene extends Scene {
                         Jaylib.LIGHTGRAY,
                         Jaylib.WHITE,
                         Jaylib.GREEN,
-                        Jaylib.RED,
-                        () -> {
-                            System.out.println("Anti-Aliasing Toggle Pressed");
-                            if (!aa) {
-                                SettingsManager.instance.setSetting("aa", "1");
-                                try {
-                                    SettingsManager.instance.saveSettings();
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                                Window.instance.reopenWindow();
-                            } else {
-                                SettingsManager.instance.setSetting("aa", "0");
-                                try {
-                                    SettingsManager.instance.saveSettings();
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                                Window.instance.reopenWindow();
-                            }
-                        }
-                ),
+                        Jaylib.RED
+                ) {
+                    @Override
+                    public void run() {
+                        System.out.println("Anti-Aliasing Toggle Pressed");
+                        sm.setSetting("aa", aa ? "0" : "1");
+                        needToRestart = true;
+                    }
+                },
                 new ToggleElement(
                         Vector2.byScreenPercent(75, 45),
                         Vector2.byScreenPercent(40, 10),
@@ -137,12 +139,14 @@ public class SettingsScene extends Scene {
                         Jaylib.LIGHTGRAY,
                         Jaylib.WHITE,
                         Jaylib.GREEN,
-                        Jaylib.RED,
-                        () -> {
-                            System.out.println("Screen Shake Toggle Pressed");
-                            needToApply = true;
-                        }
-                ),
+                        Jaylib.RED
+                ) {
+                    @Override
+                    public void run() {
+                        System.out.println("Screen Shake Toggle Pressed");
+                        needToApply = true;
+                    }
+                },
 // Text Elements define the area of where the text should be centered in
                 new TextElement(
                         Vector2.byScreenPercent(5, 55),
@@ -182,15 +186,47 @@ public class SettingsScene extends Scene {
                             System.out.println("Apply Button Pressed");
                             needToApply = false;
                             try {
-                                SettingsManager.instance.saveSettings();
+                                sm.saveSettings();
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
+                            //TODO: fix
+                            if (Jaylib.IsWindowFullscreen() != sm.getSetting("fullscreen").equals("1"))
+                                Jaylib.ToggleFullscreen();
+                        }
+                ),
+        }, false);
+
+        settingsRestartBatch = new ElementBatch(new Element[]{
+                // Restart Button
+                new ButtonElement(
+                        Vector2.byScreenPercent(50, 90),
+                        Vector2.byScreenPercent(40, 10),
+                        "Restart",
+                        50f,
+                        Jaylib.LIGHTGRAY,
+                        Jaylib.BLANK,
+                        Jaylib.WHITE,
+                        Jaylib.GREEN,
+                        () -> {
+                            System.out.println("Restart Button Pressed");
+                            needToApply = false;
+                            needToRestart = false;
+                            try {
+                                sm.saveSettings();
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                            if (Jaylib.IsWindowFullscreen() != sm.getSetting("fullscreen").equals("1"))
+                                Jaylib.ToggleFullscreen();
+                            Window.instance.reopenWindow();
+                            reload();
                         }
                 ),
         }, false);
 
         addElement(settingsBodyBatch);
         addElement(settingsApplyBatch);
+        addElement(settingsRestartBatch);
     }
 }
