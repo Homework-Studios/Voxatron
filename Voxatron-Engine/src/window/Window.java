@@ -46,13 +46,14 @@ public class Window {
         SetWindowPosition(position.x, position.y);
         SetTargetFPS(60);
 //        uncomment, when game should be fullscreen
-//        ToggleFullscreen();
+        ToggleFullscreen();
 
         String path = System.getProperty("user.dir") + "\\Voxatron-Engine\\src\\window\\icon.png";
         SetWindowIcon(LoadImage(path));
 
-
+//Todo: reload window button
         //WARNING: HERE IS NOT THE PLACE TO RENDER ANYTHING. NO WHILE LOOP OR ANYTHING
+
     }
 
     public void stop() {
