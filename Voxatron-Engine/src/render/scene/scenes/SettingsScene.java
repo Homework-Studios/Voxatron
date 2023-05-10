@@ -1,7 +1,6 @@
 package render.scene.scenes;
 
 import com.raylib.Jaylib;
-import com.raylib.Raylib;
 import math.Vector2;
 import render.scene.Element;
 import render.scene.Scene;
@@ -10,7 +9,6 @@ import render.scene.scenes.uiElements.ButtonElement;
 import render.scene.scenes.uiElements.SliderElement;
 import render.scene.scenes.uiElements.TextElement;
 import render.scene.scenes.uiElements.ToggleElement;
-import util.UiUtil;
 import window.SettingsManager;
 import window.Window;
 
@@ -30,19 +28,15 @@ public class SettingsScene extends Scene {
 
         settingsBodyBatch = new ElementBatch(new Element[]{
                 new TextElement(
-                        new Vector2(UiUtil.getWidthPercent(0),
-                                UiUtil.getHeightPercent(0)),
-                        new Vector2(UiUtil.getWidthPercent(100),
-                                UiUtil.getHeightPercent(15)),
+                        Vector2.byScreenPercent(0, 0),
+                        Vector2.byScreenPercent(100, 15),
                         "Settings",
                         50f,
                         Jaylib.LIGHTGRAY
                 ),
                 new ButtonElement(
-                        new Vector2(UiUtil.getWidthPercent(94),
-                                UiUtil.getHeightPercent(5)),
-                        new Vector2(UiUtil.getWidthPercent(10),
-                                UiUtil.getHeightPercent(7)),
+                        Vector2.byScreenPercent(94, 5),
+                        Vector2.byScreenPercent(10, 7),
                         "Close",
                         40f,
                         Jaylib.LIGHTGRAY,
@@ -54,10 +48,8 @@ public class SettingsScene extends Scene {
                         }
                 ),
                 new ToggleElement(
-                        new Vector2(UiUtil.getWidthPercent(25),
-                                UiUtil.getHeightPercent(30)),
-                        new Vector2(UiUtil.getWidthPercent(40),
-                                UiUtil.getHeightPercent(10)),
+                        Vector2.byScreenPercent(25, 30),
+                        Vector2.byScreenPercent(40, 10),
                         "Fullscreen",
                         50f,
                         false,
@@ -71,10 +63,8 @@ public class SettingsScene extends Scene {
                         }
                 ),
                 new ToggleElement(
-                        new Vector2(UiUtil.getWidthPercent(75),
-                                UiUtil.getHeightPercent(30)),
-                        new Vector2(UiUtil.getWidthPercent(40),
-                                UiUtil.getHeightPercent(10)),
+                        Vector2.byScreenPercent(75, 30),
+                        Vector2.byScreenPercent(40, 10),
                         "Particles",
                         50f,
                         false,
@@ -83,15 +73,13 @@ public class SettingsScene extends Scene {
                         Jaylib.GREEN,
                         Jaylib.RED,
                         () -> {
-                            System.out.println("Fullscreen Toggle Pressed");
+                            System.out.println("Particles Toggle Pressed");
                             needToApply = true;
                         }
                 ),
                 new ToggleElement(
-                        new Vector2(UiUtil.getWidthPercent(25),
-                                UiUtil.getHeightPercent(45)),
-                        new Vector2(UiUtil.getWidthPercent(40),
-                                UiUtil.getHeightPercent(10)),
+                        Vector2.byScreenPercent(25, 45),
+                        Vector2.byScreenPercent(40, 10),
                         "Anti-Aliasing",
                         50f,
                         aa,
@@ -100,22 +88,20 @@ public class SettingsScene extends Scene {
                         Jaylib.GREEN,
                         Jaylib.RED,
                         () -> {
-                            System.out.println("Fullscreen Toggle Pressed");
+                            System.out.println("Anti-Aliasing Toggle Pressed");
                             needToApply = true;
-                            if(!aa){
+                            if (!aa) {
                                 SettingsManager.instance.setSetting("aa", "1");
                                 Window.instance.reopenWindow();
-                            }else{
+                            } else {
                                 SettingsManager.instance.setSetting("aa", "0");
                                 Window.instance.reopenWindow();
                             }
                         }
                 ),
                 new ToggleElement(
-                        new Vector2(UiUtil.getWidthPercent(75),
-                                UiUtil.getHeightPercent(45)),
-                        new Vector2(UiUtil.getWidthPercent(40),
-                                UiUtil.getHeightPercent(10)),
+                        Vector2.byScreenPercent(75, 45),
+                        Vector2.byScreenPercent(40, 10),
                         "Screen Shake",
                         50f,
                         false,
@@ -124,27 +110,22 @@ public class SettingsScene extends Scene {
                         Jaylib.GREEN,
                         Jaylib.RED,
                         () -> {
-                            System.out.println("Fullscreen Toggle Pressed");
+                            System.out.println("Screen Shake Toggle Pressed");
                             needToApply = true;
                         }
                 ),
-                // Text Elements define the area of where the text should be centered in
+// Text Elements define the area of where the text should be centered in
                 new TextElement(
-                        new Vector2(UiUtil.getWidthPercent(5),
-                                UiUtil.getHeightPercent(55)),
-                        new Vector2(UiUtil.getWidthPercent(10),
-                                UiUtil.getHeightPercent(10)),
+                        Vector2.byScreenPercent(5, 55),
+                        Vector2.byScreenPercent(10, 10),
                         "Volume",
                         50f,
                         Jaylib.LIGHTGRAY
                 ),
                 new SliderElement(
-                        new Vector2(UiUtil.getWidthPercent(30),
-                                UiUtil.getHeightPercent(60)),
-                        new Vector2(UiUtil.getWidthPercent(27),
-                                UiUtil.getHeightPercent(10)),
-                        new Vector2(UiUtil.getWidthPercent(2),
-                                UiUtil.getHeightPercent(12)),
+                        Vector2.byScreenPercent(30, 60),
+                        Vector2.byScreenPercent(27, 10),
+                        Vector2.byScreenPercent(2, 12),
                         0,
                         Jaylib.LIGHTGRAY,
                         Jaylib.GRAY,
@@ -160,10 +141,8 @@ public class SettingsScene extends Scene {
         settingsApplyBatch = new ElementBatch(new Element[]{
                 // Apply Button
                 new ButtonElement(
-                        new Vector2(UiUtil.getWidthPercent(50),
-                                UiUtil.getHeightPercent(90)),
-                        new Vector2(UiUtil.getWidthPercent(40),
-                                UiUtil.getHeightPercent(10)),
+                        Vector2.byScreenPercent(50, 90),
+                        Vector2.byScreenPercent(40, 10),
                         "Apply",
                         50f,
                         Jaylib.LIGHTGRAY,
@@ -189,7 +168,7 @@ public class SettingsScene extends Scene {
     @Override
     public void update() {
         // Update the settings apply batch if the settings have been changed
-      settingsApplyBatch.setVisibility(needToApply);
+        settingsApplyBatch.setVisibility(needToApply);
 
         for (Element element : getIterableElements()) {
             element.update();

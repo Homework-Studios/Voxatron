@@ -5,11 +5,13 @@ import engine.assets.Asset;
 
 import java.util.HashMap;
 
-public class TextureAsset extends Asset {
+public class ImageAsset extends Asset {
 
     private final HashMap<String, Raylib.Texture> loadedTextures = new HashMap<>();
+    private final HashMap<String, Raylib.Image> loadedImages = new HashMap<>();
 
-    public TextureAsset(String name, String path, AssetType type, boolean createAsset) {
+
+    public ImageAsset(String name, String path, AssetType type, boolean createAsset) {
         super(name, path, type, createAsset);
     }
 
@@ -20,6 +22,17 @@ public class TextureAsset extends Asset {
         return image;
     }
 
+    Raylib.Image loadImage(String name) {
+        System.out.println("loading image: " + name);
+        Raylib.Image image = Raylib.LoadImage(getDirectory().getAbsolutePath() + "\\" + name + ".png");
+        loadedImages.put(name, image);
+        return image;
+    }
+
+    public Raylib.Image getImage(String name) {
+        if (loadedImages.containsKey(name)) return loadedImages.get(name);
+        return loadImage(name);
+    }
 
     public Raylib.Texture getTexture(String name) {
         if (loadedTextures.containsKey(name)) return loadedTextures.get(name);
@@ -30,4 +43,6 @@ public class TextureAsset extends Asset {
     public void load() {
 
     }
+
+
 }

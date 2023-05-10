@@ -2,6 +2,7 @@ package render.scene.scenes.uiElements;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
+import engine.assets.basic.ImageAsset;
 import math.Vector2;
 import render.scene.Element;
 
@@ -11,7 +12,7 @@ public class ImageElement extends Element {
     public Vector2 position;
     public Vector2 size;
 
-    private Raylib.Texture texture;
+    private final Raylib.Texture texture;
 
     public ImageElement(Raylib.Image image, Vector2 position, Vector2 size) {
         this.image = image;
@@ -20,6 +21,10 @@ public class ImageElement extends Element {
 
         Raylib.ImageResize(image, (int) size.x, (int) size.y);
         texture = Raylib.LoadTextureFromImage(image);
+    }
+
+    public ImageElement(ImageAsset asset, Vector2 position, Vector2 size) {
+        this(asset.getImage(asset.getName()), position, size);
     }
 
     @Override

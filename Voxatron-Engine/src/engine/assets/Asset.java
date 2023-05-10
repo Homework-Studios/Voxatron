@@ -2,7 +2,7 @@ package engine.assets;
 
 import engine.DevelopmentConstants;
 import engine.assets.assets.UI.ClickableAsset;
-import engine.assets.basic.TextureAsset;
+import engine.assets.basic.ImageAsset;
 import util.FileUtils;
 import util.Text;
 import util.TreeUtils;
@@ -66,8 +66,8 @@ public abstract class Asset {
                 }
                 break;
 
-            case TextureAsset:
-                new TextureAsset(name, path, type, createAsset);
+            case ImageAsset:
+                new ImageAsset(name, path, type, createAsset);
                 break;
             case ClickableAsset:
                 new ClickableAsset(name, path, type, createAsset);
@@ -218,11 +218,11 @@ public abstract class Asset {
 
     public enum AssetType {
         //Utility Asset Types (no actual asset)
-        Directory(),
-        File(),
+        Directory,
+        File,
         //Assets
-        TextureAsset(),
-        ClickableAsset(),
+        ImageAsset,
+        ClickableAsset,
 
     }
 
