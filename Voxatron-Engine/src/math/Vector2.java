@@ -1,6 +1,7 @@
 package math;
 
 import com.raylib.Raylib;
+import util.UiUtil;
 
 public class Vector2 extends Raylib.Vector2 {
 
@@ -17,7 +18,6 @@ public class Vector2 extends Raylib.Vector2 {
         this.y = y;
     }
 
-
     public Vector2(String string) {
         String[] split = string.split(",");
         this.x = Float.parseFloat(split[0]);
@@ -27,6 +27,10 @@ public class Vector2 extends Raylib.Vector2 {
     public Vector2(Raylib.Vector2 vector2) {
         this.x = vector2.x();
         this.y = vector2.y();
+    }
+
+    public static Vector2 byScreenPercent(float with, float height) {
+        return new Vector2(UiUtil.getWidthPercent(with), UiUtil.getHeightPercent(height));
     }
 
     public Vector2 normalize() {

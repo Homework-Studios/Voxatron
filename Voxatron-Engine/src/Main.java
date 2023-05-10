@@ -1,7 +1,6 @@
 import engine.DevelopmentConstants;
 import engine.EngineForm;
 import engine.assets.Asset;
-import engine.veobjects.ObjectManager;
 import input.Input;
 import render.Renderer;
 import window.Window;
@@ -20,7 +19,6 @@ public class Main {
         Asset.ASSET_DIR = System.getProperty("user.dir") + "\\Voxatron\\Assets";
         System.out.println(Asset.ASSET_DIR);
 
-
         // if (true) return;
 
         if (DevelopmentConstants.DEVELOPMENT_MODE) {
@@ -38,7 +36,6 @@ public class Main {
         dim = new Dimension(dim.width * 2, dim.height * 2);
         //init engine.assets and create a test asset
         Asset.init();
-        ObjectManager.init();
         Window window = new Window();
         window.init(p, dim);
 

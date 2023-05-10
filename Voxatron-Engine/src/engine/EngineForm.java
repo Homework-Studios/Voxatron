@@ -2,7 +2,6 @@ package engine;
 
 import com.raylib.Raylib;
 import engine.assets.Asset;
-import engine.veobjects.ObjectManager;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -31,7 +30,7 @@ public class EngineForm extends JFrame {
     public JTree AssetTree;
     public JPanel Game;
     private JPanel MainPanel;
-    private JTree WorldObjectsTree;
+    private JTree objectsTree;
     private JTabbedPane tabbedPane1;
     private JPanel Inspector;
     private JPanel AssetPanel;
@@ -40,17 +39,10 @@ public class EngineForm extends JFrame {
     private JPanel LeftSpacingPane;
     private JPanel TopSpacing;
     private JTextPane Debugger;
-    private JPanel ObjectsPanel;
-    private JTree ObjectsTree;
 
 
     public EngineForm() {
         Asset.tree = AssetTree;
-        ObjectManager.tree = ObjectsTree;
-        ObjectManager.worldTree = WorldObjectsTree;
-
-        ((DefaultTreeModel) ObjectsTree.getModel()).setRoot(new DefaultMutableTreeNode("Objects"));
-        ((DefaultTreeModel) WorldObjectsTree.getModel()).setRoot(new DefaultMutableTreeNode("WorldObjects"));
 
         instance = this;
         setContentPane(MainPanel);
@@ -89,7 +81,7 @@ public class EngineForm extends JFrame {
         //set sizing
         Game.setPreferredSize(new Dimension((int) (500 * 1.7), 500));
         tabbedPane1.setPreferredSize(new Dimension(200, 500));
-        WorldObjectsTree.setPreferredSize(new Dimension(200, 500));
+        objectsTree.setPreferredSize(new Dimension(200, 500));
         DebuggerPanel.setPreferredSize(new Dimension(1, 150));
 
         //set colors because it does not work with editor,
@@ -121,34 +113,31 @@ public class EngineForm extends JFrame {
         MainPanel.setBackground(background);
         Game.setBackground(highlightArea);
         tabbedPane1.setBackground(background);
-        WorldObjectsTree.setBackground(background);
+        objectsTree.setBackground(background);
         DebuggerPanel.setBackground(background);
         Debugger.setBackground(background);
         AssetTree.setBackground(background);
         Inspector.setBackground(background);
-        ObjectsTree.setBackground(background);
 
-        WorldObjectsTree.setForeground(highlight);
+        objectsTree.setForeground(highlight);
         tabbedPane1.setForeground(highlight);
         DebuggerPanel.setForeground(highlight);
         Debugger.setForeground(highlight);
         AssetTree.setForeground(highlight);
-        ObjectsTree.setForeground(highlight);
 
         //Trees
-        WorldObjectsTree.setCellRenderer(treeCellRenderer);
+        objectsTree.setCellRenderer(treeCellRenderer);
         AssetTree.setCellRenderer(treeCellRenderer);
-        ObjectsTree.setCellRenderer(treeCellRenderer);
 
-        WorldObjectsTree.setTransferHandler(new TreeTransferHandler());
-        WorldObjectsTree.setDragEnabled(true);
-        WorldObjectsTree.setDropMode(DropMode.ON_OR_INSERT);
-        WorldObjectsTree.setEditable(true);
+        objectsTree.setTransferHandler(new TreeTransferHandler());
+        objectsTree.setDragEnabled(true);
+        objectsTree.setDropMode(DropMode.ON_OR_INSERT);
+        objectsTree.setEditable(true);
 
-        WorldObjectsTree.setTransferHandler(new TreeTransferHandler());
-        WorldObjectsTree.setDragEnabled(true);
-        WorldObjectsTree.setDropMode(DropMode.ON_OR_INSERT);
-        WorldObjectsTree.setEditable(true);
+        objectsTree.setTransferHandler(new TreeTransferHandler());
+        objectsTree.setDragEnabled(true);
+        objectsTree.setDropMode(DropMode.ON_OR_INSERT);
+        objectsTree.setEditable(true);
 
 
         //Tabs
@@ -278,44 +267,6 @@ public class EngineForm extends JFrame {
 
 
         };
-        BasicTreeUI worldObjectsUI = new BasicTreeUI() {
-            @Override
-            protected void paintVerticalLine(Graphics g, JComponent c, int x, int top, int bottom) {
-                g.setColor(highlightArea);
-                g.drawLine(x, top, x, bottom);
-            }
-
-            @Override
-            protected void paintHorizontalLine(Graphics g, JComponent c, int y, int left, int right) {
-                g.setColor(highlightArea);
-                g.drawLine(left, y, right, y);
-            }
-
-            @Override
-            protected void paintExpandControl(Graphics g,
-                                              Rectangle clipBounds, Insets insets,
-                                              Rectangle bounds, TreePath path,
-                                              int row, boolean isExpanded,
-                                              boolean hasBeenExpanded,
-                                              boolean isLeaf) {
-                Object value = path.getLastPathComponent();
-
-                // Draw icons if not a leaf and either hasn't been loaded,
-                // or the model child count is > 0.
-                if (!isLeaf && (!hasBeenExpanded ||
-                        treeModel.getChildCount(value) > 0)) {
-                    int middleXOfKnob;
-                    middleXOfKnob = bounds.x - getRightChildIndent() + 1;
-                    int middleYOfKnob = bounds.y + (bounds.height / 2);
-
-
-                    Icon expandedIcon = getExpandedIcon();
-                    if (expandedIcon != null)
-                        g.fillRoundRect(middleXOfKnob - 2, middleYOfKnob - 2, 3, 3, 1, 1);
-
-                }
-            }
-        };
         BasicTreeUI objectsUI = new BasicTreeUI() {
             @Override
             protected void paintVerticalLine(Graphics g, JComponent c, int x, int top, int bottom) {
@@ -393,14 +344,13 @@ public class EngineForm extends JFrame {
                 }
             }
         };
-        WorldObjectsTree.setUI(worldObjectsUI);
-        ObjectsTree.setUI(objectsUI);
+        objectsTree.setUI(objectsUI);
         AssetTree.setUI(assetsUI);
 
 
         tabbedPane1.setUI(tabbedPaneUI);
         DebuggerPanel.setBorder(new LineBorder(highlightArea, 1, true));
-        WorldObjectsTree.setBorder(new LineBorder(highlightArea, 1, true));
+        objectsTree.setBorder(new LineBorder(highlightArea, 1, true));
         //endregion
 
         //Debugging

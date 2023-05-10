@@ -1,5 +1,6 @@
 package engine.assets;
 
+
 public class AssetManager<Type> {
 
     public Type getAsset(String path) {
