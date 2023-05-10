@@ -44,5 +44,11 @@ public class ImageAsset extends Asset {
 
     }
 
-
+    @Override
+    public void unload() {
+        loadedTextures.values().forEach(Raylib::UnloadTexture);
+        loadedImages.values().forEach(Raylib::UnloadImage);
+        loadedTextures.clear();
+        loadedImages.clear();
+    }
 }

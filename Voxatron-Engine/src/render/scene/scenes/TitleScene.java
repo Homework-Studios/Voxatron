@@ -21,7 +21,10 @@ public class TitleScene extends Scene {
 
     public TitleScene() {
         super();
+    }
 
+    @Override
+    public void init() {
         titleScreenBatch = new ElementBatch(new Element[]{
                 new ImageElement(
                         new AssetManager<ImageAsset>().getAsset("MainMenu/VTBanner"),

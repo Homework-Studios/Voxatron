@@ -51,6 +51,10 @@ public abstract class Asset {
         load();
     }
 
+    public static void clearAssets() {
+        path_assets.values().forEach(Asset::unload);
+    }
+
     public static void createOrLoadAsset(String name, String path, AssetType type, boolean createAsset) {
         switch (type) {
             case Directory:
@@ -134,7 +138,6 @@ public abstract class Asset {
         }
     }
 
-
     public static void removeFileByNode(DefaultMutableTreeNode node) {
         String path = getPathByNode(node);
         path = path.replaceAll("<.*?>", "");
@@ -154,6 +157,8 @@ public abstract class Asset {
         DefaultMutableTreeNode node = path_nodes.get(path);
         node.setUserObject(new Text().writeText(name + " ").setItalic(true).setSize(10).setColor(highlightArea).writeText("(" + type + ")"));
     }
+
+    public abstract void unload();
 
     public void updateNaming() {
         updateAssetNodeName(getName(), getAbsolutePath(), getType());

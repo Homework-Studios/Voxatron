@@ -6,11 +6,13 @@ public abstract class Scene {
 
     public ArrayList<Element> elements;
 
-    public Scene(){
+    public Scene() {
         elements = new ArrayList<>();
+        init();
     }
 
     public abstract void update();
+
     public abstract void render();
 
     public Element[] getIterableElements() {
@@ -27,5 +29,12 @@ public abstract class Scene {
 
     public void clearElements() {
         elements.clear();
+    }
+
+    public abstract void init();
+
+    public void reload() {
+        elements.clear();
+        init();
     }
 }

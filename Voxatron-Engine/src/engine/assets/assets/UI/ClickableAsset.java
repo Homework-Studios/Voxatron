@@ -21,6 +21,11 @@ public class ClickableAsset extends Asset {
     }
 
     @Override
+    public void unload() {
+        
+    }
+
+    @Override
     public void load() {
 
     }

@@ -1,8 +1,10 @@
 package window;
 
 
-import engine.DevelopmentConstants;
+import engine.assets.Asset;
 import render.Renderer;
+import render.scene.Scene;
+import render.scene.SceneManager;
 
 import java.awt.*;
 
@@ -43,10 +45,8 @@ public class Window {
         InitWindow(size.width, size.height, "Voxatron");
         SetWindowPosition(position.x, position.y);
         SetTargetFPS(60);
-
-        if (!DevelopmentConstants.DEVELOPMENT_MODE)
-            ToggleFullscreen();
-
+//        uncomment, when game should be fullscreen
+//        ToggleFullscreen();
 
         String path = System.getProperty("user.dir") + "\\Voxatron-Engine\\src\\window\\icon.png";
         SetWindowIcon(LoadImage(path));
@@ -65,8 +65,12 @@ public class Window {
     }
 
     public void reopenWindow() {
-        CloseWindow();
+        finish();
+        Asset.clearAssets();
         init(this.position, this.size);
+        for (Scene scene : SceneManager.instance.scenes) {
+            scene.init();
+        }
     }
 
 }

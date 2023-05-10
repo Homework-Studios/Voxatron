@@ -23,7 +23,27 @@ public class SettingsScene extends Scene {
 
     public SettingsScene() {
         super();
+    }
 
+    @Override
+    public void update() {
+        // Update the settings apply batch if the settings have been changed
+        settingsApplyBatch.setVisibility(needToApply);
+
+        for (Element element : getIterableElements()) {
+            element.update();
+        }
+    }
+
+    @Override
+    public void render() {
+        for (Element element : elements) {
+            element.render();
+        }
+    }
+
+    @Override
+    public void init() {
         boolean aa = SettingsManager.instance.getSetting("aa").equals("1");
 
         settingsBodyBatch = new ElementBatch(new Element[]{
@@ -52,14 +72,14 @@ public class SettingsScene extends Scene {
                         Vector2.byScreenPercent(40, 10),
                         "Fullscreen",
                         50f,
-                        false,
+                        Jaylib.IsWindowFullscreen(),
                         Jaylib.LIGHTGRAY,
                         Jaylib.GRAY,
                         Jaylib.GREEN,
                         Jaylib.RED,
                         () -> {
                             System.out.println("Fullscreen Toggle Pressed");
-                            needToApply = true;
+                            Jaylib.ToggleFullscreen();
                         }
                 ),
                 new ToggleElement(
@@ -89,12 +109,21 @@ public class SettingsScene extends Scene {
                         Jaylib.RED,
                         () -> {
                             System.out.println("Anti-Aliasing Toggle Pressed");
-                            needToApply = true;
                             if (!aa) {
                                 SettingsManager.instance.setSetting("aa", "1");
+                                try {
+                                    SettingsManager.instance.saveSettings();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
                                 Window.instance.reopenWindow();
                             } else {
                                 SettingsManager.instance.setSetting("aa", "0");
+                                try {
+                                    SettingsManager.instance.saveSettings();
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
                                 Window.instance.reopenWindow();
                             }
                         }
@@ -163,22 +192,5 @@ public class SettingsScene extends Scene {
 
         addElement(settingsBodyBatch);
         addElement(settingsApplyBatch);
-    }
-
-    @Override
-    public void update() {
-        // Update the settings apply batch if the settings have been changed
-        settingsApplyBatch.setVisibility(needToApply);
-
-        for (Element element : getIterableElements()) {
-            element.update();
-        }
-    }
-
-    @Override
-    public void render() {
-        for (Element element : elements) {
-            element.render();
-        }
     }
 }
