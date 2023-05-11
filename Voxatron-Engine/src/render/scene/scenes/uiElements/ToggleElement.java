@@ -3,16 +3,14 @@ package render.scene.scenes.uiElements;
 import com.raylib.Raylib;
 import math.Vector2;
 import render.scene.Element;
+import util.ColorPalette;
 import util.UiUtil;
 
 import static com.raylib.Raylib.*;
 
 public abstract class ToggleElement extends Element implements Runnable {
 
-    public final Raylib.Color color;
-    public final Raylib.Color hlColor;
-    public final Raylib.Color onColor;
-    public final Raylib.Color offColor;
+    public final ColorPalette cp;
     public Vector2 position;
     public Vector2 size;
     public String text;
@@ -21,22 +19,25 @@ public abstract class ToggleElement extends Element implements Runnable {
     public boolean toggle;
     public float scaleFactor = .95f;
     public boolean isPressed;
-
     private Raylib.Rectangle toggleRectangle = new Raylib.Rectangle();
 
 
-    //TODO: Make something like color scheme e.g. ColorPattern.STANDARD or new ColorPattern(Color.WHITE, Color.BLACK, Color.GREEN, Color.RED, Color.BLUE)
-    //TODO: Move constructor Elements to fit standard pattern
-    public ToggleElement(Vector2 position, Vector2 size, String text, float textSize, boolean defaultValue, Raylib.Color color, Raylib.Color hlColor, Raylib.Color onColor, Raylib.Color offColor) {
+    public ToggleElement(Vector2 position, Vector2 size, String text, float textSize, boolean defaultValue, ColorPalette colorPalette) {
         this.position = position;
         this.size = size;
         this.text = text;
         this.textSize = textSize;
         this.toggle = defaultValue;
-        this.color = color;
-        this.hlColor = hlColor;
-        this.onColor = onColor;
-        this.offColor = offColor;
+        this.cp = colorPalette;
+    }
+
+    public ToggleElement(Vector2 position, Vector2 size, String text, float textSize, boolean defaultValue, ColorPalette.ColorPalettes colorPalette) {
+        this.position = position;
+        this.size = size;
+        this.text = text;
+        this.textSize = textSize;
+        this.toggle = defaultValue;
+        this.cp = colorPalette.getColorPalette();
     }
 
     @Override
@@ -62,15 +63,15 @@ public abstract class ToggleElement extends Element implements Runnable {
 
         if (isHovered) {
             if (isPressed) {
-                UiUtil.scaleButtonRectangle(size, position, scaleFactor, toggle ? onColor : offColor, toggleRectangle);
+                UiUtil.scaleButtonRectangle(size, position, scaleFactor, toggle ? cp.on : cp.off, toggleRectangle);
             } else {
-                DrawRectangleRoundedLines(toggleRectangle, 0.3f, 5, 5, hlColor);
+                DrawRectangleRoundedLines(toggleRectangle, 0.3f, 5, 5, cp.hover);
             }
         } else {
-            DrawRectangleRoundedLines(toggleRectangle, 0.3f, 5, 5, toggle ? onColor : offColor);
+            DrawRectangleRoundedLines(toggleRectangle, 0.3f, 5, 5, toggle ? cp.on : cp.off);
         }
 
         // draw the text
-        Raylib.DrawText(text, (int) (position.x - Raylib.MeasureText(text, (int) textSize) / 2), (int) (position.y - textSize / 2), (int) textSize, color);
+        Raylib.DrawText(text, (int) (position.x - Raylib.MeasureText(text, (int) textSize) / 2), (int) (position.y - textSize / 2), (int) textSize, cp.text);
     }
 }

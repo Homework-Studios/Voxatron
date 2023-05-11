@@ -12,6 +12,8 @@ import render.scene.SceneManager;
 import render.scene.scenes.uiElements.*;
 import window.Window;
 
+import static util.ColorPalette.ColorPalettes.STANDARD_BUTTON;
+
 public class TitleScene extends Scene {
 
     public boolean creditsVisible = false;
@@ -38,10 +40,7 @@ public class TitleScene extends Scene {
                         Vector2.byScreenPercent(40, 10),
                         "Play",
                         50f,
-                        Jaylib.LIGHTGRAY,
-                        Jaylib.BLANK,
-                        Jaylib.WHITE,
-                        Jaylib.GREEN
+                        STANDARD_BUTTON
                 ) {
                     @Override
                     public void run() {
@@ -53,10 +52,7 @@ public class TitleScene extends Scene {
                         Vector2.byScreenPercent(40, 10),
                         "Settings",
                         50f,
-                        Jaylib.LIGHTGRAY,
-                        Jaylib.BLANK,
-                        Jaylib.WHITE,
-                        Jaylib.GREEN
+                        STANDARD_BUTTON
                 ) {
                     @Override
                     public void run() {
@@ -68,10 +64,7 @@ public class TitleScene extends Scene {
                         Vector2.byScreenPercent(40, 10),
                         "Quit",
                         50f,
-                        Jaylib.LIGHTGRAY,
-                        Jaylib.BLANK,
-                        Jaylib.WHITE,
-                        Jaylib.GREEN
+                        STANDARD_BUTTON
                 ) {
                     @Override
                     public void run() {
@@ -83,10 +76,7 @@ public class TitleScene extends Scene {
                         Vector2.byScreenPercent(10, 7),
                         "Credits",
                         40f,
-                        Jaylib.LIGHTGRAY,
-                        Jaylib.BLANK,
-                        Jaylib.WHITE,
-                        Jaylib.GREEN
+                        STANDARD_BUTTON
                 ) {
                     @Override
                     public void run() {
@@ -99,11 +89,8 @@ public class TitleScene extends Scene {
                         Vector2.byScreenPercent(10, 7),
                         "Mute",
                         40f,
-                        false,
-                        Jaylib.LIGHTGRAY,
-                        Jaylib.WHITE,
-                        Jaylib.GREEN,
-                        Jaylib.RED
+                        true,
+                        STANDARD_BUTTON
                 ) {
                     @Override
                     public void run() {
@@ -123,10 +110,7 @@ public class TitleScene extends Scene {
                         Vector2.byScreenPercent(10, 7),
                         "Close",
                         40f,
-                        Jaylib.LIGHTGRAY,
-                        Jaylib.BLANK,
-                        Jaylib.WHITE,
-                        Jaylib.GREEN
+                        STANDARD_BUTTON
                 ) {
                     @Override
                     public void run() {
@@ -142,7 +126,7 @@ public class TitleScene extends Scene {
                         Jaylib.LIGHTGRAY
                 ),
         }, false);
-
+        Raylib.PauseSound(new AssetManager<SoundAsset>().getAsset("MainMenu/VTTheme").getSound());
         addElement(titleScreenBatch);
         addElement(creditsScreenBatch);
     }

@@ -14,6 +14,8 @@ import window.Window;
 
 import java.io.IOException;
 
+import static util.ColorPalette.ColorPalettes.STANDARD_BUTTON;
+
 public class SettingsScene extends Scene {
 
     public SettingsManager sm;
@@ -68,10 +70,7 @@ public class SettingsScene extends Scene {
                         Vector2.byScreenPercent(10, 7),
                         "Close",
                         40f,
-                        Jaylib.LIGHTGRAY,
-                        Jaylib.BLANK,
-                        Jaylib.WHITE,
-                        Jaylib.GREEN
+                        STANDARD_BUTTON
                 ) {
                     @Override
                     public void run() {
@@ -84,10 +83,7 @@ public class SettingsScene extends Scene {
                         "Fullscreen",
                         50f,
                         fullscreen,
-                        Jaylib.LIGHTGRAY,
-                        Jaylib.WHITE,
-                        Jaylib.GREEN,
-                        Jaylib.RED
+                        STANDARD_BUTTON
                 ) {
                     @Override
                     public void run() {
@@ -102,10 +98,7 @@ public class SettingsScene extends Scene {
                         "Particles",
                         50f,
                         false,
-                        Jaylib.LIGHTGRAY,
-                        Jaylib.WHITE,
-                        Jaylib.GREEN,
-                        Jaylib.RED
+                        STANDARD_BUTTON
 
                 ) {
                     @Override
@@ -120,10 +113,7 @@ public class SettingsScene extends Scene {
                         "Anti-Aliasing",
                         50f,
                         aa,
-                        Jaylib.LIGHTGRAY,
-                        Jaylib.WHITE,
-                        Jaylib.GREEN,
-                        Jaylib.RED
+                        STANDARD_BUTTON
                 ) {
                     @Override
                     public void run() {
@@ -138,10 +128,7 @@ public class SettingsScene extends Scene {
                         "Screen Shake",
                         50f,
                         false,
-                        Jaylib.LIGHTGRAY,
-                        Jaylib.WHITE,
-                        Jaylib.GREEN,
-                        Jaylib.RED
+                        STANDARD_BUTTON
                 ) {
                     @Override
                     public void run() {
@@ -189,10 +176,7 @@ public class SettingsScene extends Scene {
                         Vector2.byScreenPercent(40, 10),
                         "Apply",
                         50f,
-                        Jaylib.LIGHTGRAY,
-                        Jaylib.BLANK,
-                        Jaylib.WHITE,
-                        Jaylib.GREEN
+                        STANDARD_BUTTON
                 ) {
                     @Override
                     public void run() {
@@ -218,10 +202,7 @@ public class SettingsScene extends Scene {
                         Vector2.byScreenPercent(40, 10),
                         "Restart",
                         50f,
-                        Jaylib.LIGHTGRAY,
-                        Jaylib.BLANK,
-                        Jaylib.WHITE,
-                        Jaylib.GREEN
+                        STANDARD_BUTTON
                 ) {
                     @Override
                     public void run() {
