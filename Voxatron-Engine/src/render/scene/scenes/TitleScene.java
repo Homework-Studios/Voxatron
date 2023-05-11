@@ -1,16 +1,15 @@
 package render.scene.scenes;
 
 import com.raylib.Jaylib;
+import com.raylib.Raylib;
 import engine.assets.AssetManager;
 import engine.assets.basic.ImageAsset;
+import engine.assets.basic.SoundAsset;
 import math.Vector2;
 import render.scene.Element;
 import render.scene.Scene;
 import render.scene.SceneManager;
-import render.scene.scenes.uiElements.ButtonElement;
-import render.scene.scenes.uiElements.ImageElement;
-import render.scene.scenes.uiElements.TextElement;
-import render.scene.scenes.uiElements.ToggleElement;
+import render.scene.scenes.uiElements.*;
 import window.Window;
 
 public class TitleScene extends Scene {
@@ -26,6 +25,9 @@ public class TitleScene extends Scene {
     @Override
     public void init() {
         titleScreenBatch = new ElementBatch(new Element[]{
+                new SoundElement(
+                        new AssetManager<SoundAsset>().getAsset("MainMenu/VTTheme")
+                ),
                 new ImageElement(
                         new AssetManager<ImageAsset>().getAsset("MainMenu/VTBanner"),
                         Vector2.byScreenPercent(50, 30),
@@ -39,11 +41,13 @@ public class TitleScene extends Scene {
                         Jaylib.LIGHTGRAY,
                         Jaylib.BLANK,
                         Jaylib.WHITE,
-                        Jaylib.GREEN,
-                        () -> {
-                            System.out.println("Play Button Pressed");
-                        }
-                ),
+                        Jaylib.GREEN
+                ) {
+                    @Override
+                    public void run() {
+                        System.out.println("Play Button Pressed");
+                    }
+                },
                 new ButtonElement(
                         Vector2.byScreenPercent(50, 72),
                         Vector2.byScreenPercent(40, 10),
@@ -52,11 +56,13 @@ public class TitleScene extends Scene {
                         Jaylib.LIGHTGRAY,
                         Jaylib.BLANK,
                         Jaylib.WHITE,
-                        Jaylib.GREEN,
-                        () -> {
-                            SceneManager.instance.setActiveScene(SettingsScene.class);
-                        }
-                ),
+                        Jaylib.GREEN
+                ) {
+                    @Override
+                    public void run() {
+                        SceneManager.instance.setActiveScene(SettingsScene.class);
+                    }
+                },
                 new ButtonElement(
                         Vector2.byScreenPercent(50, 84),
                         Vector2.byScreenPercent(40, 10),
@@ -65,11 +71,13 @@ public class TitleScene extends Scene {
                         Jaylib.LIGHTGRAY,
                         Jaylib.BLANK,
                         Jaylib.WHITE,
-                        Jaylib.GREEN,
-                        () -> {
-                            Window.instance.stop();
-                        }
-                ),
+                        Jaylib.GREEN
+                ) {
+                    @Override
+                    public void run() {
+                        Window.instance.stop();
+                    }
+                },
                 new ButtonElement(
                         Vector2.byScreenPercent(94, 5),
                         Vector2.byScreenPercent(10, 7),
@@ -78,12 +86,14 @@ public class TitleScene extends Scene {
                         Jaylib.LIGHTGRAY,
                         Jaylib.BLANK,
                         Jaylib.WHITE,
-                        Jaylib.GREEN,
-                        () -> {
-                            creditsVisible = !creditsVisible;
-                            System.out.println("Credits Button Pressed + " + creditsVisible);
-                        }
-                ),
+                        Jaylib.GREEN
+                ) {
+                    @Override
+                    public void run() {
+                        creditsVisible = !creditsVisible;
+                        System.out.println("Credits Button Pressed + " + creditsVisible);
+                    }
+                },
                 new ToggleElement(
                         Vector2.byScreenPercent(94, 14),
                         Vector2.byScreenPercent(10, 7),
@@ -98,6 +108,10 @@ public class TitleScene extends Scene {
                     @Override
                     public void run() {
                         System.out.println("Mute Button Pressed");
+                        if (toggle)
+                            Raylib.PauseSound(new AssetManager<SoundAsset>().getAsset("MainMenu/VTTheme").getSound());
+                        else
+                            Raylib.ResumeSound(new AssetManager<SoundAsset>().getAsset("MainMenu/VTTheme").getSound());
                     }
                 },
         }, true);
@@ -112,12 +126,14 @@ public class TitleScene extends Scene {
                         Jaylib.LIGHTGRAY,
                         Jaylib.BLANK,
                         Jaylib.WHITE,
-                        Jaylib.GREEN,
-                        () -> {
-                            creditsVisible = !creditsVisible;
-                            System.out.println("Credits Button Pressed + " + creditsVisible);
-                        }
-                ),
+                        Jaylib.GREEN
+                ) {
+                    @Override
+                    public void run() {
+                        creditsVisible = !creditsVisible;
+                        System.out.println("Credits Button Pressed + " + creditsVisible);
+                    }
+                },
                 new TextElement(
                         Vector2.byScreenPercent(0, 0),
                         Vector2.byScreenPercent(100, 100),

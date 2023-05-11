@@ -50,7 +50,7 @@ public class Window {
 
         String path = System.getProperty("user.dir") + "\\Voxatron-Engine\\src\\window\\icon.png";
         SetWindowIcon(LoadImage(path));
-
+        InitAudioDevice();
 //Todo: reload window button
         //WARNING: HERE IS NOT THE PLACE TO RENDER ANYTHING. NO WHILE LOOP OR ANYTHING
 

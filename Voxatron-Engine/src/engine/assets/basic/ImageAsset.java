@@ -29,6 +29,14 @@ public class ImageAsset extends Asset {
         return image;
     }
 
+    public Raylib.Image getImage() {
+        return getImage(getName());
+    }
+
+    public Raylib.Texture getTexture() {
+        return getTexture(getName());
+    }
+
     public Raylib.Image getImage(String name) {
         if (loadedImages.containsKey(name)) return loadedImages.get(name);
         return loadImage(name);

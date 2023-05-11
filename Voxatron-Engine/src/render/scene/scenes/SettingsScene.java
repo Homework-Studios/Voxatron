@@ -71,11 +71,13 @@ public class SettingsScene extends Scene {
                         Jaylib.LIGHTGRAY,
                         Jaylib.BLANK,
                         Jaylib.WHITE,
-                        Jaylib.GREEN,
-                        () -> {
-                            SceneManager.instance.setActiveScene(TitleScene.class);
-                        }
-                ),
+                        Jaylib.GREEN
+                ) {
+                    @Override
+                    public void run() {
+                        SceneManager.instance.setActiveScene(TitleScene.class);
+                    }
+                },
                 new ToggleElement(
                         Vector2.byScreenPercent(25, 30),
                         Vector2.byScreenPercent(40, 10),
@@ -163,12 +165,21 @@ public class SettingsScene extends Scene {
                         Jaylib.LIGHTGRAY,
                         Jaylib.WHITE,
                         Jaylib.GREEN,
-                        Jaylib.RED,
-                        () -> {
-                            System.out.println("Volume Slider Changed");
-                            needToApply = true;
-                        }
-                ),
+                        Jaylib.RED
+                ) {
+                    @Override
+                    public void onRelease() {
+                        System.out.println("Volume Slider Changed");
+                        sm.setSetting("volume", String.valueOf(sliderValue));
+                        needToApply = true;
+                        //TODO: change the volume
+                    }
+
+                    @Override
+                    public void onValueChange() {
+                        AudioManager.masterVolume = sliderValue;
+                    }
+                },
         }, true);
 
         settingsApplyBatch = new ElementBatch(new Element[]{
@@ -181,20 +192,23 @@ public class SettingsScene extends Scene {
                         Jaylib.LIGHTGRAY,
                         Jaylib.BLANK,
                         Jaylib.WHITE,
-                        Jaylib.GREEN,
-                        () -> {
-                            System.out.println("Apply Button Pressed");
-                            needToApply = false;
-                            try {
-                                sm.saveSettings();
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                            //TODO: fix
-                            if (Jaylib.IsWindowFullscreen() != sm.getSetting("fullscreen").equals("1"))
-                                Jaylib.ToggleFullscreen();
+                        Jaylib.GREEN
+                ) {
+                    @Override
+                    public void run() {
+                        System.out.println("Apply Button Pressed");
+                        needToApply = false;
+                        try {
+                            sm.saveSettings();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
                         }
-                ),
+                        //TODO: fix
+                        if (Jaylib.IsWindowFullscreen() != sm.getSetting("fullscreen").equals("1"))
+                            Jaylib.ToggleFullscreen();
+
+                    }
+                },
         }, false);
 
         settingsRestartBatch = new ElementBatch(new Element[]{
@@ -207,22 +221,24 @@ public class SettingsScene extends Scene {
                         Jaylib.LIGHTGRAY,
                         Jaylib.BLANK,
                         Jaylib.WHITE,
-                        Jaylib.GREEN,
-                        () -> {
-                            System.out.println("Restart Button Pressed");
-                            needToApply = false;
-                            needToRestart = false;
-                            try {
-                                sm.saveSettings();
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
-                            if (Jaylib.IsWindowFullscreen() != sm.getSetting("fullscreen").equals("1"))
-                                Jaylib.ToggleFullscreen();
-                            Window.instance.reopenWindow();
-                            reload();
+                        Jaylib.GREEN
+                ) {
+                    @Override
+                    public void run() {
+                        System.out.println("Restart Button Pressed");
+                        needToApply = false;
+                        needToRestart = false;
+                        try {
+                            sm.saveSettings();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
                         }
-                ),
+                        if (Jaylib.IsWindowFullscreen() != sm.getSetting("fullscreen").equals("1"))
+                            Jaylib.ToggleFullscreen();
+                        Window.instance.reopenWindow();
+                        reload();
+                    }
+                },
         }, false);
 
         addElement(settingsBodyBatch);

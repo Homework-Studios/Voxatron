@@ -3,16 +3,13 @@ package window;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Dictionary;
 import java.util.HashMap;
 
 public class SettingsManager {
 
     public static SettingsManager instance;
-
-    private String unparsedSettings = "";
-
     public HashMap<String, String> settings = new HashMap<>();
+    private String unparsedSettings = "";
 
     public SettingsManager() {
         instance = this;
@@ -48,11 +45,19 @@ public class SettingsManager {
     }
 
     public String getSetting(String settingName) {
-        return settings.get(settingName);
+        return settings.getOrDefault(settingName, "0");
+    }
+
+    public boolean getSettingBoolean(String settingName) {
+        return getSetting(settingName).equals("1");
     }
 
     public void setSetting(String settingName, String settingValue) {
         settings.put(settingName, settingValue);
+    }
+
+    public void setSetting(String settingName, boolean settingValue) {
+        setSetting(settingName, settingValue ? "1" : "0");
     }
 
     public void saveSettings() throws IOException {

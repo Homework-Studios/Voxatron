@@ -6,9 +6,8 @@ import util.UiUtil;
 
 import static com.raylib.Raylib.*;
 
-public class ButtonElement extends Element {
+public abstract class ButtonElement extends Element implements Runnable {
 
-    private final Runnable onClick;
     private final float scaleFactor = .95f;
     public Vector2 position;
     public Vector2 size;
@@ -36,7 +35,7 @@ public class ButtonElement extends Element {
      * @param onClick  The action that is executed when the button is clicked.
      */
 
-    public ButtonElement(Vector2 position, Vector2 size, String text, float textSize, Color color, Color bgColor, Color hlColor, Color hlpColor, Runnable onClick) {
+    public ButtonElement(Vector2 position, Vector2 size, String text, float textSize, Color color, Color bgColor, Color hlColor, Color hlpColor) {
         this.position = position;
         this.size = size;
         this.text = text;
@@ -45,7 +44,6 @@ public class ButtonElement extends Element {
         this.bgColor = bgColor;
         this.hlColor = hlColor;
         this.hlpColor = hlpColor;
-        this.onClick = onClick;
     }
 
 
@@ -60,7 +58,7 @@ public class ButtonElement extends Element {
 
         // check if mouse button left is up
         if (isHovered && IsMouseButtonReleased(MOUSE_BUTTON_LEFT)) {
-            onClick.run();
+            run();
         }
     }
 
@@ -92,6 +90,4 @@ public class ButtonElement extends Element {
         DrawText(text, (int) (position.x - MeasureText(text, (int) textSize) / 2), (int) position.y - (int) (textSize / 2),
                 (int) textSize, isPressed ? hlpColor : isHovered ? hlColor : color);
     }
-
-
 }

@@ -8,23 +8,18 @@ import render.scene.Element;
 
 public class ImageElement extends Element {
 
+    private final Raylib.Texture texture;
     public Raylib.Image image;
     public Vector2 position;
     public Vector2 size;
 
-    private final Raylib.Texture texture;
-
-    public ImageElement(Raylib.Image image, Vector2 position, Vector2 size) {
-        this.image = image;
+    public ImageElement(ImageAsset asset, Vector2 position, Vector2 size) {
+        this.image = asset.getImage();
         this.position = position;
         this.size = size;
 
         Raylib.ImageResize(image, (int) size.x, (int) size.y);
         texture = Raylib.LoadTextureFromImage(image);
-    }
-
-    public ImageElement(ImageAsset asset, Vector2 position, Vector2 size) {
-        this(asset.getImage(asset.getName()), position, size);
     }
 
     @Override
