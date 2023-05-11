@@ -6,25 +6,12 @@ public class Database {
     public static String NOTING_FOUND = "N/A";
 
     Connection connection;
-//TODO: Get database to store data
+
     String host = "localhost";
     String port = "3306";
     String database = "database";
     String username = "root";
     String password = "password";
-
-    public static void databaseTest() {
-        Database database = new Database();
-        database.connect();
-        String test = database.getStringByString("dev", "test1", "connection_test", "value");
-        if(test.equals(NOTING_FOUND)) {
-            database.addLine("dev", "connection_test", "value");
-            database.setStringByString("dev", "test1", "connection_test", "value", "test");
-        }
-        else System.out.println("test completed successfully!");
-        System.out.println(test);
-        database.disconnect();
-    }
 
     public Database(String host, String port, String database, String username, String password) {
         this.host = host;
@@ -35,6 +22,18 @@ public class Database {
     }
 
     public Database() {
+    }
+
+    public static void databaseTest() {
+        Database database = new Database();
+        database.connect();
+        String test = database.getStringByString("dev", "test1", "connection_test", "value");
+        if (test.equals(NOTING_FOUND)) {
+            database.addLine("dev", "connection_test", "value");
+            database.setStringByString("dev", "test1", "connection_test", "value", "test");
+        } else System.out.println("test completed successfully!");
+        System.out.println(test);
+        database.disconnect();
     }
 
     public void connect() {

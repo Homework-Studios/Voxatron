@@ -31,7 +31,6 @@ public class Main {
             System.out.println(p + " " + dim);
         }
 
-        //TODO: remove this
         p.move(p.x * 2 + 1, p.y * 2 + 1);
         dim = new Dimension(dim.width * 2, dim.height * 2);
         //init engine.assets and create a test asset

@@ -24,7 +24,7 @@ public class ImageElement extends Element {
 
     @Override
     public void update() {
-        // TODO: Automatically Resize on change of size or image
+
     }
 
     @Override
