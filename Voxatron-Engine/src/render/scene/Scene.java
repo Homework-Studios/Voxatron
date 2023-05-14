@@ -11,6 +11,9 @@ public abstract class Scene {
         init();
     }
 
+    // Sort the abstracts in the correct order -> Saves time when auto-completing
+    public abstract void init();
+
     public abstract void update();
 
     public abstract void render();
@@ -30,8 +33,6 @@ public abstract class Scene {
     public void clearElements() {
         elements.clear();
     }
-
-    public abstract void init();
 
     public void reload() {
         elements.clear();
