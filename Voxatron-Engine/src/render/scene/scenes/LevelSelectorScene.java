@@ -57,7 +57,7 @@ public class LevelSelectorScene extends Scene {
                         new LevelSelectorTab[]{
                                 // TODO: Implement image assets!
                                 new LevelSelectorTab("The Bluelands", Jaylib.BLUE, baseThumbnail, false),
-                                new LevelSelectorTab("The Depths", Jaylib.RED, baseThumbnail, true),
+                                new LevelSelectorTab("The Depths", Jaylib.RED, baseThumbnail, false),
                                 new LevelSelectorTab("The Generator", Jaylib.GREEN, baseThumbnail, true),
                                 new LevelSelectorTab("The Mainframe", Jaylib.YELLOW, baseThumbnail, true),
                         }
@@ -65,6 +65,12 @@ public class LevelSelectorScene extends Scene {
                     @Override
                     public void run() {
                         System.out.println("Level " + (this.hoveringTab + 1) + " selected!");
+
+                        if(hoveringTab == 1){
+                            SceneManager.instance.setActiveScene(IngameDevScene.class);
+                            return;
+                        }
+
                         SceneManager.instance.setActiveScene(IngameUIDevScene.class);
                     }
                 }

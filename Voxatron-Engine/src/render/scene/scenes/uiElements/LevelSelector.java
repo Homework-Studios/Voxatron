@@ -103,7 +103,6 @@ public abstract class LevelSelector extends Element implements Runnable {
         for (int i = 0; i < tabs.length; i++) {
             boolean isTabLocked = tabs[i].locked;
             int x = (int) position.x - (int) size.x / 2 + (tabWidth + gap) * i - scrolling;
-            // TODO: Do that with images of the levels or artworks of the levels
 
             Raylib.DrawRectangle(x, y, tabWidth, tabHeight, isTabLocked ? tabs[i].color : Jaylib.GRAY);
 

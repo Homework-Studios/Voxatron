@@ -5,9 +5,11 @@ import java.util.ArrayList;
 public abstract class Scene {
 
     public ArrayList<Element> elements;
+    public ArrayList<Element> elements3d;
 
     public Scene() {
         elements = new ArrayList<>();
+        elements3d = new ArrayList<>();
         init();
     }
 
@@ -22,20 +24,37 @@ public abstract class Scene {
         return elements.toArray(new Element[0]);
     }
 
+    public Element[] getIterableElements3d() {
+        return elements3d.toArray(new Element[0]);
+    }
+
     public void addElement(Element element) {
         elements.add(element);
+    }
+
+    public void addElement3d(Element element) {
+        elements3d.add(element);
     }
 
     public void removeElement(Element element) {
         elements.remove(element);
     }
 
+    public void removeElement3d(Element element) {
+        elements3d.remove(element);
+    }
+
     public void clearElements() {
         elements.clear();
     }
 
+    public void clearElements3d() {
+        elements3d.clear();
+    }
+
     public void reload() {
         elements.clear();
+        elements3d.clear();
         init();
     }
 
