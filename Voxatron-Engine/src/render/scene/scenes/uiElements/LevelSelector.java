@@ -24,6 +24,7 @@ public abstract class LevelSelector extends Element implements Runnable {
     private int tabHeight;
 
     private Raylib.Texture misteryThumbnail;
+    private int thumbnailY = 0;
 
     public LevelSelector(Vector2 position, Vector2 size, LevelSelectorTab[] tabs) {
         this.position = position;
@@ -109,7 +110,7 @@ public abstract class LevelSelector extends Element implements Runnable {
             Raylib.BeginScissorMode(x, y, tabWidth, tabHeight);
 
             Raylib.Texture thumbnail = tabs[i].thumbnail;
-            Raylib.DrawTexture(isTabLocked ? misteryThumbnail : thumbnail, x + tabWidth / 2 - thumbnail.width() / 2, y + tabHeight / 2 - thumbnail.height() / 2, isTabLocked ? Jaylib.DARKGRAY : Jaylib.GRAY);
+            Raylib.DrawTexture(isTabLocked ? misteryThumbnail : thumbnail, x + tabWidth / 2 - thumbnail.width() / 2, y + tabHeight / 2 - thumbnail.height() / 2 - tabs[i].thumbnailY, isTabLocked ? Jaylib.DARKGRAY : Jaylib.GRAY);
             Raylib.DrawText(isTabLocked ? "???" : tabs[i].name, x + (tabWidth / 2) - (Raylib.MeasureText(isTabLocked ? "???" : tabs[i].name, 40) / 2), y + (tabHeight / 2) - 20, 40, Jaylib.WHITE);
 
             Raylib.EndScissorMode();
@@ -119,6 +120,12 @@ public abstract class LevelSelector extends Element implements Runnable {
             if (i == hoveringTab) {
                 int lineThickness = 5;
                 Raylib.DrawLineEx(new Jaylib.Vector2(x, y + tabHeight - ((float) lineThickness / 2)), new Jaylib.Vector2(x + tabWidth, y + tabHeight - ((float) lineThickness / 2)), 5, isTabLocked ? Jaylib.RED : Jaylib.WHITE);
+
+                // lerp the thumbnailY up until it reaches 20
+                tabs[i].thumbnailY = (int) LerpUtil.lerp(tabs[i].thumbnailY, 50, 0.1f);
+            } else {
+                // lerp the thumbnailY down until it reaches 0
+                tabs[i].thumbnailY = (int) LerpUtil.lerp(tabs[i].thumbnailY, 0, 0.1f);
             }
         }
 
