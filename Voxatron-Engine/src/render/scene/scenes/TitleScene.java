@@ -19,6 +19,7 @@ public class TitleScene extends Scene {
     public boolean creditsVisible = false;
     ElementBatch titleScreenBatch;
     ElementBatch creditsScreenBatch;
+    ScrollingBackgroundElement scrollingBackgroundElement;
 
     public TitleScene() {
         super();
@@ -30,7 +31,7 @@ public class TitleScene extends Scene {
                 new SoundElement(
                         new AssetManager<SoundAsset>().getAsset("MainMenu/VTTheme")
                 ),
-                new ImageElement(
+                new VTBannerElement(
                         new AssetManager<ImageAsset>().getAsset("MainMenu/VTBanner"),
                         Vector2.byScreenPercent(50, 30),
                         Vector2.byScreenPercent(50, 50)
@@ -89,7 +90,7 @@ public class TitleScene extends Scene {
                         Vector2.byScreenPercent(10, 7),
                         "Mute",
                         40f,
-                        true,
+                        false,
                         STANDARD_BUTTON
                 ) {
                     @Override
@@ -126,24 +127,35 @@ public class TitleScene extends Scene {
                         Jaylib.LIGHTGRAY
                 ),
         }, false);
-        Raylib.PauseSound(new AssetManager<SoundAsset>().getAsset("MainMenu/VTTheme").getSound());
+
         addElement(titleScreenBatch);
         addElement(creditsScreenBatch);
+
+        scrollingBackgroundElement = new ScrollingBackgroundElement(
+                Jaylib.GenImageGradientV(Raylib.GetScreenWidth(), Raylib.GetScreenHeight(), Jaylib.BLACK, new Jaylib.Color(0, 20, 0, 255)),
+                Vector2.byScreenPercent(50, 50),
+                Vector2.byScreenPercent(100, 100),
+                50,
+                true
+        );
     }
 
     @Override
     public void update() {
-
         titleScreenBatch.setVisibility(!creditsVisible);
         creditsScreenBatch.setVisibility(creditsVisible);
 
         for (Element element : getIterableElements()) {
             element.update();
         }
+
+        scrollingBackgroundElement.update();
     }
 
     @Override
     public void render() {
+        scrollingBackgroundElement.render();
+
         for (Element element : elements) {
             element.render();
         }
