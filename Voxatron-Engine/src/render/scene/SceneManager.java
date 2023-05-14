@@ -1,5 +1,6 @@
 package render.scene;
 
+import render.scene.scenes.IngameUIDevScene;
 import render.scene.scenes.LevelSelectorScene;
 import render.scene.scenes.SettingsScene;
 import render.scene.scenes.TitleScene;
@@ -22,6 +23,7 @@ public class SceneManager {
         addScene(new TitleScene());
         addScene(new SettingsScene());
         addScene(new LevelSelectorScene());
+        addScene(new IngameUIDevScene());
         setActiveScene(scenes.get(0));
     }
 

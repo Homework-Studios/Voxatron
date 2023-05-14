@@ -64,6 +64,7 @@ public class LevelSelectorScene extends Scene {
                     @Override
                     public void run() {
                         System.out.println("Level " + (this.hoveringTab + 1) + " selected!");
+                        SceneManager.instance.setActiveScene(IngameUIDevScene.class);
                     }
                 }
         }, true);
