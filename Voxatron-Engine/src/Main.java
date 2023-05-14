@@ -3,6 +3,7 @@ import engine.EngineForm;
 import engine.assets.Asset;
 import input.Input;
 import render.Renderer;
+import testing.TestingValues;
 import window.Window;
 
 import java.awt.*;
@@ -35,6 +36,7 @@ public class Main {
         dim = new Dimension(dim.width * 2, dim.height * 2);
         //init engine.assets and create a test asset
         Asset.init();
+        new TestingValues();
         Window window = new Window();
         window.init(p, dim);
 

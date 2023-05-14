@@ -34,7 +34,7 @@ public class TitleScene extends Scene {
                 ),
                 new VTBannerElement(
                         new AssetManager<ImageAsset>().getAsset("MainMenu/VTBanner"),
-                        Vector2.byScreenPercent(50, 30),
+                        Vector2.byScreenPercent(50, 27),
                         Vector2.byScreenPercent(50, 50)
                 ),
                 new ButtonElement(

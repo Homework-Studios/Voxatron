@@ -36,6 +36,7 @@ public class Window {
         SetConfigFlags(FLAG_MSAA_4X_HINT);
         SetConfigFlags(FLAG_WINDOW_MAXIMIZED);
         SetConfigFlags(FLAG_WINDOW_UNDECORATED);
+        SetConfigFlags(FLAG_VSYNC_HINT);
 
 
         // Init window

@@ -3,6 +3,7 @@ package render;
 import com.raylib.Raylib;
 import debug.DebugDraw;
 import render.scene.SceneManager;
+import testing.TestingValues;
 import window.Window;
 
 import static com.raylib.Jaylib.BLACK;
@@ -40,6 +41,7 @@ public class Renderer {
         while (isRunning && !Raylib.WindowShouldClose()) {
 
             sceneManager.update();
+            TestingValues.instance.update();
 
             Raylib.BeginDrawing();
             Raylib.ClearBackground(BLACK);
