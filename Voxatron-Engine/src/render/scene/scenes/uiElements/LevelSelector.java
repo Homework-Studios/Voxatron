@@ -19,10 +19,11 @@ public abstract class LevelSelector extends Element implements Runnable {
 
     private Raylib.Rectangle[] tabRectangles;
     public int hoveringTab = -1;
-    private int gap = 20;
+    private int gap = 30;
     private int tabWidth;
     private int tabHeight;
 
+    private Raylib.Texture misteryThumbnail;
 
     public LevelSelector(Vector2 position, Vector2 size, LevelSelectorTab[] tabs) {
         this.position = position;
@@ -31,6 +32,8 @@ public abstract class LevelSelector extends Element implements Runnable {
 
         tabRectangles = new Raylib.Rectangle[tabs.length];
         generateRectangles();
+
+        misteryThumbnail = Raylib.LoadTextureFromImage(Raylib.GenImageChecked(1000, 1000, 5, 5, Jaylib.WHITE, Jaylib.GRAY));
     }
 
     public void generateRectangles(){
@@ -100,8 +103,17 @@ public abstract class LevelSelector extends Element implements Runnable {
             boolean isTabLocked = tabs[i].locked;
             int x = (int) position.x - (int) size.x / 2 + (tabWidth + gap) * i - scrolling;
             // TODO: Do that with images of the levels or artworks of the levels
-            Raylib.DrawRectangle(x, y, tabWidth, tabHeight, isTabLocked ? Jaylib.GRAY : tabs[i].color);
-            Raylib.DrawText(isTabLocked ? "???" : tabs[i].name, x + tabWidth / 2 - Raylib.MeasureText(tabs[i].name, 40) / 2, y + tabHeight / 2 - 20, 40, Jaylib.WHITE);
+
+            Raylib.DrawRectangle(x, y, tabWidth, tabHeight, isTabLocked ? tabs[i].color : Jaylib.GRAY);
+
+            Raylib.BeginScissorMode(x, y, tabWidth, tabHeight);
+
+            Raylib.Texture thumbnail = tabs[i].thumbnail;
+            Raylib.DrawTexture(isTabLocked ? misteryThumbnail : thumbnail, x + tabWidth / 2 - thumbnail.width() / 2, y + tabHeight / 2 - thumbnail.height() / 2, isTabLocked ? Jaylib.DARKGRAY : Jaylib.GRAY);
+            Raylib.DrawText(isTabLocked ? "???" : tabs[i].name, x + (tabWidth / 2) - (Raylib.MeasureText(isTabLocked ? "???" : tabs[i].name, 40) / 2), y + (tabHeight / 2) - 20, 40, Jaylib.WHITE);
+
+            Raylib.EndScissorMode();
+
 
             // Draw a white line under the tab if the mouse is hovering over it
             if (i == hoveringTab) {

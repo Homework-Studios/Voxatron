@@ -1,6 +1,9 @@
 package render.scene.scenes;
 
 import com.raylib.Jaylib;
+import com.raylib.Raylib;
+import engine.assets.AssetManager;
+import engine.assets.basic.ImageAsset;
 import math.Vector2;
 import render.scene.Element;
 import render.scene.Scene;
@@ -26,6 +29,8 @@ public class LevelSelectorScene extends Scene {
 
         TestingValues.instance.value = 5;
 
+        Raylib.Texture baseThumbnail = Raylib.LoadTextureFromImage(Jaylib.GenImageChecked(1000, 1000, 10, 10, Jaylib.PINK, Jaylib.BLACK));
+
         levelSelectorBatch = new ElementBatch(new Element[]{
                 new TextElement(
                         Vector2.byScreenPercent(0, 0),
@@ -50,10 +55,10 @@ public class LevelSelectorScene extends Scene {
                         Vector2.byScreenPercent(50, 50),
                         Vector2.byScreenPercent(40, 60),
                         new LevelSelectorTab[]{
-                                new LevelSelectorTab("The Bluelands", Jaylib.BLUE, false),
-                                new LevelSelectorTab("The Depths", Jaylib.RED, true),
-                                new LevelSelectorTab("The Generator", Jaylib.GREEN, true),
-                                new LevelSelectorTab("The Mainframe", Jaylib.YELLOW, true),
+                                new LevelSelectorTab("The Bluelands", Jaylib.BLUE, baseThumbnail, false),
+                                new LevelSelectorTab("The Depths", Jaylib.RED, baseThumbnail, true),
+                                new LevelSelectorTab("The Generator", Jaylib.GREEN, baseThumbnail, true),
+                                new LevelSelectorTab("The Mainframe", Jaylib.YELLOW, baseThumbnail, true),
                         }
                 ) {
                     @Override

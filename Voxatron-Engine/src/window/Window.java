@@ -1,6 +1,7 @@
 package window;
 
 
+import com.raylib.Raylib;
 import engine.assets.Asset;
 import render.Renderer;
 import render.scene.Scene;
@@ -46,14 +47,18 @@ public class Window {
         InitWindow(size.width, size.height, "Voxatron");
         SetWindowPosition(position.x, position.y);
         SetTargetFPS(60);
-//        uncomment, when game should be fullscreen
+
+        // Rebixender Rebix, bitte neachstes mal richtige Indents bei den Comments machen!
         ToggleFullscreen();
 
         String path = System.getProperty("user.dir") + "\\Voxatron-Engine\\src\\window\\icon.png";
         SetWindowIcon(LoadImage(path));
         InitAudioDevice();
-        //WARNING: HERE IS NOT THE PLACE TO RENDER ANYTHING. NO WHILE LOOP OR ANYTHING
 
+        // TODO: Remove this shit WARNING!
+        Raylib.SetMasterVolume(0);
+
+        //WARNING: HERE IS NOT THE PLACE TO RENDER ANYTHING. NO WHILE LOOP OR ANYTHING
     }
 
     public void stop() {
