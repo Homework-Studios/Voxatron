@@ -29,7 +29,8 @@ public class TitleScene extends Scene {
     public void init() {
         titleScreenBatch = new ElementBatch(new Element[]{
                 new SoundElement(
-                        new AssetManager<SoundAsset>().getAsset("MainMenu/VTTheme")
+                        new AssetManager<SoundAsset>().getAsset("MainMenu/VTTheme"),
+                        true
                 ),
                 new VTBannerElement(
                         new AssetManager<ImageAsset>().getAsset("MainMenu/VTBanner"),
@@ -45,7 +46,7 @@ public class TitleScene extends Scene {
                 ) {
                     @Override
                     public void run() {
-                        System.out.println("Play Button Pressed");
+                        SceneManager.instance.setActiveScene(LevelSelectorScene.class);
                     }
                 },
                 new ButtonElement(
