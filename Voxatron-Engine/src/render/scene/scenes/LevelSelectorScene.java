@@ -55,6 +55,7 @@ public class LevelSelectorScene extends Scene {
                         Vector2.byScreenPercent(50, 50),
                         Vector2.byScreenPercent(40, 60),
                         new LevelSelectorTab[]{
+                                // TODO: Implement image assets!
                                 new LevelSelectorTab("The Bluelands", Jaylib.BLUE, baseThumbnail, false),
                                 new LevelSelectorTab("The Depths", Jaylib.RED, baseThumbnail, true),
                                 new LevelSelectorTab("The Generator", Jaylib.GREEN, baseThumbnail, true),
