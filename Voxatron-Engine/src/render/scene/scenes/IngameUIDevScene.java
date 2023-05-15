@@ -17,7 +17,7 @@ public class IngameUIDevScene extends Scene {
     @Override
     public void init() {
         elementBatch = new ElementBatch(new Element[]{
-                new TowerSelector(Vector2.byScreenPercent(50, 85), Vector2.byScreenPercent(85, 25), new TowerPanel[]{
+                new TowerSelector(Vector2.byScreenPercent(50, 100), Vector2.byScreenPercent(85, 20), new TowerPanel[]{
                         new TowerPanel("Test1", Jaylib.RED),
                         new TowerPanel("Test2", Jaylib.BLUE),
                         new TowerPanel("Test3", Jaylib.GREEN),

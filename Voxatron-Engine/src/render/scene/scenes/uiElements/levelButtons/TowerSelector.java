@@ -15,6 +15,8 @@ public abstract class TowerSelector extends Element implements Runnable {
     private Raylib.Rectangle rectangle = new Raylib.Rectangle();
     private int scroll = 0;
     private int targetScrolling = 0;
+    private float hoverOffset;
+    private float targetHoverOffset;
 
     public TowerSelector(Vector2 position, Vector2 size, TowerPanel[] towers) {
         this.position = position;
@@ -24,14 +26,18 @@ public abstract class TowerSelector extends Element implements Runnable {
 
     @Override
     public void update() {
-        rectangle = new Raylib.Rectangle().x(position.x - size.x / 2).y(position.y - size.y / 2).width(size.x).height(size.y);
+        // hover check
+        rectangle = new Raylib.Rectangle().x(position.x - size.x / 2).y(position.y - size.y / 2 - hoverOffset).width(size.x).height(size.y);
+        Raylib.Rectangle collisions = new Raylib.Rectangle().x(position.x - size.x / 2).y(position.y - size.y / 2 - hoverOffset).width(size.x).height(size.y + UiUtil.getHeightPercent(5));
+        boolean hover = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), collisions);
+
 
         // Check if the mouse is scrolling
-        if (Raylib.GetMouseWheelMove() > 0) {
+        if (Raylib.GetMouseWheelMove() > 0 && hover) {
             targetScrolling += scrollSpeed;
         }
 
-        if (Raylib.GetMouseWheelMove() < 0) {
+        if (Raylib.GetMouseWheelMove() < 0 && hover) {
             targetScrolling -= scrollSpeed;
         }
 
@@ -49,12 +55,19 @@ public abstract class TowerSelector extends Element implements Runnable {
         // smooth scrolling
         scroll = (int) LerpUtil.lerp(scroll, targetScrolling, 0.1f);
 
+        //move up when scrolling
+        targetHoverOffset = hover ? UiUtil.getHeightPercent(15) : 0;
+
+        // update effective position
+        hoverOffset = LerpUtil.lerp(hoverOffset, targetHoverOffset, 0.1f);
+        Vector2 effectivePosition = new Vector2(position.x, position.y - hoverOffset);
+
         // update tabs
         for (int i = 0; i < towers.length; i++) {
             TowerPanel tower = towers[i];
             tower.index = i;
             tower.scroll = scroll;
-            tower.position = position;
+            tower.position = effectivePosition;
             tower.size = size;
             tower.update();
         }
