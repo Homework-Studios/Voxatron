@@ -9,22 +9,19 @@ import render.scene.scenes.uiElements.levelSelector.LevelSelectorTab;
 
 public abstract class LevelSelector extends Element implements Runnable {
 
+    private final int scrollSpeed = 60;
+    private final Raylib.Rectangle[] tabRectangles;
+    private final int gap = 30;
+    private final Raylib.Texture misteryThumbnail;
+    private final int thumbnailY = 0;
     public Vector2 position;
     public Vector2 size;
     public LevelSelectorTab[] tabs;
-
+    public int hoveringTab = -1;
     private int scrolling = 0;
     private int targetScrolling = 0;
-    private int scrollSpeed = 60;
-
-    private Raylib.Rectangle[] tabRectangles;
-    public int hoveringTab = -1;
-    private int gap = 30;
     private int tabWidth;
     private int tabHeight;
-
-    private Raylib.Texture misteryThumbnail;
-    private int thumbnailY = 0;
 
     public LevelSelector(Vector2 position, Vector2 size, LevelSelectorTab[] tabs) {
         this.position = position;
@@ -37,7 +34,7 @@ public abstract class LevelSelector extends Element implements Runnable {
         misteryThumbnail = Raylib.LoadTextureFromImage(Raylib.GenImageChecked(1000, 1000, 5, 5, Jaylib.WHITE, Jaylib.GRAY));
     }
 
-    public void generateRectangles(){
+    public void generateRectangles() {
         for (int i = 0; i < tabs.length; i++) {
             tabRectangles[i] = new Jaylib.Rectangle((int) position.x - (int) size.x / 2 + (tabWidth + gap) * i - scrolling, (int) position.y - (int) size.y / 2, tabWidth, tabHeight);
         }
