@@ -21,15 +21,6 @@ public class IngameUIDevScene extends Scene {
                         new TowerPanel("Test1", Jaylib.RED),
                         new TowerPanel("Test2", Jaylib.BLUE),
                         new TowerPanel("Test3", Jaylib.GREEN),
-                        new TowerPanel("Test4", Jaylib.YELLOW),
-                        new TowerPanel("Test5", Jaylib.PURPLE),
-                        new TowerPanel("Test6", Jaylib.ORANGE),
-                        new TowerPanel("Test7", Jaylib.BROWN),
-                        new TowerPanel("Test8", Jaylib.PINK),
-                        new TowerPanel("Test9", Jaylib.LIME),
-                        new TowerPanel("Test10", Jaylib.DARKGREEN),
-                        new TowerPanel("Test11", Jaylib.SKYBLUE),
-                        new TowerPanel("Test12", Jaylib.DARKBLUE)
                 }) {
                     @Override
                     public void run() {
