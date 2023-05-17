@@ -73,7 +73,7 @@ public abstract class TowerPanel implements Runnable {
         if (dragging) {
             if (IsMouseButtonPressed(Raylib.MOUSE_BUTTON_LEFT)) {
                 dragging = false;
-
+                run();
             }
         }
 

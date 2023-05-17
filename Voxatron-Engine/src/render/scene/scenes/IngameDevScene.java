@@ -25,32 +25,39 @@ public class IngameDevScene extends Scene {
 
     @Override
     public void init() {
-        addElement3d(new DropGhostElement());
+        addElement3d(new DropGhostElement() {
+            @Override
+            public void run() {
+                this.position = getDropPosition();
+            }
+        });
         addElement3d(new FloorElement());
 
         TowerPanel[] tpl = new TowerPanel[]{
                 new TowerPanel(new CubeCanon()) {
                     @Override
                     public void run() {
-
+                        if(canDrop()){
+                            addElement3d(new CubeElement(getDropPosition(), new Jaylib.Vector3().x(5).y(5).z(5)));
+                        }
                     }
                 },
                 new TowerPanel(new CubeCanon()) {
                     @Override
                     public void run() {
-
+                        System.out.println("CubeCanon");
                     }
                 },
                 new TowerPanel(new CubeCanon()) {
                     @Override
                     public void run() {
-
+                        System.out.println("CubeCanon");
                     }
                 },
                 new TowerPanel(new SphereCanon()) {
                     @Override
                     public void run() {
-
+                        System.out.println("SphereCanon");
                     }
                 }
         };
@@ -78,6 +85,28 @@ public class IngameDevScene extends Scene {
         }, true);
 
         addElement(elementBatch);
+    }
+
+    public Raylib.Vector3 getDropPosition() {
+        Raylib.Ray ray = Jaylib.GetMouseRay(Jaylib.GetMousePosition(), Renderer.camera.getCamera());
+
+        Raylib.Rectangle floor = new Raylib.Rectangle().x(-150).y(-150).width(300).height(300);
+        Raylib.BoundingBox box = new Jaylib.BoundingBox().min(new Raylib.Vector3().x(floor.x()).y(0).z(floor.y())).max(new Raylib.Vector3().x(floor.x() + floor.width()).y(0).z(floor.y() + floor.height()));
+
+        Raylib.RayCollision collision = Jaylib.GetRayCollisionBox(ray, box);
+
+        if (collision.hit()) {
+            // add y+1 to position
+            collision.point(new Raylib.Vector3().x(collision.point().x()).y(collision.point().y() + 1).z(collision.point().z()));
+
+            return collision.point();
+        }
+
+        return new Raylib.Vector3();
+    }
+
+    public boolean canDrop() {
+        return getDropPosition().x() != 0 && getDropPosition().y() != 0 && getDropPosition().z() != 0;
     }
 
     @Override
