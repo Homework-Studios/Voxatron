@@ -8,7 +8,7 @@ import com.raylib.Raylib;
 public abstract class Tower {
     private String name;
     private Raylib.Color color;
-
+    private boolean isUnlocked = true;
     private int damage;
     private int range;
     private int fireRate;
@@ -31,6 +31,14 @@ public abstract class Tower {
         this.range = range;
         this.fireRate = fireRate;
         this.cost = cost;
+    }
+
+    public boolean isUnlocked() {
+        return isUnlocked;
+    }
+
+    public void setUnlocked(boolean unlocked) {
+        isUnlocked = unlocked;
     }
 
     /**

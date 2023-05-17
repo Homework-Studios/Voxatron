@@ -18,7 +18,7 @@ public class TowerPanel {
     public Vector2 position;
     public Vector2 size;
 
-    private Jaylib.Rectangle screen;
+    private final Jaylib.Rectangle screen;
     private boolean cull = false;
 
     public TowerPanel(Tower tower) {
@@ -27,11 +27,11 @@ public class TowerPanel {
     }
 
     public void render() {
-        if(cull) return;
+        if (cull) return;
 
         int textSize = (int) UiUtil.getWidthPercent(3);
         Raylib.DrawRectangleRoundedLines(rectangle, 0.1f, 10, 5, tower.getColor());
-        DrawText(tower.getName(), (int) rectangle.x(), (int) rectangle.y(), textSize / 2, Jaylib.WHITE);
+        DrawText(tower.isUnlocked() ? tower.getName() : "???", (int) rectangle.x(), (int) rectangle.y(), textSize / 2, Jaylib.WHITE);
     }
 
     public void update() {
@@ -53,19 +53,16 @@ public class TowerPanel {
         rectangle = new Raylib.Rectangle().x(finalX - UiUtil.getWidthPercent(5)).y(finalY).width(width).height(size.y);
 
         // Cull the tower element if it is outside the screen
-        cull = true;
-        if(Jaylib.CheckCollisionBoxes(
+        cull = !Jaylib.CheckCollisionBoxes(
                 new Jaylib.BoundingBox(
-                    new Jaylib.Vector3(),
-                    new Jaylib.Vector3().x(screen.width()).y(screen.height())
+                        new Jaylib.Vector3(),
+                        new Jaylib.Vector3().x(screen.width()).y(screen.height())
                 ),
                 new Jaylib.BoundingBox(
-                    new Jaylib.Vector3().x(rectangle.x()).y(rectangle.y()),
-                    new Jaylib.Vector3().x(rectangle.width()).y(rectangle.height())
+                        new Jaylib.Vector3().x(rectangle.x()).y(rectangle.y()),
+                        new Jaylib.Vector3().x(rectangle.width()).y(rectangle.height())
                 )
-        )){
-            cull = false;
-        }
+        );
 
 
     }

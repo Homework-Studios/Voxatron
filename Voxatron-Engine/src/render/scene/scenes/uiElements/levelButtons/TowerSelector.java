@@ -25,7 +25,6 @@ public abstract class TowerSelector extends Element implements Runnable {
         this.towers = towers;
     }
 
-    //        TODO: CENTRE
     @Override
     public void update() {
         // hover check
@@ -58,7 +57,7 @@ public abstract class TowerSelector extends Element implements Runnable {
         scroll = (int) LerpUtil.lerp(scroll, targetScrolling, 0.1f);
 
         //move up when scrolling
-        float targetHoverOffset = hover ? UiUtil.getHeightPercent(15) : 0;
+        float targetHoverOffset = hover ? UiUtil.getHeightPercent(20) : 0;
 
         // update effective position
         hoverOffset = LerpUtil.lerp(hoverOffset, targetHoverOffset, 0.1f);
