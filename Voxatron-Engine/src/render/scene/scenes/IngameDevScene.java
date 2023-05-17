@@ -49,37 +49,34 @@ public class IngameDevScene extends Scene {
 
     @Override
     public void update() {
-        for (Element element : getIterableElements()) {
-            element.update();
-        }
+        for (Element element : getIterableElements()) element.update();
+        for (Element element : getIterableElements3d()) element.update();
 
-        for (Element element : getIterableElements3d()) {
-            element.update();
-        }
-
-        if(Jaylib.IsKeyDown(Raylib.KEY_W)){
-            Renderer.camera._position(Renderer.camera._position().x(Renderer.camera._position().x() + 1));
-            Renderer.camera.target(Renderer.camera.target().x(Renderer.camera.target().x() + 1));
-        }
-
-        if(Jaylib.IsKeyDown(Raylib.KEY_S)){
-            Renderer.camera._position(Renderer.camera._position().x(Renderer.camera._position().x() - 1));
-            Renderer.camera.target(Renderer.camera.target().x(Renderer.camera.target().x() - 1));
-        }
-
-        if(Jaylib.IsKeyDown(Raylib.KEY_A)){
-            Renderer.camera._position(Renderer.camera._position().z(Renderer.camera._position().z() - 1));
-            Renderer.camera.target(Renderer.camera.target().z(Renderer.camera.target().z() - 1));
-        }
-
-        if(Jaylib.IsKeyDown(Raylib.KEY_D)){
-            Renderer.camera._position(Renderer.camera._position().z(Renderer.camera._position().z() + 1));
-            Renderer.camera.target(Renderer.camera.target().z(Renderer.camera.target().z() + 1));
+        int keyPressed = Jaylib.GetKeyPressed();
+        switch (keyPressed) {
+            case Raylib.KEY_W:
+                moveCamera(1, 0);
+                break;
+            case Raylib.KEY_S:
+                moveCamera(-1, 0);
+                break;
+            case Raylib.KEY_A:
+                moveCamera(0, -1);
+                break;
+            case Raylib.KEY_D:
+                moveCamera(0, 1);
+                break;
         }
 
         Renderer.updateCamera();
     }
 
+    private void moveCamera(int x, int z) {
+        Renderer.camera._position(Renderer.camera._position().x(Renderer.camera._position().x() + x));
+        Renderer.camera.target(Renderer.camera.target().x(Renderer.camera.target().x() + x));
+        Renderer.camera._position(Renderer.camera._position().z(Renderer.camera._position().z() + z));
+        Renderer.camera.target(Renderer.camera.target().z(Renderer.camera.target().z() + z));
+    }
     @Override
     public void render() {
 
