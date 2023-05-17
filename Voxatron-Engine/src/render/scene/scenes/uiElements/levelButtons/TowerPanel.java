@@ -10,7 +10,7 @@ import util.UiUtil;
 import static com.raylib.Raylib.DrawText;
 import static com.raylib.Raylib.IsMouseButtonPressed;
 
-public class TowerPanel {
+public abstract class TowerPanel implements Runnable {
 
     private final Jaylib.Rectangle screen;
     public Tower tower;
@@ -73,6 +73,7 @@ public class TowerPanel {
         if (dragging) {
             if (IsMouseButtonPressed(Raylib.MOUSE_BUTTON_LEFT)) {
                 dragging = false;
+
             }
         }
 

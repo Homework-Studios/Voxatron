@@ -29,11 +29,30 @@ public class IngameDevScene extends Scene {
         addElement3d(new FloorElement());
 
         TowerPanel[] tpl = new TowerPanel[]{
-                new TowerPanel(new CubeCanon()),
-                new TowerPanel(new SphereCanon()),
-                new TowerPanel(new CubeCanon()),
-                new TowerPanel(new CubeCanon()),
-                new TowerPanel(new CubeCanon())
+                new TowerPanel(new CubeCanon()) {
+                    @Override
+                    public void run() {
+
+                    }
+                },
+                new TowerPanel(new CubeCanon()) {
+                    @Override
+                    public void run() {
+
+                    }
+                },
+                new TowerPanel(new CubeCanon()) {
+                    @Override
+                    public void run() {
+
+                    }
+                },
+                new TowerPanel(new SphereCanon()) {
+                    @Override
+                    public void run() {
+
+                    }
+                }
         };
 
         elementBatch = new ElementBatch(new Element[]{

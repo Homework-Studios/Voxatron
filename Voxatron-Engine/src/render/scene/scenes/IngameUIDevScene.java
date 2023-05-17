@@ -23,12 +23,32 @@ public class IngameUIDevScene extends Scene {
     public void init() {
 
         TowerPanel[] tpl = new TowerPanel[]{
-                new TowerPanel(new CubeCanon()),
-                new TowerPanel(new SphereCanon()),
-                new TowerPanel(new CubeCanon()),
-                new TowerPanel(new CubeCanon()),
-                new TowerPanel(new CubeCanon())
+                new TowerPanel(new CubeCanon()) {
+                    @Override
+                    public void run() {
+
+                    }
+                },
+                new TowerPanel(new CubeCanon()) {
+                    @Override
+                    public void run() {
+
+                    }
+                },
+                new TowerPanel(new CubeCanon()) {
+                    @Override
+                    public void run() {
+
+                    }
+                },
+                new TowerPanel(new SphereCanon()) {
+                    @Override
+                    public void run() {
+
+                    }
+                }
         };
+
         for (int i = 0; i < tpl.length; i++) {
             if (i > 0) tpl[i].tower.setUnlocked(false);
         }
