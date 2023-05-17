@@ -3,6 +3,7 @@ package render.scene.scenes.uiElements.levelButtons;
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import game.tower.Tower;
+import math.LerpUtil;
 import math.Vector2;
 import util.UiUtil;
 
@@ -90,8 +91,12 @@ public class TowerPanel {
         // if dragging set the position to the mouse position
         if(dragging){
             // move the rectangle to the mouse position
-            rectangle.x(Raylib.GetMouseX() - rectangle.width() / 2);
-            rectangle.y(Raylib.GetMouseY() - rectangle.height() / 2);
+            float targetX = Raylib.GetMousePosition().x() - rectangle.width() / 2;
+            float targetY = Raylib.GetMousePosition().y() - rectangle.height() / 2;
+
+            // move the rectangle to the mouse position 10%
+            rectangle.x(LerpUtil.lerp(rectangle.x(), targetX, 0.3f));
+            rectangle.y(LerpUtil.lerp(rectangle.y(), targetY, 0.3f));
         }
     }
 }
