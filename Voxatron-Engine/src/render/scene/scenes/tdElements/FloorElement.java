@@ -1,7 +1,6 @@
 package render.scene.scenes.tdElements;
 
-import static com.raylib.Jaylib.BLACK;
-import static com.raylib.Jaylib.WHITE;
+import static com.raylib.Jaylib.*;
 import static com.raylib.Raylib.*;
 
 import com.raylib.Jaylib;
@@ -30,6 +29,6 @@ public class FloorElement extends Element {
 
     @Override
     public void render() {
-        DrawModel(heighMap, new Vector3(), 2, WHITE);
+        DrawGrid(100, 10);
     }
 }

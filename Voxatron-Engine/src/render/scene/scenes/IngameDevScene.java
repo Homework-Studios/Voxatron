@@ -52,31 +52,32 @@ public class IngameDevScene extends Scene {
         for (Element element : getIterableElements()) element.update();
         for (Element element : getIterableElements3d()) element.update();
 
-        int keyPressed = Jaylib.GetKeyPressed();
-        switch (keyPressed) {
-            case Raylib.KEY_W:
-                moveCamera(1, 0);
-                break;
-            case Raylib.KEY_S:
-                moveCamera(-1, 0);
-                break;
-            case Raylib.KEY_A:
-                moveCamera(0, -1);
-                break;
-            case Raylib.KEY_D:
-                moveCamera(0, 1);
-                break;
-        }
+        Vector2 move = new Vector2(0, 0);
+
+        if(Raylib.IsKeyDown(Raylib.KEY_W)) move.x(-1);
+        if(Raylib.IsKeyDown(Raylib.KEY_S)) move.x(1);
+        if(Raylib.IsKeyDown(Raylib.KEY_A)) move.y(1);
+        if(Raylib.IsKeyDown(Raylib.KEY_D)) move.y(-1);
+        if(Raylib.IsKeyDown(Raylib.KEY_SPACE)) moveCameraV(1);
+        if(Raylib.IsKeyDown(Raylib.KEY_LEFT_SHIFT)) moveCameraV(-1);
+
+        moveCamera((int) move.x(), (int) move.y());
 
         Renderer.updateCamera();
     }
 
     private void moveCamera(int x, int z) {
         Renderer.camera._position(Renderer.camera._position().x(Renderer.camera._position().x() + x));
-        Renderer.camera.target(Renderer.camera.target().x(Renderer.camera.target().x() + x));
+        //Renderer.camera.target(Renderer.camera.target().x(Renderer.camera.target().x() + x));
         Renderer.camera._position(Renderer.camera._position().z(Renderer.camera._position().z() + z));
-        Renderer.camera.target(Renderer.camera.target().z(Renderer.camera.target().z() + z));
+        //Renderer.camera.target(Renderer.camera.target().z(Renderer.camera.target().z() + z));
     }
+
+    private void moveCameraV(int y) {
+        Renderer.camera._position(Renderer.camera._position().y(Renderer.camera._position().y() + y));
+        //Renderer.camera.target(Renderer.camera.target().y(Renderer.camera.target().y() + y));
+    }
+
     @Override
     public void render() {
 
