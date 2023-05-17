@@ -23,6 +23,7 @@ public class TowerPanel {
     private boolean hover = false;
     private boolean dragging = false;
 
+    //TODO: replace with enums
     public TowerPanel(Tower tower) {
         this.tower = tower;
         this.screen = new Jaylib.Rectangle(0, 0, Jaylib.GetScreenWidth(), Jaylib.GetScreenHeight());

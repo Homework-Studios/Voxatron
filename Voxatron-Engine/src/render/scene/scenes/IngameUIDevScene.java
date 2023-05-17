@@ -1,7 +1,5 @@
 package render.scene.scenes;
 
-import game.tower.towers.CubeCanon;
-import game.tower.towers.SphereCanon;
 import math.Vector2;
 import render.scene.Element;
 import render.scene.Scene;
@@ -22,36 +20,6 @@ public class IngameUIDevScene extends Scene {
     @Override
     public void init() {
 
-        TowerPanel[] tpl = new TowerPanel[]{
-                new TowerPanel(new CubeCanon()) {
-                    @Override
-                    public void run() {
-
-                    }
-                },
-                new TowerPanel(new CubeCanon()) {
-                    @Override
-                    public void run() {
-
-                    }
-                },
-                new TowerPanel(new CubeCanon()) {
-                    @Override
-                    public void run() {
-
-                    }
-                },
-                new TowerPanel(new SphereCanon()) {
-                    @Override
-                    public void run() {
-
-                    }
-                }
-        };
-
-        for (int i = 0; i < tpl.length; i++) {
-            if (i > 0) tpl[i].tower.setUnlocked(false);
-        }
 
         elementBatch = new ElementBatch(new Element[]{
 
@@ -67,7 +35,7 @@ public class IngameUIDevScene extends Scene {
                         SceneManager.instance.setActiveScene(LevelSelectorScene.class);
                     }
                 },
-                new TowerSelector(Vector2.byScreenPercent(50, 105), Vector2.byScreenPercent(85, 20), tpl) {
+                new TowerSelector(Vector2.byScreenPercent(50, 105), Vector2.byScreenPercent(85, 20), new TowerPanel[0]) {
                     @Override
                     public void run() {
 

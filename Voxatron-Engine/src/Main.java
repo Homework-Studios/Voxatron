@@ -1,6 +1,6 @@
 import engine.DevelopmentConstants;
-import engine.EngineForm;
 import engine.assets.Asset;
+import game.GameManager;
 import input.Input;
 import render.Renderer;
 import testing.TestingValues;
@@ -18,10 +18,9 @@ public class Main {
         Point p = new Point(0, 0);
         Dimension dim = new Dimension(0, 0);
         Asset.ASSET_DIR = System.getProperty("user.dir") + "\\Voxatron\\Assets";
-        System.out.println(Asset.ASSET_DIR);
 
         // if (true) return;
-
+/*
         if (DevelopmentConstants.DEVELOPMENT_MODE) {
             DevelopmentConstants.ENGINE_FORM = new EngineForm();
             EngineForm form = DevelopmentConstants.ENGINE_FORM;
@@ -35,6 +34,12 @@ public class Main {
         p.move(p.x * 2 + 1, p.y * 2 + 1);
         dim = new Dimension(dim.width * 2, dim.height * 2);
         //init engine.assets and create a test asset
+
+
+ */
+
+        //initializing
+        new GameManager();
         Asset.init();
         new TestingValues();
         Window window = new Window();

@@ -1,14 +1,16 @@
 package game.tower;
 
-import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import game.GameManager;
-import render.scene.scenes.tdElements.CubeElement;
+import game.tower.towers.CubeCanon;
+import game.tower.towers.SphereCanon;
 
 /**
  * The abstract class representing a tower in the game.
  */
-public abstract class Tower implements TowerInterface {
+public abstract class Tower {
+    private final GameManager gameManager;
+    private final Raylib.Vector3 location;
     private String name;
     private Raylib.Color color;
     private boolean isUnlocked = true;
@@ -16,8 +18,6 @@ public abstract class Tower implements TowerInterface {
     private int range;
     private int fireRate;
     private int cost;
-
-    private final GameManager gameManager;
 
     /**
      * Constructs a new Tower object with the specified properties.
@@ -29,7 +29,7 @@ public abstract class Tower implements TowerInterface {
      * @param fireRate the fire rate of the tower
      * @param cost     the cost of the tower
      */
-    public Tower(String name, Raylib.Color color, int damage, int range, int fireRate, int cost) {
+    public Tower(String name, Raylib.Color color, int damage, int range, int fireRate, int cost, Raylib.Vector3 location) {
         this.name = name;
         this.color = color;
         this.damage = damage;
@@ -37,7 +37,7 @@ public abstract class Tower implements TowerInterface {
         this.fireRate = fireRate;
         this.cost = cost;
         this.gameManager = GameManager.getInstance();
-//        addElement3d(new CubeElement(getDropVector(), new Jaylib.Vector3().x(5).y(5).z(5)));
+        this.location = location;
     }
 
     public boolean isUnlocked() {
@@ -169,8 +169,17 @@ public abstract class Tower implements TowerInterface {
     }
 
     public void place() {
-        if(gameManager.buy(getCost()) && placeTower()) {
-
+        //Place towers (had to do this because of the way I implemented the towers)
+        if (canDrop() && gameManager.buy(getCost())) {
+            if (this.getClass().equals(CubeCanon.class)) {
+                gameManager.addTower(new CubeCanon());
+            } else if (this.getClass().equals(SphereCanon.class)) {
+                gameManager.addTower(new SphereCanon());
+            }
         }
+    }
+
+    public boolean canDrop() {
+        return location.x() != 0 && location.y() != 0 && location.z() != 0;
     }
 }
