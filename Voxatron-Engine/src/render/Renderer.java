@@ -35,8 +35,8 @@ public class Renderer {
             new DebugDraw();
         }
 
-        camera._position(new Vector3().y(40).z(40))
-                .target(new Vector3())
+        camera._position(new Vector3().x(-40).y(60).z(-40))
+                .target(new Vector3().y(40))
                 .up(new Vector3().x(0).y(1).z(0))
                 .fovy(45).projection(CAMERA_PERSPECTIVE);
         Jaylib.SetCameraMode(camera, CAMERA_CUSTOM);

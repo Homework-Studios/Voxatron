@@ -1,12 +1,14 @@
 package render.scene.scenes;
 
 import com.raylib.Jaylib;
+import com.raylib.Raylib;
 import math.Vector2;
 import render.Renderer;
 import render.scene.Element;
 import render.scene.Scene;
 import render.scene.SceneManager;
 import render.scene.scenes.tdElements.CubeElement;
+import render.scene.scenes.tdElements.FloorElement;
 import render.scene.scenes.uiElements.ButtonElement;
 import render.scene.scenes.uiElements.TextElement;
 
@@ -16,7 +18,9 @@ public class IngameDevScene extends Scene {
 
     @Override
     public void init() {
-        addElement3d(new CubeElement(new Jaylib.Vector3(0, 0, 0), new Jaylib.Vector3(50, 5, 50)));
+        // addElement3d(new CubeElement(new Jaylib.Vector3(0, 0, 0), new Jaylib.Vector3(50, 5, 50)));
+
+        addElement3d(new FloorElement());
 
         ElementBatch levelSelectorBatch = new ElementBatch(new Element[]{
                 new TextElement(
@@ -51,6 +55,26 @@ public class IngameDevScene extends Scene {
 
         for (Element element : getIterableElements3d()) {
             element.update();
+        }
+
+        if(Jaylib.IsKeyDown(Raylib.KEY_W)){
+            Renderer.camera._position(Renderer.camera._position().x(Renderer.camera._position().x() + 1));
+            Renderer.camera.target(Renderer.camera.target().x(Renderer.camera.target().x() + 1));
+        }
+
+        if(Jaylib.IsKeyDown(Raylib.KEY_S)){
+            Renderer.camera._position(Renderer.camera._position().x(Renderer.camera._position().x() - 1));
+            Renderer.camera.target(Renderer.camera.target().x(Renderer.camera.target().x() - 1));
+        }
+
+        if(Jaylib.IsKeyDown(Raylib.KEY_A)){
+            Renderer.camera._position(Renderer.camera._position().z(Renderer.camera._position().z() - 1));
+            Renderer.camera.target(Renderer.camera.target().z(Renderer.camera.target().z() - 1));
+        }
+
+        if(Jaylib.IsKeyDown(Raylib.KEY_D)){
+            Renderer.camera._position(Renderer.camera._position().z(Renderer.camera._position().z() + 1));
+            Renderer.camera.target(Renderer.camera.target().z(Renderer.camera.target().z() + 1));
         }
 
         Renderer.updateCamera();
