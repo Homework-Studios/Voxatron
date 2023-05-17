@@ -44,6 +44,10 @@ public class Camera {
             move(Jaylib.Vector3Negate(forward));
         }
 
+        // The cross product of two vectors results in a vector perpendicular to both.
+        // This is linear algebra and is cool. I love linear algebra.
+        // Kreuzprodukt oder auch Vektorprodukt
+
         if (Raylib.IsKeyDown(Raylib.KEY_A)) {
             Raylib.Vector3 right = Jaylib.Vector3CrossProduct(camera.up(), forward);
             right = Jaylib.Vector3Normalize(right);
@@ -67,6 +71,29 @@ public class Camera {
 
     public void update() {
         input();
+
+        // limit the height of the camera to be at least 10 units above the ground and max 100 units
+        if (camera._position().y() < 10) {
+            camera._position().y(10);
+            this.position.y(10);
+        } else if (camera._position().y() > 300) {
+            camera._position().y(300);
+            this.position.y(300);
+        }
+
+        // the distance to 0,0,0 is 100 units max
+        if (Jaylib.Vector3Length(camera._position()) > 400) {
+            camera._position(Jaylib.Vector3Normalize(camera._position()));
+            camera._position(Jaylib.Vector3Scale(camera._position(), 400));
+            this.position = camera._position();
+        }
+
+        // the distance to 0,0,0 is 10 units min
+        if (Jaylib.Vector3Length(camera._position()) < 50) {
+            camera._position(Jaylib.Vector3Normalize(camera._position()));
+            camera._position(Jaylib.Vector3Scale(camera._position(), 50));
+            this.position = camera._position();
+        }
 
         Raylib.Matrix rotation = Raylib.MatrixRotate(camera.up(), 0);
         Raylib.Vector3 view = Jaylib.Vector3Subtract(camera._position(), camera.target());

@@ -29,7 +29,7 @@ public class Renderer {
     public Renderer() {
         instance = this;
 
-        camera = new Camera(new Vector3().x(40).y(60), new Vector3(), new Vector3().y(1), 45, Camera.PERSPECTIVE);
+        camera = new Camera(new Vector3().x(300).y(200), new Vector3(), new Vector3().y(1), 45, Camera.PERSPECTIVE);
     }
 
     public void begin() {
