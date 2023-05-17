@@ -14,6 +14,7 @@ public abstract class TowerSelector extends Element implements Runnable {
     private int scroll = 0;
     private int targetScrolling = 0;
     private float hoverOffset;
+    private Raylib.Rectangle collisions;
 
     /**
      * IMPORTANT: minimum of three towers in towers array (scrolling issues)
@@ -24,10 +25,11 @@ public abstract class TowerSelector extends Element implements Runnable {
         this.towers = towers;
     }
 
+    //        TODO: CENTRE
     @Override
     public void update() {
         // hover check
-        Raylib.Rectangle collisions = new Raylib.Rectangle().x(position.x - size.x / 2).y(position.y - size.y / 2 - hoverOffset).width(size.x).height(size.y + UiUtil.getHeightPercent(5));
+        collisions = new Raylib.Rectangle().x(position.x - size.x / 2).y(position.y - size.y / 2 - hoverOffset).width(size.x).height(size.y + UiUtil.getHeightPercent(5));
         boolean hover = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), collisions);
 
 

@@ -1,7 +1,6 @@
 package render.scene.scenes;
 
 import com.raylib.Jaylib;
-import com.raylib.Raylib;
 import math.Vector2;
 import render.Renderer;
 import render.scene.Element;
@@ -11,14 +10,13 @@ import render.scene.scenes.tdElements.CubeElement;
 import render.scene.scenes.uiElements.ButtonElement;
 import render.scene.scenes.uiElements.TextElement;
 
-import static com.raylib.Raylib.CAMERA_ORBITAL;
 import static util.ColorPalette.ColorPalettes.STANDARD_BUTTON;
 
 public class IngameDevScene extends Scene {
 
     @Override
     public void init() {
-        addElement3d(new CubeElement(new Jaylib.Vector3(0, 0, 0), new Jaylib.Vector3(5, 5, 5)));
+        addElement3d(new CubeElement(new Jaylib.Vector3(0, 0, 0), new Jaylib.Vector3(50, 5, 50)));
 
         ElementBatch levelSelectorBatch = new ElementBatch(new Element[]{
                 new TextElement(
