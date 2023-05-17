@@ -16,6 +16,8 @@ public abstract class TowerSelector extends Element implements Runnable {
     private float hoverOffset;
     private Raylib.Rectangle collisions;
 
+    private boolean dragging = false;
+
     /**
      * IMPORTANT: minimum of three towers in towers array (scrolling issues)
      */
