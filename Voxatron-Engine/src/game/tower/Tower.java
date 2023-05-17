@@ -15,47 +15,53 @@ public abstract class Tower {
         return name;
     }
 
-    public void setName(String name) {
+    public Tower setName(String name) {
         this.name = name;
+        return this;
     }
 
     public Raylib.Color getColor() {
         return color;
     }
 
-    public void setColor(Raylib.Color color) {
+    public Tower setColor(Raylib.Color color) {
         this.color = color;
+        return this;
     }
 
     public int getDamage() {
         return damage;
     }
 
-    public void setDamage(int damage) {
+    public Tower setDamage(int damage) {
         this.damage = damage;
+        return this;
     }
 
     public int getRange() {
         return range;
     }
 
-    public void setRange(int range) {
+    public Tower setRange(int range) {
         this.range = range;
+        return this;
     }
 
     public int getFireRate() {
         return fireRate;
     }
 
-    public void setFireRate(int fireRate) {
+    public Tower setFireRate(int fireRate) {
         this.fireRate = fireRate;
+        return this;
     }
 
     public int getCost() {
         return cost;
     }
 
-    public void setCost(int cost) {
+    public Tower setCost(int cost) {
         this.cost = cost;
+        return this;
     }
 }
