@@ -1,5 +1,6 @@
 package render.scene;
 
+import render.Renderer;
 import render.scene.scenes.*;
 
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class SceneManager {
         for (Scene scene : scenes) {
             if (scene.getClass() == sceneName) {
                 activeScene = scene;
+                Renderer.instance.mode3d = false;
             }
         }
     }
