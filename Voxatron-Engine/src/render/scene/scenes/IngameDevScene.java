@@ -34,32 +34,50 @@ public class IngameDevScene extends Scene {
         addElement3d(new FloorElement());
 
         TowerPanel[] tpl = new TowerPanel[]{
-                new TowerPanel(new CubeCanon()) {
+                new TowerPanel(new CubeCanon() {
                     @Override
-                    public void run() {
-                        if(canDrop()){
-                            addElement3d(new CubeElement(getDropPosition(), new Jaylib.Vector3().x(5).y(5).z(5)));
-                        }
+                    public boolean placeTower() {
+                        return canDrop();
                     }
-                },
-                new TowerPanel(new CubeCanon()) {
+
                     @Override
-                    public void run() {
-                        System.out.println("CubeCanon");
+                    public Raylib.Vector3 getDropVector() {
+                        return getDropPosition();
                     }
-                },
-                new TowerPanel(new CubeCanon()) {
+                }) ,
+                new TowerPanel(new CubeCanon() {
                     @Override
-                    public void run() {
-                        System.out.println("CubeCanon");
+                    public boolean placeTower() {
+                        return canDrop();
                     }
-                },
-                new TowerPanel(new SphereCanon()) {
+
                     @Override
-                    public void run() {
-                        System.out.println("SphereCanon");
+                    public Raylib.Vector3 getDropVector() {
+                        return getDropPosition();
                     }
-                }
+                }),
+                new TowerPanel(new CubeCanon() {
+                    @Override
+                    public boolean placeTower() {
+                        return canDrop();
+                    }
+
+                    @Override
+                    public Raylib.Vector3 getDropVector() {
+                        return getDropPosition();
+                    }
+                }),
+                new TowerPanel(new SphereCanon() {
+                    @Override
+                    public boolean placeTower() {
+                        return canDrop();
+                    }
+
+                    @Override
+                    public Raylib.Vector3 getDropVector() {
+                        return getDropPosition();
+                    }
+                })
         };
 
         elementBatch = new ElementBatch(new Element[]{

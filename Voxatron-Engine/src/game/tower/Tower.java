@@ -1,11 +1,14 @@
 package game.tower;
 
+import com.raylib.Jaylib;
 import com.raylib.Raylib;
+import game.GameManager;
+import render.scene.scenes.tdElements.CubeElement;
 
 /**
  * The abstract class representing a tower in the game.
  */
-public abstract class Tower {
+public abstract class Tower implements TowerInterface {
     private String name;
     private Raylib.Color color;
     private boolean isUnlocked = true;
@@ -13,6 +16,8 @@ public abstract class Tower {
     private int range;
     private int fireRate;
     private int cost;
+
+    private final GameManager gameManager;
 
     /**
      * Constructs a new Tower object with the specified properties.
@@ -31,6 +36,8 @@ public abstract class Tower {
         this.range = range;
         this.fireRate = fireRate;
         this.cost = cost;
+        this.gameManager = GameManager.getInstance();
+//        addElement3d(new CubeElement(getDropVector(), new Jaylib.Vector3().x(5).y(5).z(5)));
     }
 
     public boolean isUnlocked() {
@@ -159,5 +166,11 @@ public abstract class Tower {
     public Tower setCost(int cost) {
         this.cost = cost;
         return this;
+    }
+
+    public void place() {
+        if(gameManager.buy(getCost()) && placeTower()) {
+
+        }
     }
 }
