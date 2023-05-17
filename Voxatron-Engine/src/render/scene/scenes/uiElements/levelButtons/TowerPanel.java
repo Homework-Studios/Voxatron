@@ -12,15 +12,13 @@ import static com.raylib.Raylib.IsMouseButtonPressed;
 
 public class TowerPanel {
 
+    private final Jaylib.Rectangle screen;
     public Tower tower;
-
     public Raylib.Rectangle rectangle = new Raylib.Rectangle();
     public int index = 0;
     public float scroll = 0;
     public Vector2 position;
     public Vector2 size;
-
-    private Jaylib.Rectangle screen;
     private boolean cull = false;
     private boolean hover = false;
     private boolean dragging = false;
@@ -31,7 +29,7 @@ public class TowerPanel {
     }
 
     public void render() {
-        if(cull && !dragging) return;
+        if (cull && !dragging) return;
 
         int textSize = (int) UiUtil.getWidthPercent(3);
         Raylib.DrawRectangleRoundedLines(rectangle, 0.1f, 10, 5, tower.getColor());
@@ -57,39 +55,36 @@ public class TowerPanel {
         rectangle = new Raylib.Rectangle().x(finalX - UiUtil.getWidthPercent(5)).y(finalY).width(width).height(size.y);
 
         // Cull the tower element if it is outside the screen
-        cull = true;
-        if(Jaylib.CheckCollisionBoxes(
+        cull = !Jaylib.CheckCollisionBoxes(
                 new Jaylib.BoundingBox(
-                    new Jaylib.Vector3(),
-                    new Jaylib.Vector3().x(screen.width()).y(screen.height())
+                        new Jaylib.Vector3(),
+                        new Jaylib.Vector3().x(screen.width()).y(screen.height())
                 ),
                 new Jaylib.BoundingBox(
-                    new Jaylib.Vector3().x(rectangle.x()).y(rectangle.y()),
-                    new Jaylib.Vector3().x(rectangle.width()).y(rectangle.height())
+                        new Jaylib.Vector3().x(rectangle.x()).y(rectangle.y()),
+                        new Jaylib.Vector3().x(rectangle.width()).y(rectangle.height())
                 )
-        )){
-            cull = false;
-        }
+        );
 
         // check if the mouse is hovering over the tower element
         hover = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), rectangle);
 
         // if dragging and left mouse button is pressed set dragging to false
-        if(dragging){
-            if(IsMouseButtonPressed(Raylib.MOUSE_BUTTON_LEFT)){
+        if (dragging) {
+            if (IsMouseButtonPressed(Raylib.MOUSE_BUTTON_LEFT)) {
                 dragging = false;
             }
         }
 
         // if not dragging and left mouse button is pressed and the mouse is hovering over the tower element set dragging to true
-        if(!dragging){
-            if(IsMouseButtonPressed(Raylib.MOUSE_BUTTON_LEFT) && hover){
+        if (!dragging) {
+            if (IsMouseButtonPressed(Raylib.MOUSE_BUTTON_LEFT) && hover) {
                 dragging = true;
             }
         }
 
         // if dragging set the position to the mouse position
-        if(dragging){
+        if (dragging) {
             // move the rectangle to the mouse position
             float targetX = Raylib.GetMousePosition().x() - rectangle.width() / 2;
             float targetY = Raylib.GetMousePosition().y() - rectangle.height() / 2;
