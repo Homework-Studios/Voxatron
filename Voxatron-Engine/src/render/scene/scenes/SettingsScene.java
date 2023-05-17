@@ -164,7 +164,7 @@ public class SettingsScene extends Scene {
 
                     @Override
                     public void onValueChange() {
-                        AudioManager.masterVolume = sliderValue;
+
                     }
                 },
         }, true);

@@ -5,9 +5,8 @@ import game.tower.Tower;
 
 public class CubeCanon extends Tower {
 
-    public CubeCanon(){
-        setName("Cube Canon");
-        setColor(Jaylib.RED);
+    public CubeCanon() {
+        super("Cube Canon", Jaylib.RED, 10, 10, 10, 10);
     }
 
 }

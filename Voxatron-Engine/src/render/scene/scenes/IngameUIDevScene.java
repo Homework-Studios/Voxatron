@@ -31,7 +31,7 @@ public class IngameUIDevScene extends Scene {
         }
 
         elementBatch = new ElementBatch(new Element[]{
-                
+
                 new ButtonElement(
                         Vector2.byScreenPercent(94, 5),
                         Vector2.byScreenPercent(10, 7),

@@ -80,6 +80,12 @@ public abstract class Asset {
         }
     }
 
+    /**
+     * Gets the path of a tree node.
+     *
+     * @param node the tree node
+     * @return the path of the tree node
+     */
     public static String getPathByNode(DefaultMutableTreeNode node) {
         String path = "";
         TreeNode[] paths = node.getPath();
@@ -94,6 +100,9 @@ public abstract class Asset {
         return split[0];
     }
 
+    /**
+     * Initializes the asset system.
+     */
     public static void init() {
         if (DevelopmentConstants.DEVELOPMENT_MODE) {
             path_nodes.put("", (DefaultMutableTreeNode) tree.getModel().getRoot());
@@ -114,12 +123,22 @@ public abstract class Asset {
         }
     }
 
+    /**
+     * Loads an asset from a file.
+     *
+     * @param assetFile the file containing the asset
+     */
     public static void loadAsset(File assetFile) {
         if (assetFile.exists()) {
             createOrLoadAsset(assetFile.getParentFile().getName(), assetFile.getParentFile().getParentFile().getPath().replace(ASSET_DIR, ""), AssetType.valueOf(assetFile.getName().replace(".asset", "")), false);
         }
     }
 
+    /**
+     * Gets the currently selected asset.
+     *
+     * @return the currently selected asset
+     */
     public static Asset getSelectedAsset() {
         TreePath selectionPath = tree.getSelectionPath();
         if (selectionPath != null) {
@@ -131,6 +150,9 @@ public abstract class Asset {
         return null;
     }
 
+    /**
+     * Updates the tree nodes to match the assets.
+     */
     public static void updateTreeNodes() {
         for (File file : FileUtils.getAllFiles(new File(ASSET_DIR))) {
             String path = file.getAbsolutePath().replace(ASSET_DIR, "");
@@ -138,6 +160,11 @@ public abstract class Asset {
         }
     }
 
+    /**
+     * Removes a file from the asset system.
+     *
+     * @param node the tree node representing the file
+     */
     public static void removeFileByNode(DefaultMutableTreeNode node) {
         String path = getPathByNode(node);
         path = path.replaceAll("<.*?>", "");
@@ -147,30 +174,80 @@ public abstract class Asset {
         ((DefaultTreeModel) tree.getModel()).removeNodeFromParent(node);
     }
 
+    /**
+     * Creates a tree node for a path.
+     *
+     * @param path the path to create a node for
+     */
     public static void createNodeLevelUp(String path) {
         if (!DevelopmentConstants.DEVELOPMENT_MODE) return;
         TreeUtils.genTreeNodesLevelUp(path, path_nodes, tree);
     }
 
+    /**
+     * Updates the name of the tree node representing the asset.
+     *
+     * @param name the new name of the asset
+     * @param path the path of the asset
+     * @param type the type of the asset
+     */
     public static void updateAssetNodeName(String name, String path, AssetType type) {
         if (!path.startsWith("\\")) path = "\\" + path;
         DefaultMutableTreeNode node = path_nodes.get(path);
         node.setUserObject(new Text().writeText(name + " ").setItalic(true).setSize(10).setColor(highlightArea).writeText("(" + type + ")"));
     }
 
+    /**
+     * Unloads the asset.
+     */
     public abstract void unload();
 
+    /**
+     * Updates the naming of the asset.
+     */
     public void updateNaming() {
         updateAssetNodeName(getName(), getAbsolutePath(), getType());
     }
 
-
+    /**
+     * Renames the asset.
+     *
+     * @param test the new name of the asset
+     */
     public void rename(String test) {
         updateAssetNodeName(test, path, type);
     }
 
+    /**
+     * Loads the asset.
+     */
     public abstract void load();
 
+    /**
+     * Deletes the asset.
+     */
+    public void delete() {
+        FileUtils.deleteFileOrDirectory(directory);
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        model.removeNodeFromParent(path_nodes.get(path));
+    }
+
+    /**
+     * Returns the path of the asset.
+     *
+     * @return the path of the asset
+     */
+    @Override
+    public String toString() {
+        return path;
+    }
+
+    /**
+     * Creates the asset directory and file if they do not exist.
+     * If the directory or file already exists, this method does nothing.
+     *
+     * @throws RuntimeException if there is an IOException while creating the directory or file
+     */
     public void createAsset() {
         try {
             if (!directory.exists()) {
@@ -184,43 +261,65 @@ public abstract class Asset {
         }
     }
 
-    public void delete() {
-        FileUtils.deleteFileOrDirectory(directory);
-        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-        model.removeNodeFromParent(path_nodes.get(path));
-    }
-
-    @Override
-    public String toString() {
-        return path;
-    }
-
-    //region Getter/Setter
+    /**
+     * Gets the directory where the asset is stored.
+     *
+     * @return the directory where the asset is stored
+     */
     public File getDirectory() {
         return directory;
     }
 
+    /**
+     * Gets the absolute path of the asset.
+     *
+     * @return the absolute path of the asset
+     */
     public String getAbsolutePath() {
         return path + "\\" + name;
     }
 
+    //region Getter/Setter
+
+    /**
+     * Gets the file where the asset is stored.
+     *
+     * @return the file where the asset is stored
+     */
     public File getAssetFile() {
         return assetFile;
     }
 
+    /**
+     * Gets the name of the asset.
+     *
+     * @return the name of the asset
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Gets the path of the asset.
+     *
+     * @return the path of the asset
+     */
     public String getPath() {
         return path;
     }
 
+    /**
+     * Gets the type of the asset.
+     *
+     * @return the type of the asset
+     */
     public AssetType getType() {
         return type;
     }
 
-
+    /**
+     * The types of assets.
+     */
     public enum AssetType {
         //Utility Asset Types (no actual asset)
         Directory,
@@ -231,7 +330,9 @@ public abstract class Asset {
 
     }
 
-
+    /**
+     * A value associated with an asset.
+     */
     public static class AssetValue {
         String value;
 
@@ -248,6 +349,5 @@ public abstract class Asset {
         }
     }
 
-
-//endregion
+    //endregion
 }

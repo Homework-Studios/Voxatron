@@ -27,7 +27,6 @@ public class TowerPanel {
     }
 
     public void render() {
-
         if(cull) return;
 
         int textSize = (int) UiUtil.getWidthPercent(3);
@@ -36,16 +35,24 @@ public class TowerPanel {
     }
 
     public void update() {
+        // Set the width of the tower panel
         float width = size.x / 10;
+
+        // Calculate the final scroll position of the tower panel
         float finalScroll = -scroll + UiUtil.getWidthPercent(30);
+
+        // Calculate the final X and Y position of the tower element
         float finalX = position.x - size.x / 2 + index * (width + UiUtil.getWidthPercent(1)) + finalScroll;
         float finalY = position.y - size.y / 2;
 
-        //move elements down at sides
+        // Move elements down at the sides
         finalY += finalX < UiUtil.getWidthPercent(30) ? (-finalX + UiUtil.getWidthPercent(30)) * (-finalX + UiUtil.getWidthPercent(30)) * 0.002 : 0;
         finalY += finalX > UiUtil.getWidthPercent(70) ? (UiUtil.getWidthPercent(70) - finalX) * (UiUtil.getWidthPercent(70) - finalX) * 0.002 : 0;
+
+        // Set the rectangle for the tower element
         rectangle = new Raylib.Rectangle().x(finalX - UiUtil.getWidthPercent(5)).y(finalY).width(width).height(size.y);
 
+        // Cull the tower element if it is outside the screen
         cull = true;
         if(Jaylib.CheckCollisionBoxes(
                 new Jaylib.BoundingBox(
@@ -59,5 +66,7 @@ public class TowerPanel {
         )){
             cull = false;
         }
+
+
     }
 }

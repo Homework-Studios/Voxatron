@@ -2,13 +2,11 @@ package input;
 
 import com.raylib.Jaylib;
 import input.map.Mapping;
-
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Input {
-
     public static Input instance;
     public Map<Mapping, Integer> mappings = new HashMap<>();
 
@@ -24,11 +22,7 @@ public class Input {
     }
 
     public int findMapping(Mapping mapping) {
-        if (mappings.containsKey(mapping)) {
-            return mappings.get(mapping);
-        }
-
-        return -1;
+        return mappings.getOrDefault(mapping, -1);
     }
 
     public void remap(Mapping mapping, int key) {
@@ -36,10 +30,6 @@ public class Input {
     }
 
     public boolean isKeyPressed(Mapping mapping) {
-        int key = findMapping(mapping);
-
-        if (key == -1) return false;
-
-        return Jaylib.IsKeyPressed(key);
+        return Jaylib.IsKeyPressed(findMapping(mapping));
     }
 }
