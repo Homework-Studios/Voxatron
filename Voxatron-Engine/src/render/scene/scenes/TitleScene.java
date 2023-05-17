@@ -133,7 +133,7 @@ public class TitleScene extends Scene {
         addElement(creditsScreenBatch);
 
         scrollingBackgroundElement = new ScrollingBackgroundElement(
-                Jaylib.GenImageGradientV(Raylib.GetScreenWidth(), Raylib.GetScreenHeight(), Jaylib.BLACK, new Jaylib.Color(0, 20, 0, 255)),
+                Jaylib.GenImageGradientV(Raylib.GetScreenWidth(), Raylib.GetScreenHeight(), Jaylib.BLACK, new Jaylib.Color(0, 40, 0, 255)),
                 Vector2.byScreenPercent(50, 50),
                 Vector2.byScreenPercent(100, 100),
                 50,
