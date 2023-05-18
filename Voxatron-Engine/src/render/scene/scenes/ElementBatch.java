@@ -11,6 +11,10 @@ public class ElementBatch extends Element {
     public ElementBatch(Element[] elements, boolean isVisible) {
         this.elements = elements;
         this.isVisible = isVisible;
+
+        for (Element element : elements) {
+            element.parentScene = this.parentScene;
+        }
     }
 
     @Override

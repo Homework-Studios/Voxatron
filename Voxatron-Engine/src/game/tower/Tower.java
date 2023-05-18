@@ -56,6 +56,5 @@ public abstract class Tower extends Element {
                     return null;
             }
         }
-
     }
 }

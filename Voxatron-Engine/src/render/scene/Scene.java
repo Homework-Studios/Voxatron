@@ -30,10 +30,12 @@ public abstract class Scene {
 
     public void addElement(Element element) {
         elements.add(element);
+        element.parentScene = this;
     }
 
     public void addElement3d(Element element) {
         elements3d.add(element);
+        element.parentScene = this;
     }
 
     public void removeElement(Element element) {

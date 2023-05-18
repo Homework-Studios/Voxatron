@@ -3,6 +3,7 @@ package render.scene.scenes;
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import game.GameManager;
+import game.enemy.enemys.RedCube;
 import game.tower.Tower;
 import math.Vector2;
 import render.Renderer;
@@ -29,6 +30,8 @@ public class IngameDevScene extends InGameScene {
         addElement3d(new FloorElement());
         addElement3d(new PathDrawElement());
         addElement(new GameManagerElement());
+
+        GameManager.instance.addEnemy(new RedCube());
 
         //Todo: start game (this is for testing)
         GameManager.getInstance().start();

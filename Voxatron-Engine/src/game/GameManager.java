@@ -1,6 +1,8 @@
 package game;
 
 import com.raylib.Raylib;
+import game.enemy.Enemy;
+import game.enemy.enemys.RedCube;
 import game.tower.Tower;
 import render.scene.Element;
 import render.scene.InGameScene;
@@ -19,6 +21,7 @@ public abstract class GameManager extends Element {
     private int energy = 500;
     private int lives = 100;
     private List<Tower> towers = new ArrayList<>();
+    private List<Enemy> enemies = new ArrayList<>();
 
     public PathManager pathManager = new PathManager();
 
@@ -141,6 +144,24 @@ public abstract class GameManager extends Element {
     @Override
     public void update() {
         uiUpdate();
+    }
+
+    public void addEnemy(Enemy enemy) {
+        parentScene.addElement3d(enemy);
+        enemies.add(enemy);
+    }
+
+    public Enemy getClosetEnemy(Raylib.Vector3 location) {
+        Enemy closest = null;
+        float closestDistance = Float.MAX_VALUE;
+        for (Enemy enemy : enemies) {
+            float distance = Raylib.Vector3Distance(location, enemy.position);
+            if (distance < closestDistance) {
+                closest = enemy;
+                closestDistance = distance;
+            }
+        }
+        return closest;
     }
 
     /**
