@@ -31,7 +31,7 @@ public abstract class GameManager extends Element {
     public void placeTower(Tower.Type type) {
         if (!(SceneManager.instance.getActiveScene() instanceof InGameScene)) return;
         InGameScene scene = (InGameScene) SceneManager.instance.getActiveScene();
-        if (buy(type.getCost()) && canDrop(scene.getDropPosition())) {
+        if (canDrop(scene.getDropPosition()) && buy(type.getCost())) {
             Tower tower = type.createTower();
             assert tower != null;
             tower.setLocation(scene.getDropPosition());
