@@ -2,30 +2,31 @@ package render.scene.scenes.uiElements.levelButtons;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
+import game.GameManager;
 import game.tower.Tower;
 import math.LerpUtil;
 import math.Vector2;
+import render.scene.InGameScene;
 import util.UiUtil;
 
-import static com.raylib.Raylib.DrawText;
 import static com.raylib.Raylib.IsMouseButtonPressed;
 
 public class TowerPanel {
 
     private final Jaylib.Rectangle screen;
-    public Tower tower;
+    public Tower.Type tower;
     public Raylib.Rectangle rectangle = new Raylib.Rectangle();
     public int index = 0;
     public float scroll = 0;
     public Vector2 position;
     public Vector2 size;
+    public InGameScene scene;
     private boolean cull = false;
     private boolean hover = false;
     private boolean dragging = false;
 
-    //TODO: replace with enums
-    public TowerPanel(Tower tower) {
-        this.tower = tower;
+    public TowerPanel(Tower.Type type) {
+        this.tower = type;
         this.screen = new Jaylib.Rectangle(0, 0, Jaylib.GetScreenWidth(), Jaylib.GetScreenHeight());
     }
 
@@ -34,7 +35,7 @@ public class TowerPanel {
 
         int textSize = (int) UiUtil.getWidthPercent(3);
         Raylib.DrawRectangleRoundedLines(rectangle, 0.1f, 10, 5, tower.getColor());
-        DrawText(tower.getName(), (int) rectangle.x(), (int) rectangle.y(), textSize / 2, Jaylib.WHITE);
+        Raylib.DrawText(tower.getName(), (int) rectangle.x(), (int) rectangle.y(), textSize / 2, Jaylib.WHITE);
     }
 
     public void update() {
@@ -74,7 +75,7 @@ public class TowerPanel {
         if (dragging) {
             if (IsMouseButtonPressed(Raylib.MOUSE_BUTTON_LEFT)) {
                 dragging = false;
-                tower.place();
+                GameManager.placeTower(tower);
             }
         }
 

@@ -1,7 +1,5 @@
 package render.scene;
 
-import render.Renderer;
-
 import java.util.ArrayList;
 
 public abstract class Scene {

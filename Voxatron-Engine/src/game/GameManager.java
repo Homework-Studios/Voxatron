@@ -1,6 +1,8 @@
 package game;
 
 import game.tower.Tower;
+import render.scene.InGameScene;
+import render.scene.SceneManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +15,19 @@ public class GameManager {
     private int energy = 500;
     private int lives = 100;
     private List<Tower> towers = new ArrayList<>();
+
     public GameManager() {
         instance = this;
+        Tower.gameManager = this;
     }
 
     public static GameManager getInstance() {
         return instance;
+    }
+
+    public static void placeTower(Tower.Type tower) {
+        InGameScene scene = (InGameScene) SceneManager.instance.getActiveScene();
+        getInstance().addTower(tower.createTower());
     }
 
     public void setGameShouldEnd(boolean gameShouldEnd) {

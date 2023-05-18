@@ -1,12 +1,11 @@
 package game.tower.towers;
 
-import com.raylib.Jaylib;
-import com.raylib.Raylib;
 import game.tower.Tower;
 
 public class SphereCanon extends Tower {
 
     public SphereCanon() {
-        super("Sphere Canon", Jaylib.BLUE, 10, 10, 10, 10, new Raylib.Vector3());
+        super(Type.SPHERE_CANON, 25);
+
     }
 }

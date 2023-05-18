@@ -2,12 +2,11 @@ package render.scene.scenes;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
-import game.tower.towers.CubeCanon;
-import game.tower.towers.SphereCanon;
+import game.tower.Tower;
 import math.Vector2;
 import render.Renderer;
 import render.scene.Element;
-import render.scene.Scene;
+import render.scene.InGameScene;
 import render.scene.SceneManager;
 import render.scene.scenes.tdElements.DropGhostElement;
 import render.scene.scenes.tdElements.FloorElement;
@@ -17,7 +16,7 @@ import render.scene.scenes.uiElements.levelButtons.TowerSelector;
 
 import static util.ColorPalette.ColorPalettes.STANDARD_BUTTON;
 
-public class IngameDevScene extends Scene {
+public class IngameDevScene extends InGameScene {
 
     ElementBatch elementBatch;
 
@@ -32,10 +31,10 @@ public class IngameDevScene extends Scene {
         addElement3d(new FloorElement());
 
         TowerPanel[] tpl = new TowerPanel[]{
-                new TowerPanel(new CubeCanon()),
-                new TowerPanel(new CubeCanon()),
-                new TowerPanel(new CubeCanon()),
-                new TowerPanel(new SphereCanon())
+                new TowerPanel(Tower.Type.CUBE_CANON),
+                new TowerPanel(Tower.Type.CUBE_CANON),
+                new TowerPanel(Tower.Type.CUBE_CANON),
+                new TowerPanel(Tower.Type.SPHERE_CANON)
         };
 
         elementBatch = new ElementBatch(new Element[]{
@@ -52,7 +51,7 @@ public class IngameDevScene extends Scene {
                         SceneManager.instance.setActiveScene(LevelSelectorScene.class);
                     }
                 },
-                new TowerSelector(Vector2.byScreenPercent(50, 105), Vector2.byScreenPercent(85, 20), tpl) {
+                new TowerSelector(Vector2.byScreenPercent(50, 105), Vector2.byScreenPercent(85, 20), tpl, this) {
                     @Override
                     public void run() {
                         System.out.println("TowerSelector");

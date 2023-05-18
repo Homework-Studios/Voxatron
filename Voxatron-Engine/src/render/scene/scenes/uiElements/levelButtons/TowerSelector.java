@@ -4,6 +4,7 @@ import com.raylib.Raylib;
 import math.LerpUtil;
 import math.Vector2;
 import render.scene.Element;
+import render.scene.InGameScene;
 import util.UiUtil;
 
 public abstract class TowerSelector extends Element implements Runnable {
@@ -19,10 +20,14 @@ public abstract class TowerSelector extends Element implements Runnable {
     /**
      * IMPORTANT: minimum of three towers in towers array (scrolling issues)
      */
-    public TowerSelector(Vector2 position, Vector2 size, TowerPanel[] towers) {
+    public TowerSelector(Vector2 position, Vector2 size, TowerPanel[] towers, InGameScene scene) {
         this.position = position;
         this.size = size;
         this.towers = towers;
+
+        for (TowerPanel tower : towers) {
+            tower.scene = scene;
+        }
     }
 
     @Override

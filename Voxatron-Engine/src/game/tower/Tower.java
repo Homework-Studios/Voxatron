@@ -1,185 +1,52 @@
 package game.tower;
 
+import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import game.GameManager;
 import game.tower.towers.CubeCanon;
 import game.tower.towers.SphereCanon;
 
-/**
- * The abstract class representing a tower in the game.
- */
 public abstract class Tower {
-    private final GameManager gameManager;
-    private final Raylib.Vector3 location;
-    private String name;
-    private Raylib.Color color;
-    private boolean isUnlocked = true;
-    private int damage;
-    private int range;
-    private int fireRate;
-    private int cost;
+    public static GameManager gameManager;
+    private final Type type;
+    private final int cost;
+    protected Raylib.Vector3 location;
 
-    /**
-     * Constructs a new Tower object with the specified properties.
-     *
-     * @param name     the name of the tower
-     * @param color    the color of the tower
-     * @param damage   the damage dealt by the tower
-     * @param range    the range of the tower
-     * @param fireRate the fire rate of the tower
-     * @param cost     the cost of the tower
-     */
-    public Tower(String name, Raylib.Color color, int damage, int range, int fireRate, int cost, Raylib.Vector3 location) {
-        this.name = name;
-        this.color = color;
-        this.damage = damage;
-        this.range = range;
-        this.fireRate = fireRate;
+
+    public Tower(Type type, int cost) {
         this.cost = cost;
-        this.gameManager = GameManager.getInstance();
-        this.location = location;
+        this.type = type;
     }
 
-    public boolean isUnlocked() {
-        return isUnlocked;
-    }
+    public enum Type {
+        CUBE_CANON("Cube Canon", Jaylib.RED), SPHERE_CANON("Sphere Canon", Jaylib.BLUE);
 
-    public void setUnlocked(boolean unlocked) {
-        isUnlocked = unlocked;
-    }
+        private final String name;
+        private final Raylib.Color color;
 
-    /**
-     * Returns the name of the tower.
-     *
-     * @return the name of the tower
-     */
-    public String getName() {
-        return name;
-    }
+        Type(String name, Raylib.Color color) {
+            this.name = name;
+            this.color = color;
+        }
 
-    /**
-     * Sets the name of the tower.
-     *
-     * @param name the new name of the tower
-     * @return the updated Tower object
-     */
-    public Tower setName(String name) {
-        this.name = name;
-        return this;
-    }
+        public String getName() {
+            return name;
+        }
 
-    /**
-     * Returns the color of the tower.
-     *
-     * @return the color of the tower
-     */
-    public Raylib.Color getColor() {
-        return color;
-    }
+        public Raylib.Color getColor() {
+            return color;
+        }
 
-    /**
-     * Sets the color of the tower.
-     *
-     * @param color the new color of the tower
-     * @return the updated Tower object
-     */
-    public Tower setColor(Raylib.Color color) {
-        this.color = color;
-        return this;
-    }
-
-    /**
-     * Returns the damage of the tower.
-     *
-     * @return the damage of the tower
-     */
-    public int getDamage() {
-        return damage;
-    }
-
-    /**
-     * Sets the damage of the tower.
-     *
-     * @param damage the new damage of the tower
-     * @return the updated Tower object
-     */
-    public Tower setDamage(int damage) {
-        this.damage = damage;
-        return this;
-    }
-
-    /**
-     * Returns the range of the tower.
-     *
-     * @return the range of the tower
-     */
-    public int getRange() {
-        return range;
-    }
-
-    /**
-     * Sets the range of the tower.
-     *
-     * @param range the new range of the tower
-     * @return the updated Tower object
-     */
-    public Tower setRange(int range) {
-        this.range = range;
-        return this;
-    }
-
-    /**
-     * Returns the fire rate of the tower.
-     *
-     * @return the fire rate of the tower
-     */
-    public int getFireRate() {
-        return fireRate;
-    }
-
-    /**
-     * Sets the fire rate of the tower.
-     *
-     * @param fireRate the new fire rate of the tower
-     * @return the updated Tower object
-     */
-    public Tower setFireRate(int fireRate) {
-        this.fireRate = fireRate;
-        return this;
-    }
-
-    /**
-     * Returns the cost of the tower.
-     *
-     * @return the cost of the tower
-     */
-    public int getCost() {
-        return cost;
-    }
-
-    /**
-     * Sets the cost of the tower.
-     *
-     * @param cost the new cost of the tower
-     * @return the updated Tower object
-     */
-    public Tower setCost(int cost) {
-        this.cost = cost;
-        return this;
-    }
-
-    public void place() {
-        //Place towers (had to do this because of the way I implemented the towers)
-        if (canDrop() && gameManager.buy(getCost())) {
-            if (this.getClass().equals(CubeCanon.class)) {
-                gameManager.addTower(new CubeCanon());
-            } else if (this.getClass().equals(SphereCanon.class)) {
-                gameManager.addTower(new SphereCanon());
+        public Tower createTower() {
+            switch (this) {
+                case CUBE_CANON:
+                    return new CubeCanon();
+                case SPHERE_CANON:
+                    return new SphereCanon();
+                default:
+                    return null;
             }
         }
-    }
 
-    public boolean canDrop() {
-        return location.x() != 0 && location.y() != 0 && location.z() != 0;
     }
 }
