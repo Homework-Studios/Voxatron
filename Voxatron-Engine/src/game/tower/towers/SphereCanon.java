@@ -17,6 +17,6 @@ public class SphereCanon extends Tower {
 
     @Override
     public void render() {
-        Raylib.DrawSphere(location, 5, type.getColor());
+        Raylib.DrawSphere(position, 5, type.getColor());
     }
 }

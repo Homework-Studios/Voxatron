@@ -2,7 +2,6 @@ package game;
 
 import com.raylib.Raylib;
 import game.enemy.Enemy;
-import game.enemy.enemys.RedCube;
 import game.tower.Tower;
 import render.scene.Element;
 import render.scene.InGameScene;
@@ -40,7 +39,7 @@ public abstract class GameManager extends Element {
         if (canDrop(scene.getDropPosition()) && buy(type.getCost())) {
             Tower tower = type.createTower();
             assert tower != null;
-            tower.setLocation(scene.getDropPosition());
+            tower.setPosition(scene.getDropPosition());
             scene.addElement3d(tower);
             addTower(tower);
         }
@@ -115,6 +114,11 @@ public abstract class GameManager extends Element {
         return false;
     }
 
+    public boolean sell(int cost) {
+        addMoney((int) (cost * 0.75f));
+        return true;
+    }
+
     public void start() {
         round = 1;
         roundEnded = false;
@@ -151,16 +155,19 @@ public abstract class GameManager extends Element {
         enemies.add(enemy);
     }
 
-    public Enemy getClosetEnemy(Raylib.Vector3 location) {
+    public Enemy getClosetEnemy(Raylib.Vector3 position, float range) {
         Enemy closest = null;
         float closestDistance = Float.MAX_VALUE;
         for (Enemy enemy : enemies) {
-            float distance = Raylib.Vector3Distance(location, enemy.position);
+            float distance = Raylib.Vector3Distance(position, enemy.position);
             if (distance < closestDistance) {
                 closest = enemy;
                 closestDistance = distance;
             }
         }
+
+        if (closestDistance > range) return null;
+
         return closest;
     }
 
