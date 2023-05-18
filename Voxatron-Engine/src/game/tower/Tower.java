@@ -5,32 +5,41 @@ import com.raylib.Raylib;
 import game.GameManager;
 import game.tower.towers.CubeCanon;
 import game.tower.towers.SphereCanon;
+import render.scene.Element;
 
-public abstract class Tower {
+public abstract class Tower extends Element {
     public static GameManager gameManager;
-    private final Type type;
-    private final int cost;
-    protected Raylib.Vector3 location;
+    public final Type type;
+    protected Raylib.Vector3 location = new Raylib.Vector3();
 
 
-    public Tower(Type type, int cost) {
-        this.cost = cost;
+    public Tower(Type type) {
         this.type = type;
     }
 
+    public void setLocation(Raylib.Vector3 dropPosition) {
+        location = dropPosition;
+    }
+
     public enum Type {
-        CUBE_CANON("Cube Canon", Jaylib.RED), SPHERE_CANON("Sphere Canon", Jaylib.BLUE);
+        CUBE_CANON("Cube Canon", Jaylib.RED, 100), SPHERE_CANON("Sphere Canon", Jaylib.BLUE, 600);
 
         private final String name;
         private final Raylib.Color color;
+        private final int cost;
 
-        Type(String name, Raylib.Color color) {
+        Type(String name, Raylib.Color color, int cost) {
             this.name = name;
             this.color = color;
+            this.cost = cost;
         }
 
         public String getName() {
             return name;
+        }
+
+        public int getCost() {
+            return cost;
         }
 
         public Raylib.Color getColor() {

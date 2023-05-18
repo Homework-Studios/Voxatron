@@ -1,13 +1,16 @@
 package game;
 
+import com.raylib.Raylib;
 import game.tower.Tower;
+import render.scene.Element;
 import render.scene.InGameScene;
 import render.scene.SceneManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
-public class GameManager {
+public abstract class GameManager extends Element {
     public static GameManager instance;
     private int round = 0;
     private boolean roundEnded = true;
@@ -25,9 +28,20 @@ public class GameManager {
         return instance;
     }
 
-    public static void placeTower(Tower.Type tower) {
+    public void placeTower(Tower.Type type) {
+        if (!(SceneManager.instance.getActiveScene() instanceof InGameScene)) return;
         InGameScene scene = (InGameScene) SceneManager.instance.getActiveScene();
-        getInstance().addTower(tower.createTower());
+        if (buy(type.getCost()) && canDrop(scene.getDropPosition())) {
+            Tower tower = type.createTower();
+            assert tower != null;
+            tower.setLocation(scene.getDropPosition());
+            scene.addElement3d(tower);
+            addTower(tower);
+        }
+    }
+
+    private boolean canDrop(Raylib.Vector3 location) {
+        return location.x() != 0 && location.y() != 0 && location.z() != 0;
     }
 
     public void setGameShouldEnd(boolean gameShouldEnd) {
@@ -76,6 +90,7 @@ public class GameManager {
 
     public void nextRound() {
         round++;
+        roundEnded = false;
     }
 
     public void addMoney(int money) {
@@ -95,12 +110,38 @@ public class GameManager {
     }
 
     public void start() {
-        while (!gameShouldEnd) {
-            if (roundEnded) {
-                nextRound();
-                roundEnded = false;
+        round = 1;
+        roundEnded = false;
+        energy = 500;
+
+        //run game tick 20 times per second
+        Timer timer = new Timer();
+        timer.schedule(new java.util.TimerTask() {
+            @Override
+            public void run() {
+                if (gameShouldEnd || Raylib.WindowShouldClose()) timer.cancel();
+                gameTick();
             }
-        }
+        }, 0, 50);
     }
 
+    @Override
+    public void update() {
+        uiUpdate();
+    }
+
+    /**
+     * runs every 50ms (20 times per second)
+     */
+    public void gameTick() {
+        if (gameShouldEnd) System.out.println("Game Over");
+        if (roundEnded) {
+            nextRound();
+            System.out.println("Round " + round + " started");
+        }
+        //TODO: remove this and make a normal way to get money
+        energy++;
+    }
+
+    public abstract void uiUpdate();
 }

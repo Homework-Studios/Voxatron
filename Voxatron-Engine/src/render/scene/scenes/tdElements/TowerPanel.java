@@ -1,4 +1,4 @@
-package render.scene.scenes.uiElements.levelButtons;
+package render.scene.scenes.tdElements;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
@@ -35,7 +35,8 @@ public class TowerPanel {
 
         int textSize = (int) UiUtil.getWidthPercent(3);
         Raylib.DrawRectangleRoundedLines(rectangle, 0.1f, 10, 5, tower.getColor());
-        Raylib.DrawText(tower.getName(), (int) rectangle.x(), (int) rectangle.y(), textSize / 2, Jaylib.WHITE);
+        Raylib.DrawText(tower.getName() + System.lineSeparator() + tower.getCost(), (int) rectangle.x(), (int) rectangle.y(), textSize / 2, Jaylib.WHITE);
+
     }
 
     public void update() {
@@ -75,7 +76,7 @@ public class TowerPanel {
         if (dragging) {
             if (IsMouseButtonPressed(Raylib.MOUSE_BUTTON_LEFT)) {
                 dragging = false;
-                GameManager.placeTower(tower);
+                GameManager.getInstance().placeTower(tower);
             }
         }
 

@@ -2,17 +2,15 @@ package render.scene.scenes;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
+import game.GameManager;
 import game.tower.Tower;
 import math.Vector2;
 import render.Renderer;
 import render.scene.Element;
 import render.scene.InGameScene;
 import render.scene.SceneManager;
-import render.scene.scenes.tdElements.DropGhostElement;
-import render.scene.scenes.tdElements.FloorElement;
+import render.scene.scenes.tdElements.*;
 import render.scene.scenes.uiElements.ButtonElement;
-import render.scene.scenes.uiElements.levelButtons.TowerPanel;
-import render.scene.scenes.uiElements.levelButtons.TowerSelector;
 
 import static util.ColorPalette.ColorPalettes.STANDARD_BUTTON;
 
@@ -29,6 +27,10 @@ public class IngameDevScene extends InGameScene {
             }
         });
         addElement3d(new FloorElement());
+        addElement(new GameManagerElement());
+
+        //Todo: start game (this is for testing)
+        GameManager.getInstance().start();
 
         TowerPanel[] tpl = new TowerPanel[]{
                 new TowerPanel(Tower.Type.CUBE_CANON),

@@ -1,4 +1,4 @@
-package render.scene.scenes.uiElements.levelButtons;
+package render.scene.scenes.tdElements;
 
 import com.raylib.Raylib;
 import math.LerpUtil;

@@ -1,6 +1,5 @@
 import engine.DevelopmentConstants;
 import engine.assets.Asset;
-import game.GameManager;
 import input.Input;
 import render.Renderer;
 import testing.TestingValues;
@@ -39,7 +38,6 @@ public class Main {
  */
 
         //initializing
-        new GameManager();
         Asset.init();
         new TestingValues();
         Window window = new Window();
