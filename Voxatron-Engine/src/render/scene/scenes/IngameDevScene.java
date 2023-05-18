@@ -27,6 +27,7 @@ public class IngameDevScene extends InGameScene {
             }
         });
         addElement3d(new FloorElement());
+        addElement3d(new PathDrawElement());
         addElement(new GameManagerElement());
 
         //Todo: start game (this is for testing)

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Timer;
 
 public abstract class GameManager extends Element {
+
     public static GameManager instance;
     private int round = 0;
     private boolean roundEnded = true;
@@ -18,6 +19,8 @@ public abstract class GameManager extends Element {
     private int energy = 500;
     private int lives = 100;
     private List<Tower> towers = new ArrayList<>();
+
+    public PathManager pathManager = new PathManager();
 
     public GameManager() {
         instance = this;
@@ -123,6 +126,16 @@ public abstract class GameManager extends Element {
                 gameTick();
             }
         }, 0, 50);
+
+        pathManager = new PathManager();
+
+        // Raylib.Vector3[] last arguement
+        pathManager.genPath(new Raylib.Vector3().x(-150), new Raylib.Vector3().x(150), new Raylib.Vector3[]{
+                new Raylib.Vector3().z(-150),
+                new Raylib.Vector3().z(-50).x(-50),
+                new Raylib.Vector3().z(50).x(50),
+                new Raylib.Vector3().z(150),
+        });
     }
 
     @Override
