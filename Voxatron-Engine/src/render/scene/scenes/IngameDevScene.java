@@ -3,7 +3,7 @@ package render.scene.scenes;
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import game.GameManager;
-import game.enemy.enemys.RedCube;
+import game.enemy.enemies.RedCube;
 import game.tower.Tower;
 import math.Vector2;
 import render.Renderer;

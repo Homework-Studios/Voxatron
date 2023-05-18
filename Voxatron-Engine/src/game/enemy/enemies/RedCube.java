@@ -1,4 +1,4 @@
-package game.enemy.enemys;
+package game.enemy.enemies;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
