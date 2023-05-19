@@ -23,6 +23,8 @@ public abstract class Tower extends Element {
         this.type = type;
     }
 
+    public abstract void gameTick();
+
     public void setPosition(Raylib.Vector3 dropPosition) {
         position = dropPosition;
     }

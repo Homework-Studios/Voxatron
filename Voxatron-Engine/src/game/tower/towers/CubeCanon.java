@@ -48,4 +48,9 @@ public class CubeCanon extends Tower {
             Raylib.DrawLine3D(position, target.position, Jaylib.WHITE);
         }
     }
+
+    @Override
+    public void gameTick() {
+
+    }
 }

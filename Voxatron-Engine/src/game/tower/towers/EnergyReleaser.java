@@ -26,4 +26,9 @@ public class EnergyReleaser extends Tower {
     public void render() {
         Raylib.DrawCube(position, 5, 5, 5, type.getColor());
     }
+
+    @Override
+    public void gameTick() {
+
+    }
 }

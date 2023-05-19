@@ -19,6 +19,7 @@ public abstract class GameManager extends Element {
     private int round = 0;
     private boolean roundEnded = true;
     private boolean gameShouldEnd = false;
+
     private int energy = 500;
     private int lives = 100;
     private List<Tower> towers = new ArrayList<>();
@@ -97,12 +98,12 @@ public abstract class GameManager extends Element {
         roundEnded = false;
     }
 
-    public void addMoney(int money) {
-        this.energy += money;
+    public void addEnergy(int energy) {
+        this.energy += energy;
     }
 
-    public void removeMoney(int money) {
-        this.energy -= money;
+    public void removeMoney(int energy) {
+        this.energy -= energy;
     }
 
     public boolean buy(int cost) {
@@ -114,14 +115,15 @@ public abstract class GameManager extends Element {
     }
 
     public boolean sell(int cost) {
-        addMoney((int) (cost * 0.75f));
+        addEnergy((int) (cost * 0.75f));
         return true;
     }
 
     public void start() {
         round = 1;
         roundEnded = false;
-        energy = 500;
+        //TODO: remove only for testing standart is 500 more can be added with meta progression
+        energy = 999999;
 
         //run game tick 20 times per second
         Timer timer = new Timer();
@@ -179,8 +181,8 @@ public abstract class GameManager extends Element {
             nextRound();
             System.out.println("Round " + round + " started");
         }
-        //TODO: remove this and make a normal way to get money
-        energy += 5;
+        // hands over the Game Tick to towers
+        towers.forEach(Tower::gameTick);
     }
 
     public abstract void uiUpdate();
