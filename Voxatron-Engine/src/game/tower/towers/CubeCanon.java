@@ -3,9 +3,17 @@ package game.tower.towers;
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import game.GameManager;
-import game.enemy.Enemy;
 import game.tower.Tower;
 
+/**
+ * concept:
+ * <p>
+ * - a tower that shoots cubes
+ * <p>
+ * - single target tower
+ * <p>
+ * - no aoe damage
+ */
 public class CubeCanon extends Tower {
 
     public Raylib.BoundingBox aabb = new Raylib.BoundingBox();
@@ -17,7 +25,7 @@ public class CubeCanon extends Tower {
 
     @Override
     public void update() {
-        if(IsClicked(aabb)) {
+        if (IsClicked(aabb)) {
             parentScene.removeElement3d(this);
             GameManager.instance.sell(type.getCost());
         }

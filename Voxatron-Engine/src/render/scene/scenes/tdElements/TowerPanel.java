@@ -6,7 +6,6 @@ import game.GameManager;
 import game.tower.Tower;
 import math.LerpUtil;
 import math.Vector2;
-import render.scene.InGameScene;
 import util.UiUtil;
 
 import static com.raylib.Raylib.IsMouseButtonPressed;
@@ -20,7 +19,6 @@ public class TowerPanel {
     public float scroll = 0;
     public Vector2 position;
     public Vector2 size;
-    public InGameScene scene;
     private boolean cull = false;
     private boolean hover = false;
     private boolean dragging = false;

@@ -6,17 +6,15 @@ import game.tower.Tower;
 /**
  * concept:
  * <p>
- * - a tower that shoots spheres
+ * - a tower that releases energy
  * <p>
- * - aoe tower
+ * - energy is used to build towers
  * <p>
- * - deals aoe damage by exploding on impact
+ * - releasing energy costs energy this tower increases damage dealt to enemies when releasing
  */
-public class SphereCanon extends Tower {
-
-    public SphereCanon() {
-        super(Type.SPHERE_CANON);
-
+public class EnergyReleaser extends Tower {
+    public EnergyReleaser() {
+        super(Type.ENERGY_RELEASER);
     }
 
     @Override

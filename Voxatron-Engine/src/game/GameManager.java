@@ -14,15 +14,14 @@ import java.util.Timer;
 public abstract class GameManager extends Element {
 
     public static GameManager instance;
+    private final List<Enemy> enemies = new ArrayList<>();
+    public PathManager pathManager = new PathManager();
     private int round = 0;
     private boolean roundEnded = true;
     private boolean gameShouldEnd = false;
     private int energy = 500;
     private int lives = 100;
     private List<Tower> towers = new ArrayList<>();
-    private List<Enemy> enemies = new ArrayList<>();
-
-    public PathManager pathManager = new PathManager();
 
     public GameManager() {
         instance = this;
@@ -181,7 +180,7 @@ public abstract class GameManager extends Element {
             System.out.println("Round " + round + " started");
         }
         //TODO: remove this and make a normal way to get money
-        energy++;
+        energy += 5;
     }
 
     public abstract void uiUpdate();

@@ -4,7 +4,6 @@ import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import game.GameManager;
 import game.enemy.enemies.RedCube;
-import game.tower.Tower;
 import math.Vector2;
 import render.Renderer;
 import render.scene.Element;
@@ -36,13 +35,6 @@ public class IngameDevScene extends InGameScene {
         //Todo: start game (this is for testing)
         GameManager.getInstance().start();
 
-        TowerPanel[] tpl = new TowerPanel[]{
-                new TowerPanel(Tower.Type.CUBE_CANON),
-                new TowerPanel(Tower.Type.CUBE_CANON),
-                new TowerPanel(Tower.Type.CUBE_CANON),
-                new TowerPanel(Tower.Type.SPHERE_CANON)
-        };
-
         elementBatch = new ElementBatch(new Element[]{
 
                 new ButtonElement(
@@ -57,7 +49,7 @@ public class IngameDevScene extends InGameScene {
                         SceneManager.instance.setActiveScene(LevelSelectorScene.class);
                     }
                 },
-                new TowerSelector(Vector2.byScreenPercent(50, 105), Vector2.byScreenPercent(85, 20), tpl, this) {
+                new TowerSelector(Vector2.byScreenPercent(50, 105), Vector2.byScreenPercent(85, 20)) {
                     @Override
                     public void run() {
                         System.out.println("TowerSelector");

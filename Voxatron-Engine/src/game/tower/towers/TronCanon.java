@@ -6,17 +6,13 @@ import game.tower.Tower;
 /**
  * concept:
  * <p>
- * - a tower that shoots spheres
+ * no idea
  * <p>
- * - aoe tower
- * <p>
- * - deals aoe damage by exploding on impact
+ * maybe a tower that switches between different modes
  */
-public class SphereCanon extends Tower {
-
-    public SphereCanon() {
-        super(Type.SPHERE_CANON);
-
+public class TronCanon extends Tower {
+    public TronCanon() {
+        super(Type.TRON_CANON);
     }
 
     @Override
