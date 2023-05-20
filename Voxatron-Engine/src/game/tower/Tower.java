@@ -7,7 +7,7 @@ import game.enemy.Enemy;
 import game.tower.towers.*;
 import render.Renderer;
 import render.scene.Element;
-import render.scene.scenes.tdElements.TowerPanel;
+import render.scene.scenes.uiElements.TowerPanel;
 
 public abstract class Tower extends Element {
     public static GameManager gameManager;
@@ -15,7 +15,10 @@ public abstract class Tower extends Element {
     private final boolean moveMode = false;
     public Enemy target;
     public int range = 50;
-    protected Raylib.Vector3 position = new Raylib.Vector3();
+    public Raylib.Vector3 position = new Raylib.Vector3();
+
+    public int fireRate = 60;
+    public int triedToFire = 0;
 
     //TODO: make towers upgradeable
 
@@ -48,10 +51,34 @@ public abstract class Tower extends Element {
         return collision.hit();
     }
 
-    public enum Type {
-        CUBE_CANON("Cube Canon", Jaylib.RED, 100), PHASER_CANON("Phaser Canon", Jaylib.RED, 1300), TRON_CANON("Tron Canon", Jaylib.RED, 500), SPHERE_CANON("Sphere Canon", Jaylib.PURPLE, 600), ENERGY_RELEASER("Energy Releaser", Jaylib.PURPLE, 1500), ENERGY_COLLECTOR("Energy Collector", Jaylib.BLUE, 1000);
+    public boolean canFire() {
+        return triedToFire >= fireRate;
+    }
 
-        public static final TowerPanel[] panels = new TowerPanel[]{new TowerPanel(CUBE_CANON), new TowerPanel(PHASER_CANON), new TowerPanel(TRON_CANON), new TowerPanel(SPHERE_CANON), new TowerPanel(ENERGY_RELEASER), new TowerPanel(ENERGY_COLLECTOR)};
+    public void fire() {
+        triedToFire = 0;
+    }
+
+    public void tryFire() {
+        triedToFire++;
+    }
+
+    // IMPORTANT NOTE: The lowest EnergyFactory has to cost less than the lowest Tower to not softlock the game!
+    public enum Type {
+        CUBE_CANON("Cube Canon", Jaylib.RED, 400),
+        PHASER_CANON("Phaser Canon", Jaylib.RED, 1300),
+        TRON_CANON("Tron Canon", Jaylib.RED, 500),
+        SPHERE_CANON("Sphere Canon", Jaylib.PURPLE, 600),
+
+        ENERGY_FACTORY("Energy Factory", Jaylib.YELLOW, 100);
+
+        public static final TowerPanel[] panels = new TowerPanel[]{
+                new TowerPanel(CUBE_CANON),
+                //new TowerPanel(PHASER_CANON),
+                //new TowerPanel(TRON_CANON),
+                //new TowerPanel(SPHERE_CANON),
+                new TowerPanel(ENERGY_FACTORY)
+        };
 
         private final String name;
         private final Raylib.Color color;
@@ -85,10 +112,8 @@ public abstract class Tower extends Element {
                     return new TronCanon();
                 case SPHERE_CANON:
                     return new SphereCanon();
-                case ENERGY_RELEASER:
-                    return new EnergyReleaser();
-                case ENERGY_COLLECTOR:
-                    return new EnergyCollector();
+                case ENERGY_FACTORY:
+                    return new EnergyFactory();
                 default:
                     return null;
             }

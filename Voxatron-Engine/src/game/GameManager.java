@@ -2,6 +2,9 @@ package game;
 
 import com.raylib.Raylib;
 import game.enemy.Enemy;
+import game.enemy.enemies.RedCube;
+import game.tower.EnergyConsumer;
+import game.tower.Factory;
 import game.tower.Tower;
 import render.scene.Element;
 import render.scene.InGameScene;
@@ -16,13 +19,14 @@ public abstract class GameManager extends Element {
     public static GameManager instance;
     private final List<Enemy> enemies = new ArrayList<>();
     public PathManager pathManager = new PathManager();
-    private int round = 0;
+    private int round = 1;
     private boolean roundEnded = true;
     private boolean gameShouldEnd = false;
 
     private int energy = 500;
     private int lives = 100;
     private List<Tower> towers = new ArrayList<>();
+    private List<Tower> energyFactories = new ArrayList<>();
 
     public GameManager() {
         instance = this;
@@ -41,7 +45,12 @@ public abstract class GameManager extends Element {
             assert tower != null;
             tower.setPosition(scene.getDropPosition());
             scene.addElement3d(tower);
-            addTower(tower);
+
+            if (tower.type == Tower.Type.ENERGY_FACTORY) {
+                addEnergyFactory(tower);
+            } else {
+                addTower(tower);
+            }
         }
     }
 
@@ -67,6 +76,10 @@ public abstract class GameManager extends Element {
 
     public void addTower(Tower tower) {
         towers.add(tower);
+    }
+
+    public void addEnergyFactory(Tower tower) {
+        energyFactories.add(tower);
     }
 
     public int getRound() {
@@ -122,8 +135,6 @@ public abstract class GameManager extends Element {
     public void start() {
         round = 1;
         roundEnded = false;
-        //TODO: remove only for testing standart is 500 more can be added with meta progression
-        energy = 999999;
 
         //run game tick 20 times per second
         Timer timer = new Timer();
@@ -151,7 +162,51 @@ public abstract class GameManager extends Element {
         uiUpdate();
     }
 
+    public boolean roundHasStarted = false;
+    public int enemyToSpawn = 0;
+    public int enemySpawned = 0;
+    public int enemyKilled = 0;
+
+    public int gameHeartbeat = 0;
+    public int gameHeartbeatMax = 25;
+
+    public int enemySpawnRate = 3;
+
+    public void enemyLogicUpdate() {
+        if(!roundHasStarted)  {
+            enemySpawned = 0;
+            enemyKilled = 0;
+            enemyToSpawn = enemySpawnRate * round;
+            roundHasStarted = true;
+        }
+
+        if(gameHeartbeat >= gameHeartbeatMax) {
+
+            // randomly do nothing
+            if(Math.random() > 0.5) {
+                gameHeartbeat = 0;
+                System.out.println("Skipped Enemy Spawn");
+                return;
+            }
+
+            gameHeartbeat = 0;
+            if(enemySpawned < enemyToSpawn) {
+                enemySpawned++;
+                addEnemy(new RedCube());
+                System.out.println("Spawned Enemy");
+            }
+        }
+        gameHeartbeat++;
+        System.out.println("Enemy Spawned: " + enemySpawned + " / " + enemyToSpawn);
+
+        if(roundHasStarted && enemySpawned == enemyToSpawn && enemyKilled == enemyToSpawn) {
+            roundHasStarted = false;
+            nextRound();
+        }
+    }
+
     public void addEnemy(Enemy enemy) {
+        enemy.position = pathManager.currentPath.getLerp(0);
         parentScene.addElement3d(enemy);
         enemies.add(enemy);
     }
@@ -170,6 +225,28 @@ public abstract class GameManager extends Element {
         if (closestDistance > range) return null;
 
         return closest;
+    }
+
+    public void killEnemy(Enemy enemy) {
+        enemies.remove(enemy);
+        parentScene.removeElement3d(enemy);
+        enemyKilled++;
+    }
+
+    public EnergyConsumer[] getClosestEnergyConsumers(Raylib.Vector3 position, float range) {
+        List<EnergyConsumer> closest = new ArrayList<>();
+
+        // loop over all the energy consumers
+        for (Tower tower : towers) {
+            if (tower instanceof EnergyConsumer) {
+                float distance = Raylib.Vector3Distance(position, tower.position);
+                if (distance < range) {
+                    closest.add((EnergyConsumer) tower);
+                }
+            }
+        }
+
+        return closest.toArray(new EnergyConsumer[0]);
     }
 
     /**

@@ -1,4 +1,4 @@
-package render.scene.scenes.tdElements;
+package render.scene.scenes.uiElements;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;

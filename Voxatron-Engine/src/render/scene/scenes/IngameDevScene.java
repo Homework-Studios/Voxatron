@@ -11,6 +11,7 @@ import render.scene.InGameScene;
 import render.scene.SceneManager;
 import render.scene.scenes.tdElements.*;
 import render.scene.scenes.uiElements.ButtonElement;
+import render.scene.scenes.uiElements.TowerSelector;
 
 import static util.ColorPalette.ColorPalettes.STANDARD_BUTTON;
 
@@ -29,8 +30,6 @@ public class IngameDevScene extends InGameScene {
         addElement3d(new FloorElement());
         addElement3d(new PathDrawElement());
         addElement(new GameManagerElement());
-
-        GameManager.instance.addEnemy(new RedCube());
 
         //Todo: start game (this is for testing)
         GameManager.getInstance().start();
@@ -84,6 +83,9 @@ public class IngameDevScene extends InGameScene {
 
     @Override
     public void update() {
+
+        GameManager.instance.enemyLogicUpdate();
+
         for (Element element : getIterableElements3d()) {
             element.update();
         }

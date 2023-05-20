@@ -6,8 +6,9 @@ import render.scene.Element;
 
 public abstract class Enemy extends Element {
 
-    public float walkSpeed = 1;
+    public int health = 10;
 
+    public float walkSpeed = 1;
     public float positionOnPath = 0;
 
     public Raylib.Vector3 position = new Raylib.Vector3();
@@ -20,5 +21,12 @@ public abstract class Enemy extends Element {
         positionOnPath %= 1;
 
         position = GameManager.instance.pathManager.getLerp(positionOnPath);
+    }
+
+    public void damage(int damage) {
+        health -= damage;
+        if (health <= 0) {
+            GameManager.instance.killEnemy(this);
+        }
     }
 }
