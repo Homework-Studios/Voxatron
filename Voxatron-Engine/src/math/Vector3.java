@@ -100,6 +100,10 @@ public class Vector3 {
         return this;
     }
 
+    public float distance(Vector3 vector) {
+        return (float) Math.sqrt(Math.pow(this.x - vector.x, 2) + Math.pow(this.y - vector.y, 2) + Math.pow(this.z - vector.z, 2));
+    }
+
     public Raylib.Vector3 toRaylibVector3() {
         return new Raylib.Vector3().x(this.x).y(this.y).z(this.z);
     }

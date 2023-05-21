@@ -30,13 +30,13 @@ public class CubeCanon extends EnergyConsumer {
         }
 
         tryFire();
-        if (hasEnergy(25) && canFire()) {
+        if (hasEnergy(5) && canFire()) {
             target = GameManager.instance.getClosestEnemy(position, range);
 
             if (target != null) {
-                consumeEnergy(25);
+                consumeEnergy(5);
                 fire();
-                target.damage(25);
+                target.damage(5);
             }
         } else {
             target = null;

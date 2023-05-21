@@ -21,7 +21,8 @@ public abstract class GameManager extends Element {
 
     public static GameManager instance;
     public final List<Tower> energyFactories = new ArrayList<>();
-    private final List<Enemy> enemies = new ArrayList<>();
+    //TODO: split enemy groups into cubits to save performance when dealing aoe damage (looping through all enemies is expensive)
+    public final List<Enemy> enemies = new ArrayList<>();
     public PathManager pathManager = new PathManager();
     public boolean roundHasStarted = false;
     public int enemyToSpawn = 0;
@@ -224,10 +225,21 @@ public abstract class GameManager extends Element {
         return (float) Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2) + Math.pow(a.z - b.z, 2));
     }
 
+    public Enemy[] getEnemiesInRangeFromPosition(Vector3 position, float range) {
+        List<Enemy> enemiesInRange = new ArrayList<>();
+        for (Enemy enemy : getEnemies()) {
+            float distance = distance(position, enemy.position);
+            if (distance < range) {
+                enemiesInRange.add(enemy);
+            }
+        }
+        return enemiesInRange.toArray(new Enemy[0]);
+    }
+
     public Enemy getClosestEnemy(Vector3 position, float range) {
         Enemy closest = null;
         float closestDistance = Float.MAX_VALUE;
-        for (Enemy enemy : enemies) {
+        for (Enemy enemy : getEnemies()) {
             float distance = distance(position, enemy.position);
             if (distance < closestDistance) {
                 closest = enemy;
@@ -279,4 +291,8 @@ public abstract class GameManager extends Element {
     }
 
     public abstract void uiUpdate();
+
+    public List<Enemy> getEnemies() {
+        return new ArrayList<>(enemies);
+    }
 }

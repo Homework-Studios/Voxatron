@@ -67,8 +67,10 @@ public abstract class Tower extends Element {
     // IMPORTANT NOTE: The lowest EnergyFactory has to cost less than the lowest Tower to not softlock the game!
     public enum Type {
         CUBE_CANON("Cube Canon", Jaylib.RED, 400),
-        PHASER_CANON("Phaser Canon", Jaylib.RED, 1300),
+        PHASER_CANON("Phaser", Jaylib.RED, 1300),
         TRON_CANON("Tron Canon", Jaylib.RED, 500),
+
+        PYLON_CANON("Pylon", Jaylib.PURPLE, 2000),
         SPHERE_CANON("Sphere Canon", Jaylib.PURPLE, 600),
 
         ENERGY_FACTORY("Energy Factory", Jaylib.YELLOW, 100);
@@ -76,8 +78,11 @@ public abstract class Tower extends Element {
         public static final TowerPanel[] panels = new TowerPanel[]{
                 new TowerPanel(CUBE_CANON),
                 new TowerPanel(PHASER_CANON),
-                //new TowerPanel(TRON_CANON),
-                //new TowerPanel(SPHERE_CANON),
+                new TowerPanel(TRON_CANON),
+
+                new TowerPanel(SPHERE_CANON),
+                new TowerPanel(PYLON_CANON),
+
                 new TowerPanel(ENERGY_FACTORY)
         };
 
