@@ -1,8 +1,9 @@
 package render.scene;
 
-import com.raylib.Raylib;
+
+import math.Vector3;
 
 public abstract class InGameScene extends Scene {
-    public abstract Raylib.Vector3 getDropPosition();
+    public abstract Vector3 getDropPosition();
 
 }

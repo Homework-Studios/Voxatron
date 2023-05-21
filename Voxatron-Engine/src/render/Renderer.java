@@ -50,10 +50,7 @@ public class Renderer {
         while (isRunning && !Raylib.WindowShouldClose()) {
 
             sceneManager.update();
-
             camera.update();
-
-            TestingValues.instance.update();
 
             Raylib.BeginDrawing();
             Raylib.ClearBackground(BLACK);

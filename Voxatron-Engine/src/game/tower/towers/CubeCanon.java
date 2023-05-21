@@ -42,8 +42,8 @@ public class CubeCanon extends EnergyConsumer {
             target = null;
         }
 
-        aabb.min(new Raylib.Vector3().x(position.x() - 2.5f).y(position.y() - 2.5f).z(position.z() - 2.5f));
-        aabb.max(new Raylib.Vector3().x(position.x() + 2.5f).y(position.y() + 2.5f).z(position.z() + 2.5f));
+        aabb.min(new Raylib.Vector3().x(position.x - 2.5f).y(position.y - 2.5f).z(position.z - 2.5f));
+        aabb.max(new Raylib.Vector3().x(position.x + 2.5f).y(position.y + 2.5f).z(position.z + 2.5f));
     }
 
     @Override
@@ -51,13 +51,13 @@ public class CubeCanon extends EnergyConsumer {
 
         drawRange();
 
-        Raylib.DrawCube(position, 5, 5, 5, type.getColor());
+        Raylib.DrawCube(position.toRaylibVector3(), 5, 5, 5, type.getColor());
 
         drawEnergy();
 
         // draw a line to the target if not null
         if (target != null) {
-            Raylib.DrawLine3D(position, target.position, Jaylib.WHITE);
+            Raylib.DrawLine3D(position.toRaylibVector3(), target.position.toRaylibVector3(), Jaylib.WHITE);
         }
     }
 

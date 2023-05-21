@@ -22,7 +22,7 @@ public class TronCanon extends Tower {
 
     @Override
     public void render() {
-        Raylib.DrawCube(position, 5, 5, 5, type.getColor());
+        Raylib.DrawCube(position.toRaylibVector3(), 5, 5, 5, type.getColor());
     }
 
     @Override

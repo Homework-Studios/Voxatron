@@ -2,26 +2,27 @@ package game.path;
 
 import com.raylib.Raylib;
 import math.LerpUtil;
+import math.Vector3;
 
 public class PathComponent {
 
-    public Raylib.Vector3 start;
-    public Raylib.Vector3 end;
+    public Vector3 start;
+    public Vector3 end;
 
-    public PathComponent(Raylib.Vector3 start, Raylib.Vector3 end) {
+    public PathComponent(Vector3 start, Vector3 end) {
         this.start = start;
         this.end = end;
     }
 
-    public Raylib.Vector3 getStart() {
+    public Vector3 getStart() {
         return start;
     }
 
-    public Raylib.Vector3 getEnd() {
+    public Vector3 getEnd() {
         return end;
     }
 
-    public Raylib.Vector3 getLerp(float i) {
+    public Vector3 getLerp(float i) {
         return LerpUtil.lerp(start, end, i);
     }
 }

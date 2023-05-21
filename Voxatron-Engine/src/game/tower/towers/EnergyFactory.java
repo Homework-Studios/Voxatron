@@ -6,6 +6,8 @@ import game.tower.Factory;
 
 public class EnergyFactory extends Factory {
 
+    private EnergyConsumer[] consumers = new EnergyConsumer[0];
+
     public EnergyFactory() {
         super(Type.ENERGY_FACTORY);
 
@@ -24,22 +26,22 @@ public class EnergyFactory extends Factory {
 
     @Override
     public void update() {
-
+        consumers = gameManager.getClosestEnergyConsumers(position, range);
     }
 
     @Override
     public void render() {
         drawRange();
 
-        Raylib.DrawCube(position, 5, 5, 5, type.getColor());
+        Raylib.DrawCube(position.toRaylibVector3(), 5, 5, 5, type.getColor());
 
         drawEnergy();
 
         // draw a line to all the energy consumers in range
-        EnergyConsumer[] consumers = gameManager.getClosestEnergyConsumers(position, range);
 
         for (EnergyConsumer consumer : consumers) {
-            Raylib.DrawLine3D(position, consumer.position, type.getColor());
+            Raylib.DrawLine3D(position.toRaylibVector3(), consumer.position.toRaylibVector3(), type.getColor());
         }
+
     }
 }

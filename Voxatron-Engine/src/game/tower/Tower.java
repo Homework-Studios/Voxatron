@@ -5,6 +5,7 @@ import com.raylib.Raylib;
 import game.GameManager;
 import game.enemy.Enemy;
 import game.tower.towers.*;
+import math.Vector3;
 import render.Renderer;
 import render.scene.Element;
 import render.scene.scenes.uiElements.TowerPanel;
@@ -15,7 +16,7 @@ public abstract class Tower extends Element {
     private final boolean moveMode = false;
     public Enemy target;
     public int range = 50;
-    public Raylib.Vector3 position = new Raylib.Vector3();
+    public Vector3 position = new Vector3();
 
     public int fireRate = 60;
     public int triedToFire = 0;
@@ -28,14 +29,14 @@ public abstract class Tower extends Element {
 
     public abstract void gameTick();
 
-    public void setPosition(Raylib.Vector3 dropPosition) {
+    public void setPosition(Vector3 dropPosition) {
         position = dropPosition;
     }
 
     public void drawRange() {
-        Raylib.DrawCircle3D(position, range, new Raylib.Vector3().y(1), 90, new Jaylib.Color(255, 255, 255, 50));
-        Raylib.DrawCircle3D(position, range, new Raylib.Vector3().x(1), 90, new Jaylib.Color(255, 255, 255, 50));
-        Raylib.DrawCircle3D(position, range, new Raylib.Vector3().z(1), 90, new Jaylib.Color(255, 255, 255, 50));
+        Raylib.DrawCircle3D(position.toRaylibVector3(), range, new Raylib.Vector3().y(1), 90, new Jaylib.Color(255, 255, 255, 50));
+        Raylib.DrawCircle3D(position.toRaylibVector3(), range, new Raylib.Vector3().x(1), 90, new Jaylib.Color(255, 255, 255, 50));
+        Raylib.DrawCircle3D(position.toRaylibVector3(), range, new Raylib.Vector3().z(1), 90, new Jaylib.Color(255, 255, 255, 50));
     }
 
     protected boolean IsClicked(Raylib.BoundingBox aabb) {

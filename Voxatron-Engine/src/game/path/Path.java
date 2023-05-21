@@ -1,6 +1,7 @@
 package game.path;
 
 import com.raylib.Raylib;
+import math.Vector3;
 
 public class Path {
 
@@ -22,7 +23,7 @@ public class Path {
         return components[(int) i];
     }
 
-    public Raylib.Vector3 getLerp(float i) {
+    public Vector3 getLerp(float i) {
         // get the lerp over all the components
         // i is the lerp over the components 0 is the start 1 is the end
 

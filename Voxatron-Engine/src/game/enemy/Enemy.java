@@ -2,6 +2,7 @@ package game.enemy;
 
 import com.raylib.Raylib;
 import game.GameManager;
+import math.Vector3;
 import render.scene.Element;
 
 public abstract class Enemy extends Element {
@@ -11,7 +12,7 @@ public abstract class Enemy extends Element {
     public float walkSpeed = 1;
     public float positionOnPath = 0;
 
-    public Raylib.Vector3 position = new Raylib.Vector3();
+    public Vector3 position = new Vector3();
     public boolean isAlive = true;
 
     //TODO: make more modular

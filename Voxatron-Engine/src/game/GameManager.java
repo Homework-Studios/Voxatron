@@ -8,6 +8,7 @@ import game.enemy.enemies.RedCube;
 import game.enemy.enemies.TestTank;
 import game.tower.EnergyConsumer;
 import game.tower.Tower;
+import math.Vector3;
 import render.scene.Element;
 import render.scene.InGameScene;
 import render.scene.SceneManager;
@@ -47,6 +48,7 @@ public abstract class GameManager extends Element {
 
     public void placeTower(Tower.Type type) {
         if (!(SceneManager.instance.getActiveScene() instanceof InGameScene)) return;
+
         InGameScene scene = (InGameScene) SceneManager.instance.getActiveScene();
         boolean buy;
         if (!canDrop(scene.getDropPosition())) return;
@@ -69,8 +71,8 @@ public abstract class GameManager extends Element {
         }
     }
 
-    private boolean canDrop(Raylib.Vector3 location) {
-        return location.x() != 0 && location.y() != 0 && location.z() != 0;
+    private boolean canDrop(Vector3 location) {
+        return location.x != 0 && location.y != 0 && location.z != 0;
     }
 
     public void setGameShouldEnd(boolean gameShouldEnd) {
@@ -163,12 +165,12 @@ public abstract class GameManager extends Element {
 
         pathManager = new PathManager();
 
-        // Raylib.Vector3[] last arguement
-        pathManager.genPath(new Raylib.Vector3().x(-150), new Raylib.Vector3().x(150), new Raylib.Vector3[]{
-                new Raylib.Vector3().z(-150),
-                new Raylib.Vector3().z(-50).x(-50),
-                new Raylib.Vector3().z(50).x(50),
-                new Raylib.Vector3().z(150),
+        // Vector3[] last arguement
+        pathManager.genPath(new Vector3(-150, 0, 0), new Vector3(150, 0, 0), new Vector3[]{
+                new Vector3(0, 0, -150),
+                new Vector3(-50, 0, -50),
+                new Vector3(50, 0, 50),
+                new Vector3(0, 0, 150),
         });
     }
 
@@ -218,11 +220,15 @@ public abstract class GameManager extends Element {
         enemies.add(enemy);
     }
 
-    public Enemy getClosestEnemy(Raylib.Vector3 position, float range) {
+    public float distance(Vector3 a, Vector3 b) {
+        return (float) Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2) + Math.pow(a.z - b.z, 2));
+    }
+
+    public Enemy getClosestEnemy(Vector3 position, float range) {
         Enemy closest = null;
         float closestDistance = Float.MAX_VALUE;
         for (Enemy enemy : enemies) {
-            float distance = Raylib.Vector3Distance(position, enemy.position);
+            float distance = distance(position, enemy.position);
             if (distance < closestDistance) {
                 closest = enemy;
                 closestDistance = distance;
@@ -240,13 +246,15 @@ public abstract class GameManager extends Element {
         enemyKilled++;
     }
 
-    public EnergyConsumer[] getClosestEnergyConsumers(Raylib.Vector3 position, float range) {
+    public EnergyConsumer[] getClosestEnergyConsumers(Vector3 position, float range) {
         List<EnergyConsumer> closest = new ArrayList<>();
 
         // loop over all the energy consumers
         for (Tower tower : towers) {
             if (tower instanceof EnergyConsumer) {
-                float distance = Raylib.Vector3Distance(position, tower.position);
+
+                float distance = distance(position, tower.position);
+
                 if (distance < range) {
                     closest.add((EnergyConsumer) tower);
                 }

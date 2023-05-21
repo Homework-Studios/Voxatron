@@ -43,7 +43,7 @@ public abstract class EnergyConsumer extends Tower
 
     public void drawEnergy() {
         Raylib.EndMode3D();
-        Raylib.Vector2 screenPos = Raylib.GetWorldToScreen(position, Renderer.camera.getCamera());
+        Raylib.Vector2 screenPos = Raylib.GetWorldToScreen(position.toRaylibVector3(), Renderer.camera.getCamera());
 
         Raylib.DrawText(String.valueOf(availableEnergy), (int) screenPos.x(), (int) screenPos.y(), 20, Jaylib.WHITE);
         Raylib.BeginMode3D(Renderer.camera.getCamera());

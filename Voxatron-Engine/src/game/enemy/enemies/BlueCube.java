@@ -22,6 +22,6 @@ public class BlueCube extends Enemy {
 
     @Override
     public void render() {
-        Raylib.DrawCube(position, 3, 3, 3, Jaylib.BLUE);
+        Raylib.DrawCube(position.toRaylibVector3(), 3, 3, 3, Jaylib.BLUE);
     }
 }

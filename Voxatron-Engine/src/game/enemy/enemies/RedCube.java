@@ -17,7 +17,7 @@ public class RedCube extends Enemy {
 
     @Override
     public void render() {
-        Raylib.DrawCube(position, 3, 3, 3, Jaylib.RED);
+        Raylib.DrawCube(position.toRaylibVector3(), 3, 3, 3, Jaylib.RED);
     }
 
     @Override

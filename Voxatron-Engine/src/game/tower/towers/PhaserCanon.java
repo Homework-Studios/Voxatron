@@ -34,9 +34,9 @@ public class PhaserCanon extends EnergyConsumer {
 
     @Override
     public void render() {
-        Raylib.DrawCube(position, 5, 5, 5, type.getColor());
+        Raylib.DrawCube(position.toRaylibVector3(), 5, 5, 5, type.getColor());
         if (target != null)
-            Raylib.DrawCylinderEx(position, target.position, 0.1f * consume, 0.1f * consume, 12, type.getColor());
+            Raylib.DrawCylinderEx(position.toRaylibVector3(), target.position.toRaylibVector3(), 0.1f * consume, 0.1f * consume, 12, type.getColor());
         drawRange();
         drawEnergy();
     }

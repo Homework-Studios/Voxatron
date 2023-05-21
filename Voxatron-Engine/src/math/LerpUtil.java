@@ -8,11 +8,11 @@ public class LerpUtil {
         return a + (b - a) * t;
     }
 
-    public static Raylib.Vector3 lerp(Raylib.Vector3 a, Raylib.Vector3 b, float t) {
-        Raylib.Vector3 result = new Raylib.Vector3();
-        result.x(lerp(a.x(), b.x(), t));
-        result.y(lerp(a.y(), b.y(), t));
-        result.z(lerp(a.z(), b.z(), t));
+    public static Vector3 lerp(Vector3 a, Vector3 b, float t) {
+        Vector3 result = new Vector3();
+        result.x = lerp(a.x, b.x, t);
+        result.y = lerp(a.y, b.y, t);
+        result.z = lerp(a.z, b.z, t);
         return result;
     }
 

@@ -4,6 +4,7 @@ import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import game.GameManager;
 import math.Vector2;
+import math.Vector3;
 import render.Renderer;
 import render.scene.Element;
 import render.scene.InGameScene;
@@ -64,7 +65,7 @@ public class IngameDevScene extends InGameScene {
         addElement(elementBatch);
     }
 
-    public Raylib.Vector3 getDropPosition() {
+    public Vector3 getDropPosition() {
         Raylib.Ray ray = Jaylib.GetMouseRay(Jaylib.GetMousePosition(), Renderer.camera.getCamera());
 
         Raylib.Rectangle floor = new Raylib.Rectangle().x(-150).y(-150).width(300).height(300);
@@ -76,14 +77,14 @@ public class IngameDevScene extends InGameScene {
             // add y+1 to position
             collision.point(new Raylib.Vector3().x(collision.point().x()).y(collision.point().y() + 1).z(collision.point().z()));
 
-            return collision.point();
+            return new Vector3(collision.point());
         }
 
-        return new Raylib.Vector3();
+        return new Vector3();
     }
 
     public boolean canDrop() {
-        return getDropPosition().x() != 0 && getDropPosition().y() != 0 && getDropPosition().z() != 0;
+        return getDropPosition().x != 0 && getDropPosition().y != 0 && getDropPosition().z != 0;
     }
 
     @Override
@@ -110,6 +111,7 @@ public class IngameDevScene extends InGameScene {
         for (Element element : elements3dCopy) {
             element.render();
         }
+
 
         Renderer.instance.toggleMode3d();
         // --------------------------------------------

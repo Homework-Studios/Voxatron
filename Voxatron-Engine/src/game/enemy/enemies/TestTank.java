@@ -22,6 +22,6 @@ public class TestTank extends Enemy {
 
     @Override
     public void render() {
-        Raylib.DrawCube(position, 10, 10, 10, Jaylib.GREEN);
+        Raylib.DrawCube(position.toRaylibVector3(), 10, 10, 10, Jaylib.GREEN);
     }
 }
