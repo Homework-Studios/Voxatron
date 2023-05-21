@@ -74,7 +74,7 @@ public abstract class Tower extends Element {
 
         public static final TowerPanel[] panels = new TowerPanel[]{
                 new TowerPanel(CUBE_CANON),
-                //new TowerPanel(PHASER_CANON),
+                new TowerPanel(PHASER_CANON),
                 //new TowerPanel(TRON_CANON),
                 //new TowerPanel(SPHERE_CANON),
                 new TowerPanel(ENERGY_FACTORY)
@@ -89,6 +89,7 @@ public abstract class Tower extends Element {
             this.color = color;
             this.cost = cost;
         }
+
 
         public String getName() {
             return name;

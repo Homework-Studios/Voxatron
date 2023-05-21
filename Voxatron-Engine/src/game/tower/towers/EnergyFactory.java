@@ -24,7 +24,7 @@ public class EnergyFactory extends Factory {
 
     @Override
     public void update() {
-        gameTick();
+
     }
 
     @Override

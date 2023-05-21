@@ -6,7 +6,7 @@ import render.Renderer;
 
 public abstract class Factory extends Tower {
 
-    public int provideEveryTick = 60;
+    public int provideEveryTick = 20;
     public int currentTick = 0;
 
     public float currentEnergy = 0;

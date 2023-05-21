@@ -1,10 +1,12 @@
 package game;
 
+import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import game.enemy.Enemy;
+import game.enemy.enemies.BlueCube;
 import game.enemy.enemies.RedCube;
+import game.enemy.enemies.TestTank;
 import game.tower.EnergyConsumer;
-import game.tower.Factory;
 import game.tower.Tower;
 import render.scene.Element;
 import render.scene.InGameScene;
@@ -17,16 +19,22 @@ import java.util.Timer;
 public abstract class GameManager extends Element {
 
     public static GameManager instance;
+    public final List<Tower> energyFactories = new ArrayList<>();
     private final List<Enemy> enemies = new ArrayList<>();
     public PathManager pathManager = new PathManager();
+    public boolean roundHasStarted = false;
+    public int enemyToSpawn = 0;
+    public int enemySpawned = 0;
+    public int enemyKilled = 0;
+    public int gameHeartbeat = 0;
+    public int gameHeartbeatMax = 25;
+    public int enemySpawnRate = 3;
     private int round = 1;
     private boolean roundEnded = true;
     private boolean gameShouldEnd = false;
-
-    private int energy = 500;
+    private int energy = 999999;
     private int lives = 100;
     private List<Tower> towers = new ArrayList<>();
-    private List<Tower> energyFactories = new ArrayList<>();
 
     public GameManager() {
         instance = this;
@@ -40,7 +48,14 @@ public abstract class GameManager extends Element {
     public void placeTower(Tower.Type type) {
         if (!(SceneManager.instance.getActiveScene() instanceof InGameScene)) return;
         InGameScene scene = (InGameScene) SceneManager.instance.getActiveScene();
-        if (canDrop(scene.getDropPosition()) && buy(type.getCost())) {
+        boolean buy;
+        if (!canDrop(scene.getDropPosition())) return;
+        if (type == Tower.Type.ENERGY_FACTORY) {
+            buy = buy((int) (energyFactories.size() * energyFactories.size() * Math.PI * 0.1f));
+        } else {
+            buy = buy(type.getCost());
+        }
+        if (buy) {
             Tower tower = type.createTower();
             assert tower != null;
             tower.setPosition(scene.getDropPosition());
@@ -162,44 +177,36 @@ public abstract class GameManager extends Element {
         uiUpdate();
     }
 
-    public boolean roundHasStarted = false;
-    public int enemyToSpawn = 0;
-    public int enemySpawned = 0;
-    public int enemyKilled = 0;
-
-    public int gameHeartbeat = 0;
-    public int gameHeartbeatMax = 25;
-
-    public int enemySpawnRate = 3;
-
     public void enemyLogicUpdate() {
-        if(!roundHasStarted)  {
+        if (Raylib.IsKeyPressed(Jaylib.KEY_T)) {
+            addEnemy(new TestTank());
+        }
+        if (!roundHasStarted) {
             enemySpawned = 0;
             enemyKilled = 0;
             enemyToSpawn = enemySpawnRate * round;
             roundHasStarted = true;
         }
 
-        if(gameHeartbeat >= gameHeartbeatMax) {
+        if (gameHeartbeat >= gameHeartbeatMax) {
 
             // randomly do nothing
-            if(Math.random() > 0.5) {
+            if (Math.random() > 0.5) {
                 gameHeartbeat = 0;
-                System.out.println("Skipped Enemy Spawn");
                 return;
             }
 
             gameHeartbeat = 0;
-            if(enemySpawned < enemyToSpawn) {
+            if (enemySpawned < enemyToSpawn) {
                 enemySpawned++;
-                addEnemy(new RedCube());
-                System.out.println("Spawned Enemy");
+                if (Math.random() > 0.5) addEnemy(new BlueCube());
+                else
+                    addEnemy(new RedCube());
             }
         }
         gameHeartbeat++;
-        System.out.println("Enemy Spawned: " + enemySpawned + " / " + enemyToSpawn);
 
-        if(roundHasStarted && enemySpawned == enemyToSpawn && enemyKilled == enemyToSpawn) {
+        if (roundHasStarted && enemySpawned == enemyToSpawn && enemyKilled == enemyToSpawn) {
             roundHasStarted = false;
             nextRound();
         }
@@ -260,6 +267,7 @@ public abstract class GameManager extends Element {
         }
         // hands over the Game Tick to towers
         towers.forEach(Tower::gameTick);
+        energyFactories.forEach(Tower::gameTick);
     }
 
     public abstract void uiUpdate();

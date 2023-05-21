@@ -13,6 +13,7 @@ public abstract class Enemy extends Element {
 
     public Raylib.Vector3 position = new Raylib.Vector3();
 
+    //TODO: make more modular
     public void stepOnPath() {
         positionOnPath += (walkSpeed * 0.0001f);
 
@@ -26,7 +27,10 @@ public abstract class Enemy extends Element {
     public void damage(int damage) {
         health -= damage;
         if (health <= 0) {
+            GameManager.instance.addEnergy(getEnergyGainOnKill());
             GameManager.instance.killEnemy(this);
         }
     }
+
+    public abstract int getEnergyGainOnKill();
 }

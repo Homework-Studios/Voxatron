@@ -19,4 +19,9 @@ public class RedCube extends Enemy {
     public void render() {
         Raylib.DrawCube(position, 3, 3, 3, Jaylib.RED);
     }
+
+    @Override
+    public int getEnergyGainOnKill() {
+        return 1;
+    }
 }

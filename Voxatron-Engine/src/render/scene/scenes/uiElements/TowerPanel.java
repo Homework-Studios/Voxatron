@@ -33,7 +33,11 @@ public class TowerPanel {
 
         int textSize = (int) UiUtil.getWidthPercent(3);
         Raylib.DrawRectangleRoundedLines(rectangle, 0.1f, 10, 5, tower.getColor());
-        Raylib.DrawText(tower.getName() + System.lineSeparator() + tower.getCost(), (int) rectangle.x(), (int) rectangle.y(), textSize / 2, Jaylib.WHITE);
+        int cost = tower.getCost();
+        if (tower == Tower.Type.ENERGY_FACTORY) {
+            cost = (int) (cost * GameManager.getInstance().energyFactories.size() * GameManager.getInstance().energyFactories.size() * Math.PI * 0.1f);
+        }
+        Raylib.DrawText(tower.getName() + System.lineSeparator() + cost, (int) rectangle.x(), (int) rectangle.y(), textSize / 2, Jaylib.WHITE);
 
     }
 
