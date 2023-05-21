@@ -12,6 +12,7 @@ public abstract class Enemy extends Element {
     public float positionOnPath = 0;
 
     public Raylib.Vector3 position = new Raylib.Vector3();
+    public boolean isAlive = true;
 
     //TODO: make more modular
     public void stepOnPath() {
@@ -27,6 +28,7 @@ public abstract class Enemy extends Element {
     public void damage(int damage) {
         health -= damage;
         if (health <= 0) {
+            isAlive = false;
             GameManager.instance.addEnergy(getEnergyGainOnKill());
             GameManager.instance.killEnemy(this);
         }

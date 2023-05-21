@@ -2,6 +2,7 @@ package game.tower.towers;
 
 import com.raylib.Raylib;
 import game.GameManager;
+import game.enemy.Enemy;
 import game.tower.EnergyConsumer;
 
 /**
@@ -20,6 +21,7 @@ import game.tower.EnergyConsumer;
 public class PhaserCanon extends EnergyConsumer {
     int consume = 1;
     int fired = 0;
+    Enemy lastTarget = null;
 
     public PhaserCanon() {
         super(Type.PHASER_CANON);
@@ -33,6 +35,8 @@ public class PhaserCanon extends EnergyConsumer {
     @Override
     public void render() {
         Raylib.DrawCube(position, 5, 5, 5, type.getColor());
+        if (target != null)
+            Raylib.DrawCylinderEx(position, target.position, 0.1f * consume, 0.1f * consume, 12, type.getColor());
         drawRange();
         drawEnergy();
     }
@@ -40,8 +44,13 @@ public class PhaserCanon extends EnergyConsumer {
     @Override
     public void gameTick() {
         if (hasEnergy(consume)) {
-            target = GameManager.instance.getClosetEnemy(position, range);
-
+            if (target == null || !target.isAlive) {
+                target = GameManager.instance.getClosestEnemy(position, range);
+                if (target != null) {
+                    consume = 1;
+                    fired = 0;
+                }
+            }
             if (target != null) {
                 consumeEnergy(consume * consume);
                 fire();
@@ -54,8 +63,6 @@ public class PhaserCanon extends EnergyConsumer {
             }
         } else {
             target = null;
-            consume = 1;
-            fired = 0;
         }
     }
 }

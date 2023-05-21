@@ -4,7 +4,6 @@ import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import game.GameManager;
 import game.tower.EnergyConsumer;
-import render.Renderer;
 
 /**
  * concept:
@@ -31,10 +30,10 @@ public class CubeCanon extends EnergyConsumer {
         }
 
         tryFire();
-        if(hasEnergy(25) && canFire()){
-            target = GameManager.instance.getClosetEnemy(position, range);
+        if (hasEnergy(25) && canFire()) {
+            target = GameManager.instance.getClosestEnemy(position, range);
 
-            if(target != null) {
+            if (target != null) {
                 consumeEnergy(25);
                 fire();
                 target.damage(25);

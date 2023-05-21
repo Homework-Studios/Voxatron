@@ -218,7 +218,7 @@ public abstract class GameManager extends Element {
         enemies.add(enemy);
     }
 
-    public Enemy getClosetEnemy(Raylib.Vector3 position, float range) {
+    public Enemy getClosestEnemy(Raylib.Vector3 position, float range) {
         Enemy closest = null;
         float closestDistance = Float.MAX_VALUE;
         for (Enemy enemy : enemies) {
