@@ -3,15 +3,20 @@ package render.scene.scenes;
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import game.GameManager;
-import game.enemy.enemies.RedCube;
 import math.Vector2;
 import render.Renderer;
 import render.scene.Element;
 import render.scene.InGameScene;
 import render.scene.SceneManager;
-import render.scene.scenes.tdElements.*;
+import render.scene.scenes.tdElements.DropGhostElement;
+import render.scene.scenes.tdElements.FloorElement;
+import render.scene.scenes.tdElements.GameManagerElement;
+import render.scene.scenes.tdElements.PathDrawElement;
 import render.scene.scenes.uiElements.ButtonElement;
 import render.scene.scenes.uiElements.TowerSelector;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static util.ColorPalette.ColorPalettes.STANDARD_BUTTON;
 
@@ -101,8 +106,8 @@ public class IngameDevScene extends InGameScene {
         // Enabled the renderer to render 3d elements, without this, the 3d elements will not be rendered.
         // --------------------------------------------
         Renderer.instance.toggleMode3d();
-
-        for (Element element : elements3d) {
+        List<Element> elements3dCopy = new ArrayList<>(elements3d);
+        for (Element element : elements3dCopy) {
             element.render();
         }
 
