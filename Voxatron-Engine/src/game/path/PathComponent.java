@@ -1,8 +1,7 @@
 package game.path;
 
-import com.raylib.Raylib;
-import math.LerpUtil;
-import math.Vector3;
+import engine.math.LerpUtil;
+import engine.math.Vector3;
 
 public class PathComponent {
 

@@ -1,9 +1,8 @@
 package game.enemy;
 
-import com.raylib.Raylib;
+import engine.math.Vector3;
+import engine.render.scene.Element;
 import game.GameManager;
-import math.Vector3;
-import render.scene.Element;
 
 public abstract class Enemy extends Element {
 

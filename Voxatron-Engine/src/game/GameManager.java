@@ -2,16 +2,16 @@ package game;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
+import engine.math.Vector3;
+import engine.render.scene.Element;
+import engine.render.scene.InGameScene;
+import engine.render.scene.SceneManager;
 import game.enemy.Enemy;
 import game.enemy.enemies.BlueCube;
 import game.enemy.enemies.RedCube;
 import game.enemy.enemies.TestTank;
 import game.tower.EnergyConsumer;
 import game.tower.Tower;
-import math.Vector3;
-import render.scene.Element;
-import render.scene.InGameScene;
-import render.scene.SceneManager;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,6 @@
 package game.path;
 
-import com.raylib.Raylib;
-import math.Vector3;
+import engine.math.Vector3;
 
 public class Path {
 

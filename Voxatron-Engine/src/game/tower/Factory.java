@@ -2,7 +2,7 @@ package game.tower;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
-import render.Renderer;
+import engine.render.Renderer;
 
 public abstract class Factory extends Tower {
 

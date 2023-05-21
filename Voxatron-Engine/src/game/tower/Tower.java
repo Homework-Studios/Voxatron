@@ -2,13 +2,13 @@ package game.tower;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
+import engine.math.Vector3;
+import engine.render.Renderer;
+import engine.render.scene.Element;
 import game.GameManager;
 import game.enemy.Enemy;
 import game.tower.towers.*;
-import math.Vector3;
-import render.Renderer;
-import render.scene.Element;
-import render.scene.scenes.uiElements.TowerPanel;
+import game.visuals.elements.uiElements.inGame.TowerPanel;
 
 public abstract class Tower extends Element {
     public static GameManager gameManager;

@@ -2,9 +2,9 @@ package game;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
+import engine.math.Vector3;
 import game.path.Path;
 import game.path.PathComponent;
-import math.Vector3;
 
 public class PathManager {
 
@@ -16,7 +16,7 @@ public class PathManager {
         instance = this;
     }
 
-    public void genPath(Vector3 start, Vector3 end, Vector3[] nodes){
+    public void genPath(Vector3 start, Vector3 end, Vector3[] nodes) {
         PathComponent[] components = new PathComponent[nodes.length + 1];
         components[0] = new PathComponent(start, nodes[0]);
         for (int i = 0; i < nodes.length - 1; i++) {

@@ -2,10 +2,9 @@ package game.tower;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
-import render.Renderer;
+import engine.render.Renderer;
 
-public abstract class EnergyConsumer extends Tower
-{
+public abstract class EnergyConsumer extends Tower {
 
     public int availableEnergy = 0;
     public int maxEnergy = 100;

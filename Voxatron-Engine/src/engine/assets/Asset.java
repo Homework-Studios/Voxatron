@@ -1,30 +1,19 @@
 package engine.assets;
 
-import engine.DevelopmentConstants;
 import engine.assets.basic.ImageAsset;
 import engine.assets.basic.SoundAsset;
-import util.FileUtils;
-import util.Text;
-import util.TreeUtils;
+import engine.util.FileUtils;
 
-import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreePath;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Objects;
-
-import static engine.EngineForm.highlightArea;
 
 public abstract class Asset {
     public static final HashMap<String, Asset> path_assets = new HashMap<>();
-    public static final HashMap<String, DefaultMutableTreeNode> path_nodes = new HashMap<>();
     //Master Class related
     public static String ASSET_DIR = System.getenv("APPDATA") + "\\Voxatron\\Assets";
-    public static JTree tree;
 
     //Asset related
     String name;
@@ -41,13 +30,6 @@ public abstract class Asset {
         this.assetFile = new File(directory, type + ".asset");
         if (createAsset) createAsset();
         path_assets.put(path + "\\" + name, this);
-        if (DevelopmentConstants.DEVELOPMENT_MODE) {
-            createNodeLevelUp(path + "\\" + name);
-            for (File file : Objects.requireNonNull(directory.listFiles())) {
-                createNodeLevelUp(path + "\\" + name + "\\" + file.getName());
-            }
-            updateNaming();
-        }
         load();
     }
 
@@ -59,12 +41,10 @@ public abstract class Asset {
         switch (type) {
             case Directory:
                 new File(ASSET_DIR + "\\" + path + "\\" + name).mkdirs();
-                createNodeLevelUp(path + "\\" + name);
                 break;
             case File:
                 try {
                     new File(ASSET_DIR + "\\" + path + "\\" + name).createNewFile();
-                    createNodeLevelUp(path + "\\" + name);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -104,9 +84,6 @@ public abstract class Asset {
      * Initializes the asset system.
      */
     public static void init() {
-        if (DevelopmentConstants.DEVELOPMENT_MODE) {
-            path_nodes.put("", (DefaultMutableTreeNode) tree.getModel().getRoot());
-        }
         File assetDir = new File(ASSET_DIR);
         if (!assetDir.exists()) {
             assetDir.mkdirs();
@@ -116,10 +93,6 @@ public abstract class Asset {
             if (subFile.getName().endsWith(".asset")) {
                 loadAsset(subFile);
             }
-        }
-        updateTreeNodes();
-        if (DevelopmentConstants.DEVELOPMENT_MODE) {
-            tree.expandPath(new TreePath(path_nodes.get("").getPath()));
         }
     }
 
@@ -135,102 +108,16 @@ public abstract class Asset {
     }
 
     /**
-     * Gets the currently selected asset.
-     *
-     * @return the currently selected asset
-     */
-    public static Asset getSelectedAsset() {
-        TreePath selectionPath = tree.getSelectionPath();
-        if (selectionPath != null) {
-            DefaultMutableTreeNode node = (DefaultMutableTreeNode) selectionPath.getLastPathComponent();
-            if (node != null) {
-                return path_assets.get(getPathByNode(node));
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Updates the tree nodes to match the assets.
-     */
-    public static void updateTreeNodes() {
-        for (File file : FileUtils.getAllFiles(new File(ASSET_DIR))) {
-            String path = file.getAbsolutePath().replace(ASSET_DIR, "");
-            createNodeLevelUp(path);
-        }
-    }
-
-    /**
-     * Removes a file from the asset system.
-     *
-     * @param node the tree node representing the file
-     */
-    public static void removeFileByNode(DefaultMutableTreeNode node) {
-        String path = getPathByNode(node);
-        path = path.replaceAll("<.*?>", "");
-        String[] split = path.split(" ");
-        File file = new File(ASSET_DIR + "\\" + split[0]);
-        FileUtils.deleteFileOrDirectory(file);
-        ((DefaultTreeModel) tree.getModel()).removeNodeFromParent(node);
-    }
-
-    /**
-     * Creates a tree node for a path.
-     *
-     * @param path the path to create a node for
-     */
-    public static void createNodeLevelUp(String path) {
-        if (!DevelopmentConstants.DEVELOPMENT_MODE) return;
-        TreeUtils.genTreeNodesLevelUp(path, path_nodes, tree);
-    }
-
-    /**
-     * Updates the name of the tree node representing the asset.
-     *
-     * @param name the new name of the asset
-     * @param path the path of the asset
-     * @param type the type of the asset
-     */
-    public static void updateAssetNodeName(String name, String path, AssetType type) {
-        if (!path.startsWith("\\")) path = "\\" + path;
-        DefaultMutableTreeNode node = path_nodes.get(path);
-        node.setUserObject(new Text().writeText(name + " ").setItalic(true).setSize(10).setColor(highlightArea).writeText("(" + type + ")"));
-    }
-
-    /**
      * Unloads the asset.
      */
     public abstract void unload();
 
-    /**
-     * Updates the naming of the asset.
-     */
-    public void updateNaming() {
-        updateAssetNodeName(getName(), getAbsolutePath(), getType());
-    }
-
-    /**
-     * Renames the asset.
-     *
-     * @param test the new name of the asset
-     */
-    public void rename(String test) {
-        updateAssetNodeName(test, path, type);
-    }
 
     /**
      * Loads the asset.
      */
     public abstract void load();
 
-    /**
-     * Deletes the asset.
-     */
-    public void delete() {
-        FileUtils.deleteFileOrDirectory(directory);
-        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-        model.removeNodeFromParent(path_nodes.get(path));
-    }
 
     /**
      * Returns the path of the asset.
