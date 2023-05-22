@@ -7,7 +7,12 @@ import engine.render.Renderer;
 import engine.render.scene.Element;
 import game.GameManager;
 import game.enemy.Enemy;
-import game.tower.towers.*;
+import game.tower.towers.aoe.PylonCanon;
+import game.tower.towers.aoe.SphereCanon;
+import game.tower.towers.energy.EnergyFactory;
+import game.tower.towers.singletarget.CubeCanon;
+import game.tower.towers.singletarget.PhaserCanon;
+import game.tower.towers.singletarget.TronCanon;
 import game.visuals.elements.uiElements.inGame.TowerPanel;
 
 public abstract class Tower extends Element {
@@ -117,8 +122,12 @@ public abstract class Tower extends Element {
                     return new PhaserCanon();
                 case TRON_CANON:
                     return new TronCanon();
+
                 case SPHERE_CANON:
                     return new SphereCanon();
+                case PYLON_CANON:
+                    return new PylonCanon();
+
                 case ENERGY_FACTORY:
                     return new EnergyFactory();
                 default:

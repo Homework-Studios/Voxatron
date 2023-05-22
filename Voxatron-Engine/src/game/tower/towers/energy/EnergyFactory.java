@@ -1,4 +1,4 @@
-package game.tower.towers;
+package game.tower.towers.energy;
 
 import com.raylib.Raylib;
 import game.tower.EnergyConsumer;

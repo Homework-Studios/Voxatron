@@ -16,14 +16,14 @@ public class ImageAsset extends Asset {
     }
 
     Raylib.Texture loadTexture(String name) {
-        System.out.println("loading texture: " + name);
+        System.out.println("Loading texture: " + name);
         Raylib.Texture image = Raylib.LoadTexture(getDirectory().getAbsolutePath() + "\\" + name + ".png");
         loadedTextures.put(name, image);
         return image;
     }
 
     Raylib.Image loadImage(String name) {
-        System.out.println("loading image: " + name);
+        System.out.println("Loading image: " + name);
         Raylib.Image image = Raylib.LoadImage(getDirectory().getAbsolutePath() + "\\" + name + ".png");
         loadedImages.put(name, image);
         return image;

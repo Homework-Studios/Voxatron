@@ -1,4 +1,4 @@
-package game.tower.towers;
+package game.tower.towers.singletarget;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;

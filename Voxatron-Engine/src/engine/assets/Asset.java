@@ -1,6 +1,7 @@
 package engine.assets;
 
 import engine.assets.basic.ImageAsset;
+import engine.assets.basic.ModelAsset;
 import engine.assets.basic.SoundAsset;
 import engine.util.FileUtils;
 
@@ -56,6 +57,8 @@ public abstract class Asset {
             case SoundAsset:
                 new SoundAsset(name, path, type, createAsset);
                 break;
+            case ModelAsset:
+                new ModelAsset(name, path, type, createAsset);
             default:
         }
     }
@@ -214,6 +217,7 @@ public abstract class Asset {
         //Assets
         ImageAsset,
         SoundAsset,
+        ModelAsset,
 
     }
 

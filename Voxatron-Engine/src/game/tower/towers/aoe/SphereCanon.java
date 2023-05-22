@@ -1,4 +1,4 @@
-package game.tower.towers;
+package game.tower.towers.aoe;
 
 import com.raylib.Raylib;
 import game.GameManager;
