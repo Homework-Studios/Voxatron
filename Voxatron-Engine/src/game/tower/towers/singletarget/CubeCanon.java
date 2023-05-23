@@ -2,6 +2,8 @@ package game.tower.towers.singletarget;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
+import engine.assets.AssetManager;
+import engine.assets.basic.ModelAsset;
 import game.GameManager;
 import game.tower.EnergyConsumer;
 
@@ -17,9 +19,14 @@ import game.tower.EnergyConsumer;
 public class CubeCanon extends EnergyConsumer {
 
     public Raylib.BoundingBox aabb = new Raylib.BoundingBox();
+    private final Raylib.Model base;
+    private final Raylib.Model canon;
 
     public CubeCanon() {
         super(Type.CUBE_CANON);
+        ModelAsset asset = new AssetManager<ModelAsset>().getAsset("Game/Towers/CubeCanon");
+        base = asset.getNewModel("cubecanonbase");
+        canon = asset.getNewModel("cubecanoncanon");
     }
 
     @Override
@@ -28,10 +35,12 @@ public class CubeCanon extends EnergyConsumer {
             parentScene.removeElement3d(this);
             GameManager.instance.sell(type.getCost());
         }
-
+        target = GameManager.instance.getClosestEnemy(position, range);
+        if(target != null) //TODO: fix this
+            canon.transform(Raylib.MatrixLookAt(position.toRaylibVector3(), target.position.toRaylibVector3(), new Raylib.Vector3().y(1)));
         tryFire();
         if (hasEnergy(5) && canFire()) {
-            target = GameManager.instance.getClosestEnemy(position, range);
+
 
             if (target != null) {
                 consumeEnergy(5);
@@ -51,7 +60,9 @@ public class CubeCanon extends EnergyConsumer {
 
         drawRange();
 
-        Raylib.DrawCube(position.toRaylibVector3(), 5, 5, 5, type.getColor());
+
+        Raylib.DrawModel(base, position.toRaylibVector3(), 5, type.getColor());
+        Raylib.DrawModel(canon, position.toRaylibVector3(), 5, type.getColor());
 
         drawEnergy();
 
