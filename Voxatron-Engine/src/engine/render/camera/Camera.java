@@ -36,11 +36,11 @@ public class Camera {
         // move by one unit
         forward = Jaylib.Vector3Normalize(forward);
 
-        if (Raylib.IsKeyDown(Raylib.KEY_W)) {
+        if (Raylib.IsKeyDown(Raylib.KEY_W) || Raylib.IsKeyDown(Raylib.KEY_I)) {
             move(forward);
         }
 
-        if (Raylib.IsKeyDown(Raylib.KEY_S)) {
+        if (Raylib.IsKeyDown(Raylib.KEY_S) || Raylib.IsKeyDown(Raylib.KEY_K)) {
             move(Jaylib.Vector3Negate(forward));
         }
 
@@ -48,13 +48,13 @@ public class Camera {
         // This is linear algebra and is cool. I love linear algebra.
         // Kreuzprodukt oder auch Vektorprodukt
 
-        if (Raylib.IsKeyDown(Raylib.KEY_A)) {
+        if (Raylib.IsKeyDown(Raylib.KEY_A) || Raylib.IsKeyDown(Raylib.KEY_J)) {
             Raylib.Vector3 right = Jaylib.Vector3CrossProduct(camera.up(), forward);
             right = Jaylib.Vector3Normalize(right);
             move(right);
         }
 
-        if (Raylib.IsKeyDown(Raylib.KEY_D)) {
+        if (Raylib.IsKeyDown(Raylib.KEY_D) || Raylib.IsKeyDown(Raylib.KEY_L)) {
             Raylib.Vector3 right = Jaylib.Vector3CrossProduct(camera.up(), forward);
             right = Jaylib.Vector3Normalize(right);
             move(Jaylib.Vector3Negate(right));
@@ -64,7 +64,7 @@ public class Camera {
             move(camera.up());
         }
 
-        if (Raylib.IsKeyDown(Raylib.KEY_LEFT_SHIFT)) {
+        if (Raylib.IsKeyDown(Raylib.KEY_LEFT_SHIFT) || Raylib.IsKeyDown(Raylib.KEY_RIGHT_SHIFT)) {
             move(Jaylib.Vector3Negate(camera.up()));
         }
     }
