@@ -5,9 +5,6 @@ import engine.assets.AssetManager;
 import engine.assets.basic.ModelAsset;
 import game.tower.EnergyConsumer;
 
-import static com.raylib.Raylib.Model;
-import static com.raylib.Raylib.ModelAnimation;
-
 /**
  * concept:
  * <p>
@@ -17,14 +14,13 @@ import static com.raylib.Raylib.ModelAnimation;
  * - deals aoe damage to all enemies in range by shooting a schockwave?
  */
 public class PylonCanon extends EnergyConsumer {
-    private final Model model;
-    private ModelAnimation animation;
-    private int animFrameCounter;
+    private final Raylib.Model model;
+    private float rotation = 0;
 
     public PylonCanon() {
         super(Type.PYLON_CANON);
         ModelAsset asset = new AssetManager<ModelAsset>().getAsset("Game/Towers/PylonModel");
-        model = asset.getModel();
+        model = asset.getNewModel();
     }
 
     @Override
@@ -35,8 +31,9 @@ public class PylonCanon extends EnergyConsumer {
     //TODO: implement
     @Override
     public void update() {
-
-
+        rotation += 0.01f;
+        if (rotation > 360) rotation = 0;
+        model.transform(Raylib.MatrixRotateY(rotation));
     }
 
     @Override
