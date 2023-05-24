@@ -8,6 +8,7 @@ import engine.render.scene.ElementBatch;
 import engine.render.scene.Scene;
 import engine.render.scene.SceneManager;
 import engine.testing.TestingValues;
+import game.GameManager;
 import game.visuals.elements.uiElements.ButtonElement;
 import game.visuals.elements.uiElements.TextElement;
 import game.visuals.elements.uiElements.levelSelector.LevelSelector;
@@ -67,6 +68,8 @@ public class LevelSelectorScene extends Scene {
 
                         if (hoveringTab == 1) {
                             SceneManager.instance.setActiveScene(IngameDevScene.class);
+                            //TODO: move
+                            GameManager.getInstance().start();
                             return;
                         }
 

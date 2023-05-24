@@ -8,19 +8,15 @@ import engine.render.Renderer;
 import engine.render.scene.Element;
 import engine.render.scene.ElementBatch;
 import engine.render.scene.InGameScene;
-import engine.render.scene.SceneManager;
 import game.GameManager;
 import game.visuals.elements.tdElements.DropGhostElement;
 import game.visuals.elements.tdElements.FloorElement;
 import game.visuals.elements.tdElements.GameManagerElement;
 import game.visuals.elements.tdElements.PathDrawElement;
-import game.visuals.elements.uiElements.ButtonElement;
 import game.visuals.elements.uiElements.inGame.TowerSelector;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static engine.util.ColorPalette.ColorPalettes.STANDARD_BUTTON;
 
 public class IngameDevScene extends InGameScene {
 
@@ -38,23 +34,9 @@ public class IngameDevScene extends InGameScene {
         addElement3d(new PathDrawElement());
         addElement(new GameManagerElement());
 
-        //Todo: start game (this is for testing)
-        GameManager.getInstance().start();
 
         elementBatch = new ElementBatch(new Element[]{
 
-                new ButtonElement(
-                        Vector2.byScreenPercent(94, 5),
-                        Vector2.byScreenPercent(10, 7),
-                        "Close",
-                        40f,
-                        STANDARD_BUTTON
-                ) {
-                    @Override
-                    public void run() {
-                        SceneManager.instance.setActiveScene(LevelSelectorScene.class);
-                    }
-                },
                 new TowerSelector(Vector2.byScreenPercent(50, 105), Vector2.byScreenPercent(85, 20)) {
                     @Override
                     public void run() {

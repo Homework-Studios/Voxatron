@@ -1,5 +1,6 @@
 package engine.render.scene;
 
+import engine.assets.Asset;
 import engine.render.Renderer;
 import game.visuals.scenes.*;
 
@@ -49,10 +50,12 @@ public class SceneManager {
     }
 
     public void setActiveScene(Scene scene) {
+        Asset.clearAssets();
         activeScene = scene;
     }
 
     public void setActiveScene(Class sceneName) {
+        Asset.clearAssets();
         for (Scene scene : scenes) {
             if (scene.getClass() == sceneName) {
                 activeScene = scene;

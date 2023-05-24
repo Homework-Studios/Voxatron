@@ -308,4 +308,10 @@ public abstract class GameManager extends Element {
     public List<Enemy> getEnemies() {
         return new ArrayList<>(enemies);
     }
+
+    public void clear() {
+        towers.clear();
+        enemies.clear();
+        energyFactories.clear();
+    }
 }
