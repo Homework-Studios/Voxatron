@@ -18,15 +18,15 @@ import game.tower.EnergyConsumer;
  */
 public class CubeCanon extends EnergyConsumer {
 
-    public Raylib.BoundingBox aabb = new Raylib.BoundingBox();
     private final Raylib.Model base;
     private final Raylib.Model canon;
+    public Raylib.BoundingBox aabb = new Raylib.BoundingBox();
 
     public CubeCanon() {
         super(Type.CUBE_CANON);
         ModelAsset asset = new AssetManager<ModelAsset>().getAsset("Game/Towers/CubeCanon");
         base = asset.getNewModel("cubecanonbase");
-        canon = asset.getNewModel("cubecanoncanon");
+        canon = asset.getModel("cubecanoncanon");
     }
 
     @Override
@@ -35,9 +35,10 @@ public class CubeCanon extends EnergyConsumer {
             parentScene.removeElement3d(this);
             GameManager.instance.sell(type.getCost());
         }
-        target = GameManager.instance.getClosestEnemy(position, range);
-        if(target != null) //TODO: fix this
-            canon.transform(Raylib.MatrixLookAt(position.toRaylibVector3(), target.position.toRaylibVector3(), new Raylib.Vector3().y(1)));
+        target = GameManager.instance.getFurthestEnemyInRange(position, range);
+        if (target != null && target.position.distance(position) < range)
+            //make canon look at target
+            canon.transform(Raylib.MatrixRotateY((float) Math.atan2(target.position.x - position.x, target.position.z - position.z) + (float) Math.toRadians(-90)));
         tryFire();
         if (hasEnergy(5) && canFire()) {
 

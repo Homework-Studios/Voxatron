@@ -252,6 +252,19 @@ public abstract class GameManager extends Element {
         return closest;
     }
 
+    public Enemy getFurthestEnemyInRange(Vector3 position, float range) {
+        Enemy furtherst = null;
+        float furthestOnPath = 0;
+        for (Enemy enemy : getEnemies()) {
+            float distance = enemy.positionOnPath;
+            if (distance > furthestOnPath && enemy.position.distance(position) <= range) {
+                furtherst = enemy;
+                furthestOnPath = distance;
+            }
+        }
+        return furtherst;
+    }
+
     public void killEnemy(Enemy enemy) {
         enemies.remove(enemy);
         parentScene.removeElement3d(enemy);
