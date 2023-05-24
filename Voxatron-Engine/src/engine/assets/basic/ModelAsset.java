@@ -8,10 +8,18 @@ import java.util.HashMap;
 import static com.raylib.Raylib.*;
 
 public class ModelAsset extends Asset {
-    HashMap<String, Model> loadedModels = new HashMap<>();
+    private final HashMap<String, Texture> loadedTextures = new HashMap<>();
+    private final HashMap<String, Model> loadedModels = new HashMap<>();
 
     public ModelAsset(String name, String path, AssetType type, boolean createAsset) {
         super(name, path, type, createAsset);
+    }
+
+    Texture loadTexture(String name) {
+        System.out.println("Loading texture: " + name);
+        Texture image = LoadTexture(getDirectory().getAbsolutePath() + "\\" + name + ".png");
+        loadedTextures.put(name, image);
+        return image;
     }
 
     public Model getModel(String name) {
@@ -38,6 +46,16 @@ public class ModelAsset extends Asset {
         return model;
     }
 
+    public Texture getTexture() {
+        return getTexture(getName());
+    }
+
+
+    public Texture getTexture(String name) {
+        if (loadedTextures.containsKey(name)) return loadedTextures.get(name);
+        return loadTexture(name);
+    }
+
     public Model getNewModel(String name) {
         return LoadModel(getDirectory().getAbsolutePath() + "\\" + name + ".obj");
     }
@@ -50,11 +68,21 @@ public class ModelAsset extends Asset {
     @Override
     public void unload() {
         loadedModels.values().forEach(Raylib::UnloadModel);
+        loadedTextures.values().forEach(Raylib::UnloadTexture);
         loadedModels.clear();
+        loadedTextures.clear();
     }
 
     @Override
     public void load() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "ModelAsset{" +
+                "loadedTextures=" + loadedTextures +
+                ", loadedModels=" + loadedModels +
+                '}';
     }
 }

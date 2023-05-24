@@ -25,8 +25,8 @@ public class CubeCanon extends EnergyConsumer {
     public CubeCanon() {
         super(Type.CUBE_CANON);
         ModelAsset asset = new AssetManager<ModelAsset>().getAsset("Game/Towers/CubeCanon");
-        base = asset.getNewModel("cubecanonbase");
-        canon = asset.getModel("cubecanoncanon");
+        base = asset.getModel("cubecanonbase");
+        canon = asset.getNewModel("cubecanoncanon");
     }
 
     @Override
@@ -38,11 +38,9 @@ public class CubeCanon extends EnergyConsumer {
         target = GameManager.instance.getFurthestEnemyInRange(position, range);
         if (target != null && target.position.distance(position) < range)
             //make canon look at target
-            canon.transform(Raylib.MatrixRotateY((float) Math.atan2(target.position.x - position.x, target.position.z - position.z) + (float) Math.toRadians(-90)));
+            canon.transform(Raylib.MatrixRotateY((float) Math.atan2(target.position.x - position.x, target.position.z - position.z)));
         tryFire();
         if (hasEnergy(5) && canFire()) {
-
-
             if (target != null) {
                 consumeEnergy(5);
                 fire();

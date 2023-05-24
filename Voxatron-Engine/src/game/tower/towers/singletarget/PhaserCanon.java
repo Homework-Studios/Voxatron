@@ -1,6 +1,9 @@
 package game.tower.towers.singletarget;
 
+import com.raylib.Jaylib;
 import com.raylib.Raylib;
+import engine.assets.AssetManager;
+import engine.assets.basic.ModelAsset;
 import game.GameManager;
 import game.enemy.Enemy;
 import game.tower.EnergyConsumer;
@@ -19,12 +22,20 @@ import game.tower.EnergyConsumer;
  * - make as gimmicky as possible
  */
 public class PhaserCanon extends EnergyConsumer {
+    private final Raylib.Model base;
+    private final Raylib.Model canon;
     int consume = 1;
     int fired = 0;
     Enemy lastTarget = null;
 
     public PhaserCanon() {
         super(Type.PHASER_CANON);
+        ModelAsset modelAsset = new AssetManager<ModelAsset>().getAsset("Game/Towers/Phaser");
+        base = modelAsset.getModel("base");
+        canon = modelAsset.getNewModel("phaser");
+        Raylib.Texture texture = modelAsset.getTexture("phasertexture");
+        Raylib.SetMaterialTexture(canon.materials().position(0), Jaylib.MATERIAL_MAP_DIFFUSE, texture);
+        Raylib.SetMaterialTexture(base.materials().position(0), Jaylib.MATERIAL_MAP_DIFFUSE, texture);
     }
 
     @Override
@@ -34,23 +45,31 @@ public class PhaserCanon extends EnergyConsumer {
 
     @Override
     public void render() {
-        Raylib.DrawCube(position.toRaylibVector3(), 5, 5, 5, type.getColor());
-        if (target != null)
-            Raylib.DrawCylinderEx(position.toRaylibVector3(), target.position.toRaylibVector3(), 0.1f * consume, 0.1f * consume, 12, type.getColor());
+        if (base != null && canon != null) {
+            Raylib.DrawModel(base, position.toRaylibVector3(), 5, type.getColor());
+            Raylib.DrawModel(canon, position.toRaylibVector3(), 5, type.getColor());
+        }
+
         drawRange();
         drawEnergy();
     }
 
     @Override
     public void gameTick() {
-        if (hasEnergy(consume)) {
-            if (target == null || !target.isAlive) {
-                target = GameManager.instance.getClosestEnemy(position, range);
-                if (target != null) {
-                    consume = 1;
-                    fired = 0;
-                }
+        if (target == null || !target.isAlive) {
+            target = GameManager.instance.getFurthestEnemyInRange(position, range);
+            if (target == null) {
+                consume = 1;
+                fired = 0;
             }
+        }
+
+        if (target != null)
+            //make canon look at target
+            canon.transform(Raylib.MatrixRotateY((float) Math.atan2(target.position.x - position.x, target.position.z - position.z)));
+
+        if (hasEnergy(consume)) {
+
             if (target != null) {
                 consumeEnergy(consume * consume);
                 fire();
