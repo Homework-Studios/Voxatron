@@ -1,6 +1,5 @@
 package game.tower.towers.singletarget;
 
-import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import engine.assets.AssetManager;
 import engine.assets.basic.ModelAsset;
@@ -21,21 +20,18 @@ import game.tower.EnergyConsumer;
  * <p>
  * - make as gimmicky as possible
  */
-public class PhaserCanon extends EnergyConsumer {
+public class LaserCanon extends EnergyConsumer {
     private final Raylib.Model base;
     private final Raylib.Model canon;
     int consume = 1;
     int fired = 0;
     Enemy lastTarget = null;
 
-    public PhaserCanon() {
-        super(Type.PHASER_CANON);
-        ModelAsset modelAsset = new AssetManager<ModelAsset>().getAsset("Game/Towers/Phaser");
+    public LaserCanon() {
+        super(Type.LASER_CANON);
+        ModelAsset modelAsset = new AssetManager<ModelAsset>().getAsset("Game/Towers/Laser");
         base = modelAsset.getModel("base");
-        canon = modelAsset.getNewModel("phaser");
-        Raylib.Texture texture = modelAsset.getTexture("phasertexture");
-        Raylib.SetMaterialTexture(canon.materials().position(0), Jaylib.MATERIAL_MAP_DIFFUSE, texture);
-        Raylib.SetMaterialTexture(base.materials().position(0), Jaylib.MATERIAL_MAP_DIFFUSE, texture);
+        canon = modelAsset.getNewModel("laser");
     }
 
     @Override

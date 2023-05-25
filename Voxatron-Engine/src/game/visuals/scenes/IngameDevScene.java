@@ -8,11 +8,7 @@ import engine.render.Renderer;
 import engine.render.scene.Element;
 import engine.render.scene.ElementBatch;
 import engine.render.scene.InGameScene;
-import game.GameManager;
-import game.visuals.elements.tdElements.DropGhostElement;
-import game.visuals.elements.tdElements.FloorElement;
-import game.visuals.elements.tdElements.GameManagerElement;
-import game.visuals.elements.tdElements.PathDrawElement;
+import game.visuals.elements.tdElements.*;
 import game.visuals.elements.uiElements.inGame.TowerSelector;
 
 import java.util.ArrayList;
@@ -27,11 +23,12 @@ public class IngameDevScene extends InGameScene {
         addElement3d(new DropGhostElement() {
             @Override
             public void run() {
-                this.position = getDropPosition();
+                position = getDropPosition();
             }
         });
         addElement3d(new FloorElement());
         addElement3d(new PathDrawElement());
+        addElement3d(new LightElement());
         addElement(new GameManagerElement());
 
 
@@ -74,12 +71,12 @@ public class IngameDevScene extends InGameScene {
     public void update() {
 
         for (Element element : getIterableElements3d()) {
-            if(element == null) continue;
+            if (element == null) continue;
             element.update();
         }
 
         for (Element element : getIterableElements()) {
-            if(element == null) continue;
+            if (element == null) continue;
             element.update();
         }
     }

@@ -1,6 +1,6 @@
 # Blender 3.2.2
 # www.blender.org
-mtllib phaser.mtl
+mtllib laser.mtl
 o Cube
 v -0.016427 0.392675 -0.170337
 v -0.016427 0.415612 -0.170337

@@ -11,7 +11,7 @@ import game.tower.towers.aoe.PylonCanon;
 import game.tower.towers.aoe.SphereCanon;
 import game.tower.towers.energy.EnergyFactory;
 import game.tower.towers.singletarget.CubeCanon;
-import game.tower.towers.singletarget.PhaserCanon;
+import game.tower.towers.singletarget.LaserCanon;
 import game.tower.towers.singletarget.TronCanon;
 import game.visuals.elements.uiElements.inGame.TowerPanel;
 
@@ -72,7 +72,7 @@ public abstract class Tower extends Element {
     // IMPORTANT NOTE: The lowest EnergyFactory has to cost less than the lowest Tower to not softlock the game!
     public enum Type {
         CUBE_CANON("Cube Canon", Jaylib.RED, 400),
-        PHASER_CANON("Phaser", Jaylib.RED, 1300),
+        LASER_CANON("Laser", Jaylib.RED, 1300),
         TRON_CANON("Tron Canon", Jaylib.RED, 500),
 
         PYLON_CANON("Pylon", Jaylib.PURPLE, 2000),
@@ -82,7 +82,7 @@ public abstract class Tower extends Element {
 
         public static final TowerPanel[] panels = new TowerPanel[]{
                 new TowerPanel(CUBE_CANON),
-                new TowerPanel(PHASER_CANON),
+                new TowerPanel(LASER_CANON),
                 new TowerPanel(TRON_CANON),
 
                 new TowerPanel(SPHERE_CANON),
@@ -118,11 +118,10 @@ public abstract class Tower extends Element {
             switch (this) {
                 case CUBE_CANON:
                     return new CubeCanon();
-                case PHASER_CANON:
-                    return new PhaserCanon();
+                case LASER_CANON:
+                    return new LaserCanon();
                 case TRON_CANON:
                     return new TronCanon();
-
                 case SPHERE_CANON:
                     return new SphereCanon();
                 case PYLON_CANON:
