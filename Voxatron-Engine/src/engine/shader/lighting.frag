@@ -3,7 +3,6 @@
 // Input vertex attributes (from vertex shader)
 in vec3 fragPosition;
 in vec2 fragTexCoord;
-//in vec4 fragColor;
 in vec3 fragNormal;
 
 // Input uniform values
@@ -11,41 +10,85 @@ uniform sampler2D texture0;
 uniform vec4 colDiffuse;
 uniform vec3 viewPos;
 
+// Maximum number of light sources
+const int MAX_LIGHT_SOURCES = 4;
+
+// Light struct
+struct Light {
+    vec3 position;
+    vec4 color;
+    float intensity;
+};
+
+// Light source array
+uniform Light lights[MAX_LIGHT_SOURCES];
+
+vec4 ambient = vec4(0.1, 0.1, 0.1, 1.0);
+
 // Output fragment color
 out vec4 finalColor;
 
+float attenuation(Light light)
+{
+    float distance = length(light.position - fragPosition);
 
-vec3 lightPosition = vec3(0.0, 10.0, 0.0);
-vec4 lightColor = vec4(1.0, 0.0, 0.0, 1.0);
-vec4 ambient = vec4(0.1, 0.1, 0.1, 1.0);
+    // light intensity
+    distance /= light.intensity;
+
+    return 1.0 / (1.0 + 0.1 * pow(distance, 2.0));
+}
+
+vec3 CalcLight(vec3 normal, vec3 viewDir, Light light)
+{
+    vec3 lightDir = normalize(light.position - fragPosition);
+    float NdotL = max(dot(normal, lightDir), 0.0);
+    vec4 color = (light.color * colDiffuse)/2;
+
+    vec3 lightDot = vec3(color) * NdotL;
+
+    // Specular
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 16.0);
+    vec3 specular = vec3(color) * spec;
+
+    // attenuation
+    float attenuation = attenuation(light);
+
+    return (lightDot + specular) * attenuation;
+}
+
+void ApplyAmbientLight(vec4 texelColor)
+{
+    finalColor += texelColor * (ambient / 10.0) * colDiffuse;
+}
+
+void ApplyGammaCorrection()
+{
+    finalColor = pow(finalColor, vec4(1.0 / 2.2));
+}
 
 void main()
 {
     // Texel color fetching from texture sampler
     vec4 texelColor = texture(texture0, fragTexCoord);
-    vec3 lightDot = vec3(0.0);
     vec3 normal = normalize(fragNormal);
     vec3 viewD = normalize(viewPos - fragPosition);
-    vec3 specular = vec3(0.0);
 
-    vec3 light = normalize(lightPosition - fragPosition);
+    vec3 totalLight = vec3(0.0);
 
-    float NdotL = max(dot(normal, light), 0.0);
-    lightDot += vec3(lightColor)*NdotL;
+    for (int i = 0; i < MAX_LIGHT_SOURCES; i++)
+    {
+        Light light = lights[i];
 
-    float specCo = 0.0;
-    if (NdotL > 0.0) specCo = pow(max(0.0, dot(viewD, reflect(-(light), normal))), 16.0); // 16 refers to shine
-    specular += specCo;
+        vec3 lightResult = CalcLight(normal, viewD, light);
+        totalLight += lightResult;
+    }
 
-    // attenuation
-    float distance = length(lightPosition - fragPosition);
-    float attenuation = 1.0 / (1.0 + 0.1 * pow(distance, 2.0));
+    finalColor = texelColor * vec4((totalLight / MAX_LIGHT_SOURCES), 1.0);
 
-    finalColor = (texelColor*((colDiffuse + vec4(specular, 1.0))*vec4(lightDot, 1.0))) * attenuation;
-    // remove transparency
+    ApplyAmbientLight(texelColor);
+    ApplyGammaCorrection();
+
+    // Remove transparency
     finalColor.a = 1.0;
-    finalColor += texelColor*(ambient/10.0)*colDiffuse;
-
-    // Gamma correction
-    finalColor = pow(finalColor, vec4(1.0/2.2));
 }
