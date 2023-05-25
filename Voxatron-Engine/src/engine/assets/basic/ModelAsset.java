@@ -2,6 +2,7 @@ package engine.assets.basic;
 
 import com.raylib.Raylib;
 import engine.assets.Asset;
+import engine.render.shader.ShaderManager;
 
 import java.util.HashMap;
 
@@ -57,7 +58,10 @@ public class ModelAsset extends Asset {
     }
 
     public Model getNewModel(String name) {
-        return LoadModel(getDirectory().getAbsolutePath() + "\\" + name + ".obj");
+        Model model = LoadModel(getDirectory().getAbsolutePath() + "\\" + name + ".obj");
+        Shader lightShader = ShaderManager.instance.lightShader;
+        model.materials().shader(lightShader);
+        return model;
     }
 
     //TODO: own model system

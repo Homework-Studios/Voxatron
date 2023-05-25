@@ -4,6 +4,7 @@ import com.raylib.Raylib;
 import engine.debug.DebugDraw;
 import engine.render.camera.Camera;
 import engine.render.scene.SceneManager;
+import engine.render.shader.ShaderManager;
 import engine.window.Window;
 
 import static com.raylib.Jaylib.BLACK;
@@ -24,6 +25,8 @@ public class Renderer {
         instance = this;
 
         camera = new Camera(new Vector3().x(300).y(200), new Vector3(), new Vector3().y(1), 45, Camera.PERSPECTIVE);
+        ShaderManager shaderManager = new ShaderManager();
+        shaderManager.init();
     }
 
     public void begin() {
