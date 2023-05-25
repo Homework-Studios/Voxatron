@@ -1,5 +1,6 @@
 package engine.render;
 
+import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import engine.debug.DebugDraw;
 import engine.render.camera.Camera;
@@ -15,7 +16,7 @@ public class Renderer {
 
     public static Renderer instance;
 
-    public static SceneManager sceneManager = new SceneManager();
+    public static SceneManager sceneManager;
     public static Camera camera;
     public boolean isDebugOverlay = true;
     public boolean mode3d = false;
@@ -27,6 +28,8 @@ public class Renderer {
         camera = new Camera(new Vector3().x(300).y(200), new Vector3(), new Vector3().y(1), 45, Camera.PERSPECTIVE);
         ShaderManager shaderManager = new ShaderManager();
         shaderManager.init();
+
+        sceneManager = new SceneManager();
     }
 
     public void begin() {
@@ -48,6 +51,7 @@ public class Renderer {
 
             sceneManager.update();
             camera.update();
+            ShaderManager.instance.update();
 
             Raylib.BeginDrawing();
             Raylib.ClearBackground(BLACK);

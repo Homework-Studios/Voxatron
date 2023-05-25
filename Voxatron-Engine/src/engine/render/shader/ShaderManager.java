@@ -1,6 +1,7 @@
 package engine.render.shader;
 
 import com.raylib.Raylib;
+import engine.render.Renderer;
 
 public class ShaderManager {
 
@@ -17,7 +18,7 @@ public class ShaderManager {
         lightShader = Raylib.LoadShader("C:\\Users\\j.windmann\\IdeaProjects\\Voxatron\\Voxatron-Engine\\src\\engine\\shader\\lighting.vert", "C:\\Users\\j.windmann\\IdeaProjects\\Voxatron\\Voxatron-Engine\\src\\engine\\shader\\lighting.frag");
     }
 
-    public void Update() {
-
+    public void update() {
+        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "viewPos"), Renderer.camera.position, Raylib.SHADER_ATTRIB_VEC3);
     }
 }

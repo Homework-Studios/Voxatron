@@ -160,7 +160,7 @@ public abstract class GameManager extends Element {
             @Override
             public void run() {
                 if (gameShouldEnd || Raylib.WindowShouldClose()) timer.cancel();
-                gameTick();
+                    gameTick();
             }
         }, 0, 50);
 
@@ -294,6 +294,7 @@ public abstract class GameManager extends Element {
      */
     public void gameTick() {
         if (gameShouldEnd) System.out.println("Game Over");
+        enemyLogicUpdate();
         if (roundEnded) {
             nextRound();
             System.out.println("Round " + round + " started");

@@ -1,8 +1,10 @@
 package game.tower.towers.aoe;
 
+import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import engine.assets.AssetManager;
 import engine.assets.basic.ModelAsset;
+import engine.render.shader.ShaderManager;
 import game.tower.EnergyConsumer;
 
 /**
@@ -17,10 +19,14 @@ public class PylonCanon extends EnergyConsumer {
     private final Raylib.Model model;
     private float rotation = 0;
 
+    private final Raylib.Model sphere;
     public PylonCanon() {
         super(Type.PYLON_CANON);
         ModelAsset asset = new AssetManager<ModelAsset>().getAsset("Game/Towers/PylonModel");
         model = asset.getNewModel();
+
+        sphere = Raylib.LoadModelFromMesh(Raylib.GenMeshSphere(1, 32, 32));
+        sphere.materials().shader(ShaderManager.instance.lightShader);
     }
 
     @Override
@@ -39,5 +45,7 @@ public class PylonCanon extends EnergyConsumer {
     @Override
     public void render() {
         Raylib.DrawModel(model, position.toRaylibVector3(), 5, type.getColor());
+
+        Raylib.DrawModel(sphere, new Raylib.Vector3().x(10).y(10).z(10), 5, type.getColor());
     }
 }

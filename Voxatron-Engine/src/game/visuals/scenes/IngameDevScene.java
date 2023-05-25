@@ -73,13 +73,13 @@ public class IngameDevScene extends InGameScene {
     @Override
     public void update() {
 
-        GameManager.instance.enemyLogicUpdate();
-
         for (Element element : getIterableElements3d()) {
+            if(element == null) continue;
             element.update();
         }
 
         for (Element element : getIterableElements()) {
+            if(element == null) continue;
             element.update();
         }
     }

@@ -36,7 +36,7 @@ public class PathManager {
         // node is blue sphere
         // line is green
 
-        Vector3 offset = new Vector3(0, 2, 0);
+        Vector3 offset = new Vector3(0, 0, 0);
 
         Vector3 start = currentPath.getComponent(0).getStart();
         Vector3 end = currentPath.getComponent(currentPath.getComponents().length - 1).getEnd();
