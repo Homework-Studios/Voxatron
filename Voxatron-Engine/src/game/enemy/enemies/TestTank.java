@@ -16,11 +16,6 @@ public class TestTank extends Enemy {
     }
 
     @Override
-    public void update() {
-        stepOnPath();
-    }
-
-    @Override
     public void render() {
         Raylib.DrawCube(position.toRaylibVector3(), 10, 10, 10, Jaylib.GREEN);
     }

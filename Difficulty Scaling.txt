@@ -1,0 +1,3 @@
+Difficulty Scaling
+<30:  0,83x
+>30:  (20-x)^2*0,05+20

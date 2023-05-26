@@ -15,10 +15,6 @@ public class BlueCube extends Enemy {
         return 2;
     }
 
-    @Override
-    public void update() {
-        stepOnPath();
-    }
 
     @Override
     public void render() {

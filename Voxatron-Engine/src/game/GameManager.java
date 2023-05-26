@@ -160,7 +160,7 @@ public abstract class GameManager extends Element {
             @Override
             public void run() {
                 if (gameShouldEnd || Raylib.WindowShouldClose()) timer.cancel();
-                    gameTick();
+                gameTick();
             }
         }, 0, 50);
 
@@ -290,7 +290,7 @@ public abstract class GameManager extends Element {
     }
 
     /**
-     * runs every 50ms (20 times per second)
+     * runs every 50ms / gameSpeed (20 times per second * gameSpeed)
      */
     public void gameTick() {
         if (gameShouldEnd) System.out.println("Game Over");
@@ -299,9 +299,10 @@ public abstract class GameManager extends Element {
             nextRound();
             System.out.println("Round " + round + " started");
         }
-        // hands over the Game Tick to towers
+        // hands over the Game Ticks
         towers.forEach(Tower::gameTick);
         energyFactories.forEach(Tower::gameTick);
+        enemies.forEach(Enemy::gameTick);
     }
 
     public abstract void uiUpdate();

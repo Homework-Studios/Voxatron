@@ -6,7 +6,7 @@ public class TestingValues {
 
     public static TestingValues instance;
 
-    public int value = 0;
+    public int value = 1;
 
     public TestingValues() {
         instance = this;

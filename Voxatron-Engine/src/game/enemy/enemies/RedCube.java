@@ -11,11 +11,6 @@ public class RedCube extends Enemy {
     }
 
     @Override
-    public void update() {
-        stepOnPath();
-    }
-
-    @Override
     public void render() {
         Raylib.DrawCube(position.toRaylibVector3(), 3, 3, 3, Jaylib.RED);
     }

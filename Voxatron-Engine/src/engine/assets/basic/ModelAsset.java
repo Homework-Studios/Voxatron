@@ -43,6 +43,8 @@ public class ModelAsset extends Asset {
     Model loadModel(String name) {
         System.out.println("Loading model: " + name);
         Model model = LoadModel(getDirectory().getAbsolutePath() + "\\" + name + ".obj");
+        Shader lightShader = ShaderManager.instance.lightShader;
+        model.materials().shader(lightShader);
         loadedModels.put(name, model);
         return model;
     }

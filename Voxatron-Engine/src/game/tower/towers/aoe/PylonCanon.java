@@ -45,8 +45,6 @@ public class PylonCanon extends EnergyConsumer {
     @Override
     public void render() {
         Vector3 pos = new Vector3(position).add(0, (float) Math.sin(rotation), 0);
-        Raylib.DrawModel(model, pos.toRaylibVector3(), 5, type.getColor());
-
-        Raylib.DrawModel(sphere, new Raylib.Vector3().x(10).y(10).z(10), 5, type.getColor());
+        Raylib.DrawModel(model, pos.toRaylibVector3(), 3, type.getColor());
     }
 }

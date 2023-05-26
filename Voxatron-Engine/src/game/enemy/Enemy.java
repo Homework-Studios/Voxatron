@@ -34,5 +34,14 @@ public abstract class Enemy extends Element {
         }
     }
 
+    public void gameTick() {
+
+    }
+
     public abstract int getEnergyGainOnKill();
+
+    @Override
+    public void update() {
+        stepOnPath();
+    }
 }

@@ -59,8 +59,8 @@ public class CubeCanon extends EnergyConsumer {
 
         drawRange();
 
-        Raylib.DrawModel(base, position.toRaylibVector3(), 5, type.getColor());
-        Raylib.DrawModel(canon, position.toRaylibVector3(), 5, type.getColor());
+        Raylib.DrawModel(base, position.toRaylibVector3(), 2, type.getColor());
+        Raylib.DrawModel(canon, position.toRaylibVector3(), 2, type.getColor());
 
 
         drawEnergy();

@@ -3,6 +3,7 @@ package game.tower.towers.singletarget;
 import com.raylib.Raylib;
 import engine.assets.AssetManager;
 import engine.assets.basic.ModelAsset;
+import engine.math.Vector3;
 import game.GameManager;
 import game.enemy.Enemy;
 import game.tower.EnergyConsumer;
@@ -26,6 +27,7 @@ public class LaserCanon extends EnergyConsumer {
     int consume = 1;
     int fired = 0;
     Enemy lastTarget = null;
+    private double hover;
 
     public LaserCanon() {
         super(Type.LASER_CANON);
@@ -36,14 +38,16 @@ public class LaserCanon extends EnergyConsumer {
 
     @Override
     public void update() {
-
+        hover += 0.01f;
+        hover %= Math.PI * 2;
     }
 
     @Override
     public void render() {
         if (base != null && canon != null) {
-            Raylib.DrawModel(base, position.toRaylibVector3(), 5, type.getColor());
-            Raylib.DrawModel(canon, position.toRaylibVector3(), 5, type.getColor());
+            Vector3 pos = new Vector3(position).add(0, (float) Math.sin(hover) / 2, 0);
+            Raylib.DrawModel(base, position.toRaylibVector3(), 2, type.getColor());
+            Raylib.DrawModel(canon, pos.toRaylibVector3(), 2, type.getColor());
         }
 
         drawRange();
