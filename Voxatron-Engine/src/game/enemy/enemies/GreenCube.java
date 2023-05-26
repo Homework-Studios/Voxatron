@@ -4,19 +4,18 @@ import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import game.enemy.Enemy;
 
-public class RedCube extends Enemy {
-
-    public RedCube() {
-        super(3, 5);
+public class GreenCube extends Enemy {
+    public GreenCube() {
+        super(15, 5);
     }
 
     @Override
     public void render() {
-        Raylib.DrawCube(position.toRaylibVector3(), 3, 3, 3, Jaylib.RED);
+        Raylib.DrawCube(position.toRaylibVector3(), 1, 1, 1, Jaylib.GREEN);
     }
 
     @Override
     public void kill() {
-
+        spawnEnemy(new BlueCube());
     }
 }

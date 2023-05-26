@@ -7,8 +7,8 @@ import engine.render.scene.Element;
 import engine.render.scene.InGameScene;
 import engine.render.scene.SceneManager;
 import game.enemy.Enemy;
-import game.enemy.enemies.BlueCube;
 import game.enemy.enemies.RedCube;
+import game.enemy.enemies.Sphere;
 import game.enemy.enemies.TestTank;
 import game.tower.EnergyConsumer;
 import game.tower.Tower;
@@ -34,7 +34,7 @@ public abstract class GameManager extends Element {
     private int round = 1;
     private boolean roundEnded = true;
     private boolean gameShouldEnd = false;
-    private int energy = 999999;
+    private int energy = 500;
     private int lives = 100;
     private List<Tower> towers = new ArrayList<>();
 
@@ -184,6 +184,9 @@ public abstract class GameManager extends Element {
         if (Raylib.IsKeyPressed(Jaylib.KEY_T)) {
             addEnemy(new TestTank());
         }
+        //TODO: use difficulty to calculate enemy spawn rate
+
+
         if (!roundHasStarted) {
             enemySpawned = 0;
             enemyKilled = 0;
@@ -202,7 +205,7 @@ public abstract class GameManager extends Element {
             gameHeartbeat = 0;
             if (enemySpawned < enemyToSpawn) {
                 enemySpawned++;
-                if (Math.random() > 0.5) addEnemy(new BlueCube());
+                if (Math.random() > 0.5) addEnemy(new Sphere());
                 else
                     addEnemy(new RedCube());
             }

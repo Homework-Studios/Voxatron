@@ -29,6 +29,7 @@ public class LaserCanon extends EnergyConsumer {
     Enemy lastTarget = null;
     private double hover;
 
+    //TODO: make tank damager
     public LaserCanon() {
         super(Type.LASER_CANON);
         ModelAsset modelAsset = new AssetManager<ModelAsset>().getAsset("Game/Towers/Laser");

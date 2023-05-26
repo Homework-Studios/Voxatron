@@ -7,12 +7,13 @@ import game.enemy.Enemy;
 public class BlueCube extends Enemy {
 
     public BlueCube() {
-        walkSpeed = 10;
+        super(5, 8);
     }
 
+
     @Override
-    public int getEnergyGainOnKill() {
-        return 2;
+    public void kill() {
+        spawnEnemy(new RedCube());
     }
 
 

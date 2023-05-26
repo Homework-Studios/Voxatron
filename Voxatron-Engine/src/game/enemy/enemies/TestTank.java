@@ -6,13 +6,13 @@ import game.enemy.Enemy;
 
 public class TestTank extends Enemy {
     public TestTank() {
-        walkSpeed = 0.5f;
-        health = 1000000000;
+        super(1010000000, 1);
     }
 
     @Override
-    public int getEnergyGainOnKill() {
-        return 99999999;
+    public void kill() {
+
+
     }
 
     @Override

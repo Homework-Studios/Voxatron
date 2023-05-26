@@ -122,6 +122,7 @@ public abstract class Tower extends Element {
                     return new LaserCanon();
                 case TRON_CANON:
                     return new TronCanon();
+
                 case SPHERE_CANON:
                     return new SphereCanon();
                 case PYLON_CANON:
