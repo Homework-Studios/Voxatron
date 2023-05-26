@@ -12,7 +12,7 @@ public class Sphere extends Enemy {
 
     @Override
     public void render() {
-        Raylib.DrawSphere(position.toRaylibVector3(), 0.5f, Jaylib.LIGHTGRAY);
+        Raylib.DrawSphere(position.toRaylibVector3(), 3, Jaylib.LIGHTGRAY);
     }
 
     @Override

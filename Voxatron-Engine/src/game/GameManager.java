@@ -76,6 +76,17 @@ public abstract class GameManager extends Element {
         return location.x != 0 && location.y != 0 && location.z != 0;
     }
 
+    /**
+     * Difficulty Scaling Function
+     * <p>
+     * <30:  0,83x
+     * <p>
+     * >30:  (20-x)^2*0,05+20
+     */
+    public int getDifficulty() {
+        return round < 30 ? (int) (round * 0.83f) : (int) ((20 - round) * (20 - round) * 0.05f + 20);
+    }
+
     public void setGameShouldEnd(boolean gameShouldEnd) {
         this.gameShouldEnd = gameShouldEnd;
     }
