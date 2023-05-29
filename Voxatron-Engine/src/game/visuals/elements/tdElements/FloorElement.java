@@ -2,19 +2,19 @@ package game.visuals.elements.tdElements;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
+import engine.assets.AssetManager;
+import engine.assets.basic.ModelAsset;
 import engine.render.scene.Element;
-import engine.render.shader.ShaderManager;
 
 import static com.raylib.Jaylib.DARKGRAY;
-import static com.raylib.Jaylib.DrawPlane;
 
 public class FloorElement extends Element {
 
     private final Raylib.Model model;
 
-    public FloorElement() {
-        model = Raylib.LoadModelFromMesh(Raylib.GenMeshPlane(300, 300, 10, 10));
-        model.materials().shader(ShaderManager.instance.lightShader);
+    public FloorElement(int i) {
+        ModelAsset asset = new AssetManager<ModelAsset>().getAsset("Game/Maps");
+        model = asset.getNewModel(String.valueOf(i));
     }
 
     @Override
@@ -25,8 +25,8 @@ public class FloorElement extends Element {
     @Override
     public void render() {
 
-        if(model == null) return;
+        if (model == null) return;
 
-        Raylib.DrawModel(model, new Jaylib.Vector3().y(-5), 1, DARKGRAY);
+        Raylib.DrawModel(model, new Jaylib.Vector3().y(-5), 5, DARKGRAY);
     }
 }

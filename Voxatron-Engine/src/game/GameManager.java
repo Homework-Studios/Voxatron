@@ -34,7 +34,7 @@ public abstract class GameManager extends Element {
     private int round = 1;
     private boolean roundEnded = true;
     private boolean gameShouldEnd = false;
-    private int energy = 500;
+    private int energy = 500000;
     private int lives = 100;
     private List<Tower> towers = new ArrayList<>();
 

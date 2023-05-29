@@ -14,9 +14,10 @@ import game.visuals.elements.uiElements.inGame.TowerSelector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngameDevScene extends InGameScene {
-
+public class MapOneScene extends InGameScene {
+    private final Vector3 pos = new Vector3(0, 0, 0);
     ElementBatch elementBatch;
+    Raylib.Model map;
 
     @Override
     public void init() {
@@ -28,9 +29,8 @@ public class IngameDevScene extends InGameScene {
         });
         addElement3d(new FloorElement(1));
         addElement3d(new PathDrawElement());
-        addElement3d(new LightElement());
         addElement(new GameManagerElement());
-
+        addElement3d(new LightElement());
 
         elementBatch = new ElementBatch(new Element[]{
 
@@ -83,10 +83,10 @@ public class IngameDevScene extends InGameScene {
 
     @Override
     public void render() {
-
         // Enabled the renderer to render 3d elements, without this, the 3d elements will not be rendered.
         // --------------------------------------------
         Renderer.instance.toggleMode3d();
+
         List<Element> elements3dCopy = new ArrayList<>(elements3d);
         for (Element element : elements3dCopy) {
             element.render();

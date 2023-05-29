@@ -22,6 +22,7 @@ public class SceneManager {
         addScene(new LevelSelectorScene());
         addScene(new IngameUIDevScene());
         addScene(new IngameDevScene());
+        addScene(new MapOneScene());
         setActiveScene(scenes.get(0));
     }
 

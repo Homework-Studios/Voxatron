@@ -21,7 +21,6 @@ public class LevelSelectorScene extends Scene {
     public ElementBatch levelSelectorBatch;
 
     public LevelSelectorScene() {
-        super();
     }
 
     @Override
@@ -56,7 +55,7 @@ public class LevelSelectorScene extends Scene {
                         Vector2.byScreenPercent(40, 60),
                         new LevelSelectorTab[]{
                                 // TODO: Implement image assets!
-                                new LevelSelectorTab("The Bluelands", Jaylib.BLUE, baseThumbnail, false),
+                                new LevelSelectorTab("Tron", Jaylib.BLUE, baseThumbnail, false),
                                 new LevelSelectorTab("The Depths", Jaylib.RED, baseThumbnail, false),
                                 new LevelSelectorTab("The Generator", Jaylib.GREEN, baseThumbnail, true),
                                 new LevelSelectorTab("The Mainframe", Jaylib.YELLOW, baseThumbnail, true),
@@ -64,7 +63,7 @@ public class LevelSelectorScene extends Scene {
                 ) {
                     @Override
                     public void run() {
-                        System.out.println("Level " + (this.hoveringTab + 1) + " selected!");
+                        System.out.println("Level " + (hoveringTab + 1) + " selected!");
 
                         if (hoveringTab == 1) {
                             SceneManager.instance.setActiveScene(IngameDevScene.class);
@@ -73,7 +72,8 @@ public class LevelSelectorScene extends Scene {
                             return;
                         }
 
-                        SceneManager.instance.setActiveScene(IngameUIDevScene.class);
+                        SceneManager.instance.setActiveScene(MapOneScene.class);
+                        GameManager.getInstance().start();
                     }
                 }
         }, true);
