@@ -83,9 +83,9 @@ public abstract class Tower extends Element {
         public static final TowerPanel[] panels = new TowerPanel[]{
                 new TowerPanel(CUBE_CANON),
                 new TowerPanel(LASER_CANON),
-                new TowerPanel(TRON_CANON),
+//                new TowerPanel(TRON_CANON),
 
-                new TowerPanel(SPHERE_CANON),
+//                new TowerPanel(SPHERE_CANON),
                 new TowerPanel(PYLON_CANON),
 
                 new TowerPanel(ENERGY_FACTORY)

@@ -4,6 +4,8 @@ import com.raylib.Raylib;
 import engine.assets.AssetManager;
 import engine.assets.basic.ModelAsset;
 import engine.math.Vector3;
+import game.GameManager;
+import game.enemy.Enemy;
 import game.tower.EnergyConsumer;
 
 /**
@@ -17,6 +19,7 @@ import game.tower.EnergyConsumer;
 public class PylonCanon extends EnergyConsumer {
     private final Raylib.Model model;
     private float rotation = 0;
+    private int delay;
 
     public PylonCanon() {
         super(Type.PYLON_CANON);
@@ -26,10 +29,18 @@ public class PylonCanon extends EnergyConsumer {
 
     @Override
     public void gameTick() {
-
+        if(hasEnergy(25)) {
+            delay++;
+            if(delay >= 60) {
+                delay = 0;
+                for (Enemy enemy : GameManager.instance.getEnemiesInRangeFromPosition(position, range)) {
+                    enemy.damage(5);
+                }
+                consumeEnergy(25);
+            }
+        }
     }
 
-    //TODO: implement
     @Override
     public void update() {
         rotation += 0.01f;

@@ -20,7 +20,6 @@ public class CubeCanon extends EnergyConsumer {
 
     private final Raylib.Model base;
     private final Raylib.Model canon;
-    public Raylib.BoundingBox aabb = new Raylib.BoundingBox();
 
     public CubeCanon() {
         super(Type.CUBE_CANON);
@@ -31,10 +30,6 @@ public class CubeCanon extends EnergyConsumer {
 
     @Override
     public void update() {
-        if (IsClicked(aabb)) {
-            parentScene.removeElement3d(this);
-            GameManager.instance.sell(type.getCost());
-        }
         target = GameManager.instance.getFurthestEnemyInRange(position, range);
         if (target != null && target.position.distance(position) < range)
             //make canon look at target
@@ -49,9 +44,6 @@ public class CubeCanon extends EnergyConsumer {
         } else {
             target = null;
         }
-
-        aabb.min(new Raylib.Vector3().x(position.x - 2.5f).y(position.y - 2.5f).z(position.z - 2.5f));
-        aabb.max(new Raylib.Vector3().x(position.x + 2.5f).y(position.y + 2.5f).z(position.z + 2.5f));
     }
 
     @Override

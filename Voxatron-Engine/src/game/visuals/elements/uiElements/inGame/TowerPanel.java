@@ -9,6 +9,7 @@ import game.GameManager;
 import game.tower.Tower;
 
 import static com.raylib.Raylib.IsMouseButtonPressed;
+import static com.raylib.Raylib.IsMouseButtonReleased;
 
 public class TowerPanel {
 
@@ -31,13 +32,13 @@ public class TowerPanel {
     public void render() {
         if (cull && !dragging) return;
 
-        int textSize = (int) UiUtils.getWidthPercent(3);
+        int textSize = (int) UiUtils.getWidthPercent(2);
         Raylib.DrawRectangleRoundedLines(rectangle, 0.1f, 10, 5, tower.getColor());
         int cost = tower.getCost();
         if (tower == Tower.Type.ENERGY_FACTORY) {
             cost = (int) (cost * GameManager.getInstance().energyFactories.size() * GameManager.getInstance().energyFactories.size() * Math.PI * 0.1f);
         }
-        Raylib.DrawText(tower.getName() + System.lineSeparator() + cost, (int) rectangle.x(), (int) rectangle.y(), textSize / 2, Jaylib.WHITE);
+        Raylib.DrawText(tower.getName() + "\n" + cost, (int) rectangle.x(), (int) rectangle.y(), textSize / 2, Jaylib.WHITE);
 
     }
 
@@ -76,7 +77,7 @@ public class TowerPanel {
 
         // if dragging and left mouse button is pressed set dragging to false
         if (dragging) {
-            if (IsMouseButtonPressed(Raylib.MOUSE_BUTTON_LEFT)) {
+            if (IsMouseButtonReleased(Raylib.MOUSE_BUTTON_LEFT)) {
                 dragging = false;
                 GameManager.getInstance().placeTower(tower);
             }

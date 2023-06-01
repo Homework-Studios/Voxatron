@@ -27,6 +27,6 @@ public class FloorElement extends Element {
 
         if (model == null) return;
 
-        Raylib.DrawModel(model, new Jaylib.Vector3().y(-5), 5, DARKGRAY);
+        Raylib.DrawModel(model, new Jaylib.Vector3(), 5, DARKGRAY);
     }
 }
