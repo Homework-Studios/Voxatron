@@ -30,7 +30,6 @@ public class MapOneScene extends InGameScene {
         addElement3d(new FloorElement(1));
         addElement3d(new PathDrawElement());
         addElement(new GameManagerElement());
-        addElement3d(new LightElement());
 
         elementBatch = new ElementBatch(new Element[]{
 

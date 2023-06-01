@@ -21,18 +21,15 @@ public class ShaderManager {
     public void init() {
         String path = System.getProperty("user.dir") + "\\Voxatron-Engine\\src\\engine\\shader\\";
         lightShader = Raylib.LoadShader(path + "lighting.vert", path + "lighting.frag");
-
-        // Randomly add 10 lights
-        regen();
     }
 
     public int maxLights = 10;
     public int currentLight = 0;
 
-    public void addLightSource(Vector3 position, Vector3 direction, Vector3 color, float intensity) {
+    public int addLightSource(Vector3 position, Vector3 direction, Vector3 color, float intensity) {
         // if over max lights, return
         if (currentLight + 1 > maxLights) {
-            return;
+            return -1;
         }
 
         currentLight++;
@@ -43,6 +40,8 @@ public class ShaderManager {
         Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[" + currentLight + "].intensity"), new FloatPointer(intensity), Raylib.SHADER_ATTRIB_FLOAT);
 
         Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lightCount"), new FloatPointer((float)currentLight), Raylib.SHADER_ATTRIB_FLOAT);
+
+        return currentLight;
     }
 
     public void updateLightSource(int index, Vector3 position, Vector3 direction, Vector3 color, float intensity) {
@@ -54,21 +53,5 @@ public class ShaderManager {
 
     public void update() {
         Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "viewPos"), Renderer.camera.position, Raylib.SHADER_ATTRIB_VEC3);
-
-        if(Raylib.IsKeyPressed(Raylib.KEY_R)) {
-            regen();
-        }
-    }
-
-    public void regen() {
-        currentLight = 0;
-        for (int i = 0; i < 10; i++) {
-            addLightSource(
-                    new Vector3((float) (Math.random() * 200 - 100), (float) (20), (float) (Math.random() * 200 - 100)),
-                    new Vector3((float) (Math.random() * 100), (float) (Math.random() * 100), (float) (Math.random() * 100)),
-                    new Vector3(1,1,1),
-                    20
-            );
-        }
     }
 }

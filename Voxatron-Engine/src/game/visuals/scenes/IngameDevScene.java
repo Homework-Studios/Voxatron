@@ -8,6 +8,7 @@ import engine.render.Renderer;
 import engine.render.scene.Element;
 import engine.render.scene.ElementBatch;
 import engine.render.scene.InGameScene;
+import engine.render.scene.LightElement;
 import game.visuals.elements.tdElements.*;
 import game.visuals.elements.uiElements.inGame.TowerSelector;
 
@@ -31,7 +32,7 @@ public class IngameDevScene extends InGameScene {
         });
         addElement3d(new FloorElement(1));
         addElement3d(new PathDrawElement());
-        addElement3d(new LightElement());
+        addElement3d(new LightElement(new Vector3(0, 10, 0), new Vector3(1, 1, 1), 5));
         addElement(new GameManagerElement());
 
 
