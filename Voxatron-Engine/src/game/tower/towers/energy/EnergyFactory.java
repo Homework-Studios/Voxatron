@@ -9,11 +9,11 @@ import game.tower.Factory;
 public class EnergyFactory extends Factory {
 
     private EnergyConsumer[] consumers = new EnergyConsumer[0];
-    private Raylib.Model model;
+    private final Raylib.Model model;
 
     public EnergyFactory() {
         super(Type.ENERGY_FACTORY);
-        model = Raylib.LoadModelFromMesh(Raylib.GenMeshCube(5,5,5));
+        model = Raylib.LoadModelFromMesh(Raylib.GenMeshCube(5, 5, 5));
         model.materials().shader(ShaderManager.instance.lightShader);
         range = 100;
     }
@@ -37,11 +37,8 @@ public class EnergyFactory extends Factory {
     public void render() {
         drawRange();
 
-        Vector3 pos = new Vector3(position).add(0,5,0);
-        Raylib.DrawModel(model,pos.toRaylibVector3(), 1, type.getColor());
-
-        drawEnergy();
-
+        Vector3 pos = new Vector3(position).add(0, 5, 0);
+        Raylib.DrawModel(model, pos.toRaylibVector3(), 1, type.getColor());
         // draw a line to all the energy consumers in range
 
         for (EnergyConsumer consumer : consumers) {

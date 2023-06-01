@@ -6,12 +6,12 @@ import game.enemy.Enemy;
 
 public class YellowCube extends Enemy {
     public YellowCube() {
-        super(10, 15);
+        super(10, 15, 15);
     }
 
     @Override
     public void render() {
-        Raylib.DrawCube(position.toRaylibVector3(), 1, 1, 1, Jaylib.YELLOW);
+        Raylib.DrawCube(position.toRaylibVector3(), 3, 3, 3, Jaylib.YELLOW);
     }
 
     @Override

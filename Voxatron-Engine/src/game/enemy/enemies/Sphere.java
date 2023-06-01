@@ -7,7 +7,7 @@ import game.enemy.Enemy;
 public class Sphere extends Enemy {
     //TODO: make immune to none tank damage
     public Sphere() {
-        super(50, 6);
+        super(50, 6, 150);
     }
 
     @Override

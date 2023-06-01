@@ -10,6 +10,7 @@ public class PathManager {
 
     public static PathManager instance;
 
+    public float totalDistance;
     public Path currentPath;
 
     public PathManager() {
@@ -21,14 +22,16 @@ public class PathManager {
         PathComponent[] components = new PathComponent[nodes.length + 1];
         components[0] = new PathComponent(start, nodes[0]);
         for (int i = 0; i < nodes.length - 1; i++) {
-            components[i + 1] = new PathComponent(nodes[i], nodes[i + 1]);
+            PathComponent component = new PathComponent(nodes[i], nodes[i + 1]);
+            components[i + 1] = component;
+            totalDistance += component.length;
         }
         components[nodes.length] = new PathComponent(nodes[nodes.length - 1], end);
         currentPath = new Path(components);
     }
 
-    public Vector3 getLerp(float i) {
-        return currentPath.getLerp(i);
+    public Vector3 getTravel(float distance) {
+        return currentPath.getTravel(distance);
     }
 
     public void debugDraw() {

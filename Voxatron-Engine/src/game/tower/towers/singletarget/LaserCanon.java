@@ -49,6 +49,9 @@ public class LaserCanon extends EnergyConsumer {
             Vector3 pos = new Vector3(position).add(0, (float) Math.sin(hover) / 2, 0);
             Raylib.DrawModel(base, position.toRaylibVector3(), 2, type.getColor());
             Raylib.DrawModel(canon, pos.toRaylibVector3(), 2, type.getColor());
+
+            if (target != null)
+                Raylib.DrawCylinderEx(pos.add(0, 10, 0).toRaylibVector3(), target.position.toRaylibVector3(), 0.1f * consume, 0.1f * consume, 12, type.getColor());
         }
 
         drawRange();

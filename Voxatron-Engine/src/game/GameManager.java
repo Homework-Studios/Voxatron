@@ -7,9 +7,7 @@ import engine.render.scene.Element;
 import engine.render.scene.InGameScene;
 import engine.render.scene.SceneManager;
 import game.enemy.Enemy;
-import game.enemy.enemies.RedCube;
-import game.enemy.enemies.Sphere;
-import game.enemy.enemies.TestTank;
+import game.enemy.enemies.*;
 import game.tower.EnergyConsumer;
 import game.tower.Tower;
 
@@ -20,28 +18,29 @@ import java.util.Timer;
 public abstract class GameManager extends Element {
 
     public static GameManager instance;
+    public static float gameSpeed = 1;
     public final List<Tower> energyFactories = new ArrayList<>();
-    //TODO: split enemy groups into cubits to save performance when dealing aoe damage (looping through all enemies is expensive)
     public final List<Enemy> enemies = new ArrayList<>();
-    public PathManager pathManager = new PathManager();
-    public boolean roundHasStarted = false;
-    public int enemyToSpawn = 0;
-    public int enemySpawned = 0;
+    private final List<Enemy> enemyList = new ArrayList<>();
+    private final List<Enemy> spawnableEnemies = new ArrayList<>();
+    public PathManager pathManager;
     public int enemyKilled = 0;
-    public int gameHeartbeat = 0;
-    public int gameHeartbeatMax = 25;
-    public int enemySpawnRate = 3;
-    private int round = 1;
+    public int spawnWeight;
+    private int round = 0;
     private boolean roundEnded = true;
     private boolean gameShouldEnd = false;
     private int energy = 500000;
     private int lives = 100;
     private List<Tower> towers = new ArrayList<>();
+    private int remainingWeight;
 
     public GameManager() {
         instance = this;
         Tower.gameManager = this;
         pathManager = new PathManager();
+
+        enemyList.addAll(List.of(new Enemy[]{new RedCube(), new BlueCube(), new GreenCube(), new YellowCube(), new PinkCube(), new Sphere()}));
+        spawnableEnemies.add(new RedCube());
     }
 
     public static GameManager getInstance() {
@@ -86,7 +85,7 @@ public abstract class GameManager extends Element {
      * >30:  (20-x)^2*0,05+20
      */
     public int getDifficulty() {
-        return round < 30 ? (int) (round * 0.83f) : (int) ((20 - round) * (20 - round) * 0.05f + 20);
+        return (round < 30 ? (int) (round * 0.83f) : (int) ((20 - round) * (20 - round) * 0.05f + 20)) + 1;
     }
 
     public void setGameShouldEnd(boolean gameShouldEnd) {
@@ -117,29 +116,30 @@ public abstract class GameManager extends Element {
         return round;
     }
 
-    public void setRound(int round) {
-        this.round = round;
-    }
-
     public int getEnergy() {
         return energy;
-    }
-
-    public void setEnergy(int energy) {
-        this.energy = energy;
     }
 
     public int getLives() {
         return lives;
     }
 
-    public void setLives(int lives) {
-        this.lives = lives;
+    public void removeLives(int lives) {
+        this.lives -= lives;
     }
 
     public void nextRound() {
         round++;
         roundEnded = false;
+        spawnableEnemies.clear();
+        remainingWeight = getDifficulty() + 3;
+        spawnWeight = 0;
+        for (Enemy enemy : enemyList) {
+            if (enemy.weight <= getDifficulty()) {
+                spawnableEnemies.add(enemy);
+            }
+        }
+//        Collections.reverse(spawnableEnemies);
     }
 
     public void addEnergy(int energy) {
@@ -158,11 +158,6 @@ public abstract class GameManager extends Element {
         return false;
     }
 
-    public boolean sell(int cost) {
-        addEnergy((int) (cost * 0.75f));
-        return true;
-    }
-
     public void start() {
         round = 1;
         roundEnded = false;
@@ -175,66 +170,63 @@ public abstract class GameManager extends Element {
                 if (gameShouldEnd || Raylib.WindowShouldClose()) timer.cancel();
                 gameTick();
             }
-        }, 0, 50);
+        }, 0, (long) (50 / gameSpeed));
     }
 
     @Override
     public void update() {
         uiUpdate();
-    }
-
-    public void enemyLogicUpdate() {
         if (Raylib.IsKeyPressed(Jaylib.KEY_T)) {
-            addEnemy(new TestTank());
-        }
-        //TODO: use difficulty to calculate enemy spawn rate
-
-
-        if (!roundHasStarted) {
-            enemySpawned = 0;
-            enemyKilled = 0;
-            enemyToSpawn = enemySpawnRate * round;
-            roundHasStarted = true;
-        }
-
-        if (gameHeartbeat >= gameHeartbeatMax) {
-
-            // randomly do nothing
-            if (Math.random() > 0.5) {
-                gameHeartbeat = 0;
-                return;
-            }
-
-            gameHeartbeat = 0;
-            if (enemySpawned < enemyToSpawn) {
-                enemySpawned++;
-                if (Math.random() > 0.5) addEnemy(new Sphere());
-                else
-                    addEnemy(new RedCube());
-            }
-        }
-        gameHeartbeat++;
-
-        if (roundHasStarted && enemySpawned == enemyToSpawn && enemyKilled == enemyToSpawn) {
-            roundHasStarted = false;
             nextRound();
         }
     }
 
-    public void addEnemy(Enemy enemy) {
-        enemy.position = pathManager.currentPath.getLerp(0);
-        parentScene.addElement3d(enemy);
-        enemies.add(enemy);
+    public void enemyLogicUpdate() {
+        spawnWeight += Math.sqrt(round * 3);
+        if (spawnWeight <= 50) return;
+        Enemy enemyToSpawn = null;
+        for (Enemy enemy : spawnableEnemies) {
+            if (enemy.weight <= remainingWeight) {
+                if (enemyToSpawn == null || enemy.weight > enemyToSpawn.weight) {
+                    enemyToSpawn = enemy;
+                }
+            }
+        }
+        if (enemyToSpawn != null) {
+            addEnemy(getNewEnemy(enemyToSpawn));
+            spawnWeight -= enemyToSpawn.weight * 20;
+            remainingWeight -= enemyToSpawn.weight;
+        }
+        if (remainingWeight == 0 && enemies.size() == 0) nextRound();
     }
 
-    public float distance(Vector3 a, Vector3 b) {
-        return (float) Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2) + Math.pow(a.z - b.z, 2));
+    public Enemy getNewEnemy(Enemy enemy) {
+        if (enemy.getClass().equals(RedCube.class)) {
+            return new RedCube();
+        } else if (enemy.getClass().equals(BlueCube.class)) {
+            return new BlueCube();
+        } else if (enemy.getClass().equals(GreenCube.class)) {
+            return new GreenCube();
+        } else if (enemy.getClass().equals(YellowCube.class)) {
+            return new YellowCube();
+        } else if (enemy.getClass().equals(PinkCube.class)) {
+            return new PinkCube();
+        } else if (enemy.getClass().equals(Sphere.class)) {
+            return new Sphere();
+        }
+        return null;
+    }
+
+    public void addEnemy(Enemy enemy) {
+        enemy.position = pathManager.currentPath.getTravel(0);
+        parentScene.addElement3d(enemy);
+        enemies.add(enemy);
     }
 
     public Enemy[] getEnemiesInRangeFromPosition(Vector3 position, float range) {
         List<Enemy> enemiesInRange = new ArrayList<>();
         for (Enemy enemy : getEnemies()) {
-            float distance = distance(position, enemy.position);
+            float distance = position.distance(enemy.position);
             if (distance < range) {
                 enemiesInRange.add(enemy);
             }
@@ -246,7 +238,7 @@ public abstract class GameManager extends Element {
         Enemy closest = null;
         float closestDistance = Float.MAX_VALUE;
         for (Enemy enemy : getEnemies()) {
-            float distance = distance(position, enemy.position);
+            float distance = position.distance(enemy.position);
             if (distance < closestDistance) {
                 closest = enemy;
                 closestDistance = distance;
@@ -284,7 +276,7 @@ public abstract class GameManager extends Element {
         for (Tower tower : towers) {
             if (tower instanceof EnergyConsumer) {
 
-                float distance = distance(position, tower.position);
+                float distance = position.distance(tower.position);
 
                 if (distance < range) {
                     closest.add((EnergyConsumer) tower);
@@ -317,9 +309,4 @@ public abstract class GameManager extends Element {
         return new ArrayList<>(enemies);
     }
 
-    public void clear() {
-        towers.clear();
-        enemies.clear();
-        energyFactories.clear();
-    }
 }

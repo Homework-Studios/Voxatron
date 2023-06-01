@@ -7,10 +7,12 @@ public class PathComponent {
 
     public Vector3 start;
     public Vector3 end;
+    public float length;
 
     public PathComponent(Vector3 start, Vector3 end) {
         this.start = start;
         this.end = end;
+        this.length = start.distance(end);
     }
 
     public Vector3 getStart() {
@@ -21,7 +23,8 @@ public class PathComponent {
         return end;
     }
 
-    public Vector3 getLerp(float i) {
-        return LerpUtil.lerp(start, end, i);
+    public Vector3 getTravel(float distance) {
+        float t = distance / length;
+        return LerpUtil.lerp(start, end, t);
     }
 }

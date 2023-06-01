@@ -7,7 +7,7 @@ import game.enemy.Enemy;
 public class BlueCube extends Enemy {
 
     public BlueCube() {
-        super(5, 8);
+        super(5, 8, 3);
     }
 
 
@@ -19,6 +19,6 @@ public class BlueCube extends Enemy {
 
     @Override
     public void render() {
-        Raylib.DrawCube(position.toRaylibVector3(), 3, 3, 3, Jaylib.BLUE);
+        Raylib.DrawCube(position.toRaylibVector3(), 2, 2, 2, Jaylib.BLUE);
     }
 }

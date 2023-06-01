@@ -6,7 +6,7 @@ import game.enemy.Enemy;
 
 public class TestTank extends Enemy {
     public TestTank() {
-        super(1010000000, 1);
+        super(1010000000, 1, 250);
     }
 
     @Override

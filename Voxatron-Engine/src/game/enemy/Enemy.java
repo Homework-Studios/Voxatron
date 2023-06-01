@@ -6,31 +6,32 @@ import game.GameManager;
 
 public abstract class Enemy extends Element {
 
-    public int health = 10;
-    public int maxHealth = 10;
+    public final int weight;
+    public int health;
+    public int maxHealth;
 
-    public float walkSpeed = 1;
+    public float walkSpeed;
     public float positionOnPath = 0;
 
     public Vector3 position = new Vector3();
     public boolean isAlive = true;
 
-    public Enemy(int health, float walkSpeed) {
+    public Enemy(int health, float walkSpeed, int weight) {
         maxHealth = health;
         this.health = health;
         this.walkSpeed = walkSpeed;
+        this.weight = weight;
 
     }
 
-    //TODO: make more modular
     public void stepOnPath() {
-        positionOnPath += (walkSpeed * 0.0001f);
+        positionOnPath += (walkSpeed * 0.05f * GameManager.gameSpeed);
 
-        // modulo 1 to keep it in the range of 0 to 1
-        // TODO: Remove this
-        positionOnPath %= 1;
-
-        position = GameManager.instance.pathManager.getLerp(positionOnPath);
+        position = GameManager.instance.pathManager.getTravel(positionOnPath);
+        if (positionOnPath >= GameManager.instance.pathManager.totalDistance) {
+            GameManager.instance.removeLives(health);
+            GameManager.instance.killEnemy(this);
+        }
     }
 
     public void damage(int damage) {
@@ -55,7 +56,7 @@ public abstract class Enemy extends Element {
     }
 
     public void spawnEnemy(Enemy enemy) {
-        GameManager.instance.addEnemy(enemy);
         enemy.positionOnPath = positionOnPath;
+        GameManager.instance.addEnemy(enemy);
     }
 }

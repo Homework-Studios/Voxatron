@@ -4,7 +4,7 @@ import engine.math.Vector3;
 
 public class Path {
 
-    public PathComponent[] components;
+    private final PathComponent[] components;
 
     public Path(PathComponent[] components) {
         this.components = components;
@@ -22,13 +22,14 @@ public class Path {
         return components[(int) i];
     }
 
-    public Vector3 getLerp(float i) {
-        // get the lerp over all the components
-        // i is the lerp over the components 0 is the start 1 is the end
-
-        // map i
-        i *= components.length;
-
-        return components[(int) i].getLerp(i % 1);
+    public Vector3 getTravel(float distance) {
+        int componentIndex = 0;
+        float traveledDistance = distance;
+        while (componentIndex < components.length - 1 && traveledDistance > components[componentIndex].length) {
+            traveledDistance -= components[componentIndex].length;
+            componentIndex++;
+        }
+        return components[componentIndex].getTravel(traveledDistance);
     }
+
 }

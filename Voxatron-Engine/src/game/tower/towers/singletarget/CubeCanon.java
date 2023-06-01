@@ -4,6 +4,7 @@ import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import engine.assets.AssetManager;
 import engine.assets.basic.ModelAsset;
+import engine.math.Vector3;
 import game.GameManager;
 import game.tower.EnergyConsumer;
 
@@ -59,7 +60,8 @@ public class CubeCanon extends EnergyConsumer {
 
         // draw a line to the target if not null
         if (target != null) {
-            Raylib.DrawLine3D(position.toRaylibVector3(), target.position.toRaylibVector3(), Jaylib.WHITE);
+            Vector3 copy = new Vector3(position).add(0, 4, 0);
+            Raylib.DrawLine3D(copy.toRaylibVector3(), target.position.toRaylibVector3(), Jaylib.WHITE);
         }
     }
 
