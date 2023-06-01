@@ -1,3 +1,4 @@
+import com.raylib.Raylib;
 import engine.assets.Asset;
 import engine.input.Input;
 import engine.render.Renderer;
@@ -11,6 +12,8 @@ public class Main {
         new Input();
         //Initializing Assets
         Asset.ASSET_DIR = System.getProperty("user.dir") + "\\Voxatron\\Assets";
+
+        Raylib.SetTraceLogLevel(Raylib.LOG_ERROR);
 
         //initializing
         Asset.init();

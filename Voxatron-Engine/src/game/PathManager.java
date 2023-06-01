@@ -17,6 +17,7 @@ public class PathManager {
     }
 
     public void genPath(Vector3 start, Vector3 end, Vector3[] nodes) {
+        System.out.println("generating Path");
         PathComponent[] components = new PathComponent[nodes.length + 1];
         components[0] = new PathComponent(start, nodes[0]);
         for (int i = 0; i < nodes.length - 1; i++) {

@@ -41,6 +41,7 @@ public abstract class GameManager extends Element {
     public GameManager() {
         instance = this;
         Tower.gameManager = this;
+        pathManager = new PathManager();
     }
 
     public static GameManager getInstance() {
@@ -48,9 +49,10 @@ public abstract class GameManager extends Element {
     }
 
     public void placeTower(Tower.Type type) {
+        InGameScene scene;
         if (!(SceneManager.instance.getActiveScene() instanceof InGameScene)) return;
 
-        InGameScene scene = (InGameScene) SceneManager.instance.getActiveScene();
+        scene = ((InGameScene) SceneManager.instance.getActiveScene());
         boolean buy;
         if (!canDrop(scene.getDropPosition())) return;
         if (type == Tower.Type.ENERGY_FACTORY) {
@@ -174,16 +176,6 @@ public abstract class GameManager extends Element {
                 gameTick();
             }
         }, 0, 50);
-
-        pathManager = new PathManager();
-
-        // Vector3[] last arguement
-        pathManager.genPath(new Vector3(-150, 0, 0), new Vector3(150, 0, 0), new Vector3[]{
-                new Vector3(0, 0, -150),
-                new Vector3(-50, 0, -50),
-                new Vector3(50, 0, 50),
-                new Vector3(0, 0, 150),
-        });
     }
 
     @Override

@@ -13,6 +13,14 @@ public class Vector3 {
         this.y = 0;
         this.z = 0;
     }
+/*
+    public Vector3(double x, double y, double z) {
+        this.x = (float) x;
+        this.y = (float) y;
+        this.z = (float) z;
+    }
+
+ */
 
     public Vector3(float x, float y, float z) {
         this.x = x;
@@ -106,5 +114,12 @@ public class Vector3 {
 
     public Raylib.Vector3 toRaylibVector3() {
         return new Raylib.Vector3().x(this.x).y(this.y).z(this.z);
+    }
+
+    @Override
+    public String toString() {
+        return "new Vector3(" + x +
+                "," + y +
+                "," + z + ")";
     }
 }
