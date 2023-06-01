@@ -1,7 +1,6 @@
 package game.visuals.elements.tdElements;
 
 import engine.render.scene.Element;
-import game.GameManager;
 
 public class PathDrawElement extends Element {
 
@@ -12,6 +11,6 @@ public class PathDrawElement extends Element {
 
     @Override
     public void render() {
-        GameManager.instance.pathManager.debugDraw();
+//        GameManager.instance.pathManager.debugDraw();
     }
 }
