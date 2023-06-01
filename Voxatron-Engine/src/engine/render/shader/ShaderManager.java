@@ -4,6 +4,8 @@ import com.raylib.Raylib;
 import engine.math.Vector3;
 import engine.render.Renderer;
 import org.bytedeco.javacpp.FloatPointer;
+import org.bytedeco.javacpp.IntPointer;
+import org.bytedeco.javacpp.Pointer;
 
 public class ShaderManager {
 
@@ -19,42 +21,45 @@ public class ShaderManager {
     public void init() {
         String path = System.getProperty("user.dir") + "\\Voxatron-Engine\\src\\engine\\shader\\";
         lightShader = Raylib.LoadShader(path + "lighting.vert", path + "lighting.frag");
+
+        // Randomly add 10 lights
+        for (int i = 0; i < 10; i++) {
+            addLightSource(
+                    new Vector3((float) (Math.random() * 100), (float) (Math.random() * 100), (float) (Math.random() * 100)),
+                    new Vector3((float) (Math.random() * 100), (float) (Math.random() * 100), (float) (Math.random() * 100)),
+                    new Vector3((float) (Math.random() * 100), (float) (Math.random() * 100), (float) (Math.random() * 100)),
+                    (float) Math.random() * 100
+            );
+        }
     }
 
-    //// Maximum number of light sources
-    //const int MAX_LIGHT_SOURCES = 4;
-    //
-    //// Light struct
-    //struct Light {
-    //    vec3 position;
-    //    vec4 color;
-    //    float intensity;
-    //};
-    //
-    //// Light source array
-    //uniform Light lights[MAX_LIGHT_SOURCES];
+    public int maxLights = 10;
+    public int currentLight = 0;
 
-    public void addLightSource() {
-        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[0].position"), new Vector3(0, 20, 0).toRaylibVector3(), Raylib.SHADER_ATTRIB_VEC3);
-        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[0].color"), new Vector3(1,1,1).toRaylibVector3(), Raylib.SHADER_ATTRIB_VEC4);
-        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[0].intensity"), new FloatPointer(5.0f), Raylib.SHADER_ATTRIB_FLOAT);
+    public void addLightSource(Vector3 position, Vector3 direction, Vector3 color, float intensity) {
+        // if over max lights, return
+        if (currentLight + 1 > maxLights) {
+            return;
+        }
 
-        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[1].position"), new Vector3(50, 20, 0).toRaylibVector3(), Raylib.SHADER_ATTRIB_VEC3);
-        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[1].color"), new Vector3(1,1,1).toRaylibVector3(), Raylib.SHADER_ATTRIB_VEC4);
-        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[1].intensity"), new FloatPointer(5.0f), Raylib.SHADER_ATTRIB_FLOAT);
+        currentLight++;
 
-        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[2].position"), new Vector3(0, 20, 50).toRaylibVector3(), Raylib.SHADER_ATTRIB_VEC3);
-        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[2].color"), new Vector3(1,1,1).toRaylibVector3(), Raylib.SHADER_ATTRIB_VEC4);
-        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[2].intensity"), new FloatPointer(5.0f), Raylib.SHADER_ATTRIB_FLOAT);
+        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[" + currentLight  + "].position"), position.toRaylibVector3(), Raylib.SHADER_ATTRIB_VEC3);
+        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[" + currentLight + "].direction"), direction.toRaylibVector3(), Raylib.SHADER_ATTRIB_VEC3);
+        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[" + currentLight + "].color"), color.toRaylibVector3(), Raylib.SHADER_ATTRIB_VEC4);
+        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[" + currentLight + "].intensity"), new FloatPointer(intensity), Raylib.SHADER_ATTRIB_FLOAT);
 
-        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[3].position"), new Vector3(50, 20, 50).toRaylibVector3(), Raylib.SHADER_ATTRIB_VEC3);
-        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[3].color"), new Vector3(1,1,1).toRaylibVector3(), Raylib.SHADER_ATTRIB_VEC4);
-        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[3].intensity"), new FloatPointer(5.0f), Raylib.SHADER_ATTRIB_FLOAT);
+        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lightCount"), new FloatPointer(1f), Raylib.SHADER_ATTRIB_FLOAT);
+    }
+
+    public void updateLightSource(int index, Vector3 position, Vector3 direction, Vector3 color, float intensity) {
+        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[" + index + "].position"), position.toRaylibVector3(), Raylib.SHADER_ATTRIB_VEC3);
+        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[" + index + "].direction"), direction.toRaylibVector3(), Raylib.SHADER_ATTRIB_VEC3);
+        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[" + index + "].color"), color.toRaylibVector3(), Raylib.SHADER_ATTRIB_VEC4);
+        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[" + index + "].intensity"), new FloatPointer(intensity), Raylib.SHADER_ATTRIB_FLOAT);
     }
 
     public void update() {
         Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "viewPos"), Renderer.camera.position, Raylib.SHADER_ATTRIB_VEC3);
-
-        addLightSource();
     }
 }

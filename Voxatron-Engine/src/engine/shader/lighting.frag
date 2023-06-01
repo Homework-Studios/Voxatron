@@ -11,19 +11,21 @@ uniform vec4 colDiffuse;
 uniform vec3 viewPos;
 
 // Maximum number of light sources
-const int MAX_LIGHT_SOURCES = 4;
+const int MAX_LIGHT_SOURCES = 10;
 
 // Light struct
 struct Light {
     vec3 position;
+    vec3 direction;
     vec4 color;
     float intensity;
 };
 
+uniform float lightCount;
 // Light source array
 uniform Light lights[MAX_LIGHT_SOURCES];
 
-vec4 ambient = vec4(0.1, 0.1, 0.1, 1.0);
+vec4 ambient = vec4(0.3, 0.3, 0.3, 1.0);
 
 // Output fragment color
 out vec4 finalColor;
@@ -57,6 +59,22 @@ vec3 CalcLight(vec3 normal, vec3 viewDir, Light light)
     return (lightDot + specular) * attenuation;
 }
 
+vec3 CalcDirectionalLight(vec3 normal, vec3 viewDir, Light light)
+{
+    vec3 lightDir = normalize(light.direction);
+    float NdotL = max(dot(normal, lightDir), 0.0);
+    vec4 color = (light.color * colDiffuse)/2;
+
+    vec3 lightDot = vec3(color) * NdotL;
+
+    // Specular
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 16.0);
+    vec3 specular = vec3(color) * spec;
+
+    return (lightDot + specular);
+}
+
 void ApplyAmbientLight(vec4 texelColor)
 {
     finalColor += texelColor * (ambient / 10.0) * colDiffuse;
@@ -84,7 +102,10 @@ void main()
         totalLight += lightResult;
     }
 
-    finalColor = texelColor * vec4((totalLight / MAX_LIGHT_SOURCES), 1.0);
+    // add a directional light - sun light
+    totalLight += CalcDirectionalLight(normal, viewD, Light(vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.5), vec4(1.0, 0.94, 0.63, 1.0), 1.0));
+
+    finalColor = texelColor * vec4((totalLight / lightCount), 1.0);
 
     ApplyAmbientLight(texelColor);
     ApplyGammaCorrection();
