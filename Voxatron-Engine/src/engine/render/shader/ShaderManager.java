@@ -23,14 +23,7 @@ public class ShaderManager {
         lightShader = Raylib.LoadShader(path + "lighting.vert", path + "lighting.frag");
 
         // Randomly add 10 lights
-        for (int i = 0; i < 10; i++) {
-            addLightSource(
-                    new Vector3((float) (Math.random() * 100), (float) (Math.random() * 100), (float) (Math.random() * 100)),
-                    new Vector3((float) (Math.random() * 100), (float) (Math.random() * 100), (float) (Math.random() * 100)),
-                    new Vector3((float) (Math.random() * 100), (float) (Math.random() * 100), (float) (Math.random() * 100)),
-                    (float) Math.random() * 100
-            );
-        }
+        regen();
     }
 
     public int maxLights = 10;
@@ -49,7 +42,7 @@ public class ShaderManager {
         Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[" + currentLight + "].color"), color.toRaylibVector3(), Raylib.SHADER_ATTRIB_VEC4);
         Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lights[" + currentLight + "].intensity"), new FloatPointer(intensity), Raylib.SHADER_ATTRIB_FLOAT);
 
-        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lightCount"), new FloatPointer(1f), Raylib.SHADER_ATTRIB_FLOAT);
+        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "lightCount"), new FloatPointer((float)currentLight), Raylib.SHADER_ATTRIB_FLOAT);
     }
 
     public void updateLightSource(int index, Vector3 position, Vector3 direction, Vector3 color, float intensity) {
@@ -61,5 +54,21 @@ public class ShaderManager {
 
     public void update() {
         Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "viewPos"), Renderer.camera.position, Raylib.SHADER_ATTRIB_VEC3);
+
+        if(Raylib.IsKeyPressed(Raylib.KEY_R)) {
+            regen();
+        }
+    }
+
+    public void regen() {
+        currentLight = 0;
+        for (int i = 0; i < 10; i++) {
+            addLightSource(
+                    new Vector3((float) (Math.random() * 200 - 100), (float) (20), (float) (Math.random() * 200 - 100)),
+                    new Vector3((float) (Math.random() * 100), (float) (Math.random() * 100), (float) (Math.random() * 100)),
+                    new Vector3(1,1,1),
+                    20
+            );
+        }
     }
 }

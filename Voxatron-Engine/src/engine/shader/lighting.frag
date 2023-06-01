@@ -25,7 +25,7 @@ uniform float lightCount;
 // Light source array
 uniform Light lights[MAX_LIGHT_SOURCES];
 
-vec4 ambient = vec4(0.3, 0.3, 0.3, 1.0);
+vec4 ambient = vec4(1.0, 0.94, 0.63, 1.0);
 
 // Output fragment color
 out vec4 finalColor;
@@ -50,7 +50,7 @@ vec3 CalcLight(vec3 normal, vec3 viewDir, Light light)
 
     // Specular
     vec3 reflectDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 16.0);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32.0);
     vec3 specular = vec3(color) * spec;
 
     // attenuation
@@ -103,7 +103,7 @@ void main()
     }
 
     // add a directional light - sun light
-    totalLight += CalcDirectionalLight(normal, viewD, Light(vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.5), vec4(1.0, 0.94, 0.63, 1.0), 1.0));
+    totalLight += CalcDirectionalLight(normal, viewD, Light(vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.5), vec4(1.0, 0.94, 0.63, 1.0), 5.0));
 
     finalColor = texelColor * vec4((totalLight / lightCount), 1.0);
 

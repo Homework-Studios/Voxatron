@@ -54,7 +54,7 @@ public class Renderer {
             ShaderManager.instance.update();
 
             Raylib.BeginDrawing();
-            Raylib.ClearBackground(new Jaylib.Color(255, 240, 161, 255));
+            Raylib.ClearBackground(sceneManager.activeScene.clearColor);
 
             sceneManager.render();
 
