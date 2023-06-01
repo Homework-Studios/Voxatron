@@ -28,7 +28,7 @@ public class LightElement extends Element{
 
     @Override
     public void render() {
-        if(Raylib.IsKeyDown(Raylib.KEY_L)){
+        if(Raylib.IsKeyDown(Raylib.KEY_O)){
             Raylib.DrawSphere(position.toRaylibVector3(), 1, Jaylib.WHITE);
         }
     }

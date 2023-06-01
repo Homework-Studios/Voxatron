@@ -21,6 +21,9 @@ public class MapOneScene extends InGameScene {
 
     @Override
     public void init() {
+
+        clearColor = new Jaylib.Color(16, 49, 85, 255);
+
         addElement3d(new DropGhostElement() {
             @Override
             public void run() {

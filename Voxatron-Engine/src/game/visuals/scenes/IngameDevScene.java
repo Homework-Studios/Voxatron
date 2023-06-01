@@ -22,7 +22,7 @@ public class IngameDevScene extends InGameScene {
     @Override
     public void init() {
 
-        clearColor = new Jaylib.Color(255, 240, 161, 255);
+        clearColor = new Jaylib.Color(16, 49, 85, 255);
 
         addElement3d(new DropGhostElement() {
             @Override
