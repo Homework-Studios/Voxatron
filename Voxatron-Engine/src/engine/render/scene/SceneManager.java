@@ -2,10 +2,10 @@ package engine.render.scene;
 
 import engine.assets.Asset;
 import engine.render.Renderer;
-import game.visuals.scenes.EbenenAuswaehlerSzene;
-import game.visuals.scenes.EinstellungsSzene;
-import game.visuals.scenes.KarteEinsSzene;
-import game.visuals.scenes.TitelSzene;
+import spiel.visuellen.szenen.EbenenAuswaehlerSzene;
+import spiel.visuellen.szenen.EinstellungsSzene;
+import spiel.visuellen.szenen.KarteEinsSzene;
+import spiel.visuellen.szenen.TitelSzene;
 
 import java.util.ArrayList;
 
