@@ -29,7 +29,7 @@ public abstract class GameManager extends Element {
     private int round = 0;
     private boolean roundEnded = true;
     private boolean gameShouldEnd = false;
-    private int energy = 500000;
+    private int energy = 500;
     private int lives = 100;
     private List<Tower> towers = new ArrayList<>();
     private int remainingWeight;
@@ -218,7 +218,6 @@ public abstract class GameManager extends Element {
     }
 
     public void addEnemy(Enemy enemy) {
-        enemy.position = pathManager.currentPath.getTravel(0);
         parentScene.addElement3d(enemy);
         enemies.add(enemy);
     }

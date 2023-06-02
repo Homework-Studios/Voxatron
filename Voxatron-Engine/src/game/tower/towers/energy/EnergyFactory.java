@@ -1,19 +1,21 @@
 package game.tower.towers.energy;
 
 import com.raylib.Raylib;
-import engine.math.Vector3;
+import engine.assets.AssetManager;
+import engine.assets.basic.ModelAsset;
 import engine.render.shader.ShaderManager;
 import game.tower.EnergyConsumer;
 import game.tower.Factory;
 
 public class EnergyFactory extends Factory {
 
-    private EnergyConsumer[] consumers = new EnergyConsumer[0];
     private final Raylib.Model model;
+    private EnergyConsumer[] consumers = new EnergyConsumer[0];
 
     public EnergyFactory() {
         super(Type.ENERGY_FACTORY);
-        model = Raylib.LoadModelFromMesh(Raylib.GenMeshCube(5, 5, 5));
+        ModelAsset asset = new AssetManager<ModelAsset>().getAsset("Game/Towers/EnergyFactory");
+        model = asset.getModel();
         model.materials().shader(ShaderManager.instance.lightShader);
         range = 100;
     }
@@ -37,8 +39,8 @@ public class EnergyFactory extends Factory {
     public void render() {
         drawRange();
 
-        Vector3 pos = new Vector3(position).add(0, 5, 0);
-        Raylib.DrawModel(model, pos.toRaylibVector3(), 1, type.getColor());
+        if (model != null)
+            Raylib.DrawModel(model, position.toRaylibVector3(), 3, type.getColor());
         // draw a line to all the energy consumers in range
 
         for (EnergyConsumer consumer : consumers) {

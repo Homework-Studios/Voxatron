@@ -69,13 +69,12 @@ public abstract class Tower extends Element {
         triedToFire++;
     }
 
-    // IMPORTANT NOTE: The lowest EnergyFactory has to cost less than the lowest Tower to not softlock the game!
     public enum Type {
         CUBE_CANON("Cube Canon", Jaylib.RED, 400),
         LASER_CANON("Laser", Jaylib.RED, 1300),
         TRON_CANON("Tron Canon", Jaylib.RED, 500),
 
-        PYLON_CANON("Pylon", Jaylib.PURPLE, 2000),
+        PYLON_CANON("Pylon", Jaylib.PURPLE, 700),
         SPHERE_CANON("Sphere Canon", Jaylib.PURPLE, 600),
 
         ENERGY_FACTORY("Energy Factory", Jaylib.YELLOW, 100);

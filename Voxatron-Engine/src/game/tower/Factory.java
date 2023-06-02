@@ -1,9 +1,5 @@
 package game.tower;
 
-import com.raylib.Jaylib;
-import com.raylib.Raylib;
-import engine.render.Renderer;
-
 public abstract class Factory extends Tower {
 
     public int provideEveryTick = 20;
@@ -11,7 +7,6 @@ public abstract class Factory extends Tower {
 
     public float currentEnergy = 0;
     public int maxEnergy = 1000;
-    public float efficiency = 0.1f;
 
     public Factory(Type type) {
         super(type);
@@ -22,14 +17,15 @@ public abstract class Factory extends Tower {
 
         gameManager.addEnergy(amount);
 
+        if (consumers.length > 5) {
+            consumers = new EnergyConsumer[]{consumers[0], consumers[1], consumers[2], consumers[3], consumers[4]};
+        }
         int energyPerConsumer = amount / (consumers.length == 0 ? 1 : consumers.length);
 
         float leftoverEnergy = 0;
         for (EnergyConsumer consumer : consumers) {
             leftoverEnergy += consumer.addEnergy(energyPerConsumer);
         }
-
-        leftoverEnergy *= efficiency;
 
         return leftoverEnergy;
     }
@@ -40,13 +36,5 @@ public abstract class Factory extends Tower {
         if (currentEnergy > maxEnergy) {
             currentEnergy = maxEnergy;
         }
-    }
-
-    public void drawEnergy() {
-        Raylib.EndMode3D();
-        Raylib.Vector2 screenPos = Raylib.GetWorldToScreen(position.toRaylibVector3(), Renderer.camera.getCamera());
-
-        Raylib.DrawText(String.valueOf(currentEnergy), (int) screenPos.x(), (int) screenPos.y(), 20, Jaylib.WHITE);
-        Raylib.BeginMode3D(Renderer.camera.getCamera());
     }
 }
