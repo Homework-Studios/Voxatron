@@ -13,7 +13,7 @@ public class Main {
         //Initializing Assets
         Asset.ASSET_DIR = System.getProperty("user.dir") + "\\Voxatron\\Assets";
 
-        Raylib.SetTraceLogLevel(Raylib.LOG_ERROR);
+        Raylib.SetTraceLogLevel(Raylib.LOG_WARNING);
 
         //initializing
         Asset.init();

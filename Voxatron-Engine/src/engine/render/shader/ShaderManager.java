@@ -23,6 +23,10 @@ public class ShaderManager {
         lightShader = Raylib.LoadShader(path + "lighting.vert", path + "lighting.frag");
     }
 
+    public void LoadDepthTexture(Raylib.Texture depthTexture) {
+        Raylib.SetShaderValueTexture(lightShader, Raylib.GetShaderLocation(lightShader, "depthTexture"), depthTexture);
+    }
+
     public int maxLights = 10;
     public int currentLight = 0;
 
@@ -53,5 +57,6 @@ public class ShaderManager {
 
     public void update() {
         Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "viewPos"), Renderer.camera.position, Raylib.SHADER_ATTRIB_VEC3);
+        Raylib.SetShaderValue(lightShader, Raylib.GetShaderLocation(lightShader, "ambient"), new Vector3(0.06f, 0.19f, 0.33f).toRaylibVector3(), Raylib.SHADER_ATTRIB_VEC3);
     }
 }

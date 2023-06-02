@@ -10,6 +10,7 @@ import engine.window.Window;
 
 import static com.raylib.Jaylib.BLACK;
 import static com.raylib.Raylib.Vector3;
+import static com.raylib.Raylib.rlDisableDepthTest;
 
 
 public class Renderer {
@@ -67,9 +68,11 @@ public class Renderer {
         mode3d = !mode3d;
 
         if (mode3d) {
+            Raylib.rlEnableDepthTest();
             Raylib.BeginMode3D(camera.getCamera());
         } else {
             Raylib.EndMode3D();
+            Raylib.rlDisableDepthTest();
         }
     }
 

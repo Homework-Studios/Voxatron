@@ -7,6 +7,7 @@ in vec3 fragNormal;
 
 // Input uniform values
 uniform sampler2D texture0;
+uniform sampler2D depthTexture;
 uniform vec4 colDiffuse;
 uniform vec3 viewPos;
 
@@ -25,7 +26,7 @@ uniform float lightCount;
 // Light source array
 uniform Light lights[MAX_LIGHT_SOURCES];
 
-vec4 ambient = vec4(0.06, 0.19, 0.33, 1.0);
+uniform vec3 ambient; //= vec4(0.06, 0.19, 0.33, 1.0);
 
 // Output fragment color
 out vec4 finalColor;
@@ -77,7 +78,7 @@ vec3 CalcDirectionalLight(vec3 normal, vec3 viewDir, Light light)
 
 void ApplyAmbientLight(vec4 texelColor)
 {
-    finalColor += texelColor * (ambient / 10.0) * colDiffuse;
+    finalColor += texelColor * (vec4(ambient, 1.0) / 10.0) * colDiffuse;
 }
 
 void ApplyGammaCorrection()
@@ -103,7 +104,7 @@ void main()
     }
 
     // add a directional light - sun light
-    totalLight += CalcDirectionalLight(normal, viewD, Light(vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.5), vec4(0.06, 0.19, 0.33, 1.0), 5.0));
+    totalLight += CalcDirectionalLight(normal, viewD, Light(vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.5), vec4(ambient, 1.0), 5.0));
 
     finalColor = texelColor * vec4((totalLight / lightCount), 1.0);
 
