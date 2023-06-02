@@ -1,6 +1,5 @@
 package engine.render;
 
-import com.raylib.Jaylib;
 import com.raylib.Raylib;
 import engine.debug.DebugDraw;
 import engine.render.camera.Camera;
@@ -8,9 +7,7 @@ import engine.render.scene.SceneManager;
 import engine.render.shader.ShaderManager;
 import engine.window.Window;
 
-import static com.raylib.Jaylib.BLACK;
 import static com.raylib.Raylib.Vector3;
-import static com.raylib.Raylib.rlDisableDepthTest;
 
 
 public class Renderer {
@@ -55,7 +52,7 @@ public class Renderer {
             ShaderManager.instance.update();
 
             Raylib.BeginDrawing();
-            Raylib.ClearBackground(sceneManager.activeScene.clearColor);
+            Raylib.ClearBackground(sceneManager.activeScene.leereFarbe);
 
             sceneManager.render();
 

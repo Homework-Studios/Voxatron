@@ -1,7 +1,7 @@
 package game.tower.towers.singletarget;
 
 import com.raylib.Raylib;
-import game.tower.Tower;
+import game.tower.Turm;
 
 /**
  * concept:
@@ -10,7 +10,7 @@ import game.tower.Tower;
  * <p>
  * maybe a tower that switches between different modes
  */
-public class TronCanon extends Tower {
+public class TronCanon extends Turm {
     public TronCanon() {
         super(Type.TRON_CANON);
     }
@@ -22,11 +22,11 @@ public class TronCanon extends Tower {
 
     @Override
     public void render() {
-        Raylib.DrawCube(position.toRaylibVector3(), 5, 5, 5, type.getColor());
+        Raylib.DrawCube(position.toRaylibVector3(), 5, 5, 5, typ.getFarbe());
     }
 
     @Override
-    public void gameTick() {
+    public void spielSchlag() {
 
     }
 }

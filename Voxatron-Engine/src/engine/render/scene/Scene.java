@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public abstract class Scene {
 
-    public Jaylib.Color clearColor = new Jaylib.Color(0, 0, 0, 255);
+    public Jaylib.Color leereFarbe = new Jaylib.Color(0, 0, 0, 255);
 
     public ArrayList<Element> elements;
     public ArrayList<Element> elements3d;

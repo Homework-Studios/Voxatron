@@ -2,7 +2,10 @@ package engine.render.scene;
 
 import engine.assets.Asset;
 import engine.render.Renderer;
-import game.visuals.scenes.*;
+import game.visuals.scenes.EbenenAuswaehlerSzene;
+import game.visuals.scenes.EinstellungsSzene;
+import game.visuals.scenes.KarteEinsSzene;
+import game.visuals.scenes.TitelSzene;
 
 import java.util.ArrayList;
 
@@ -17,12 +20,10 @@ public class SceneManager {
 
         scenes = new ArrayList<>();
 
-        addScene(new TitleScene());
-        addScene(new SettingsScene());
-        addScene(new LevelSelectorScene());
-        addScene(new IngameUIDevScene());
-        addScene(new IngameDevScene());
-        addScene(new MapOneScene());
+        addScene(new TitelSzene());
+        addScene(new EinstellungsSzene());
+        addScene(new EbenenAuswaehlerSzene());
+        addScene(new KarteEinsSzene());
         setActiveScene(scenes.get(0));
     }
 
