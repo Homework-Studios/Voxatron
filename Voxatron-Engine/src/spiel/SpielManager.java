@@ -47,7 +47,7 @@ public abstract class SpielManager extends Element {
         return instance;
     }
 
-    public void placeTower(Turm.Type typ) {
+    public void plaziereTurm(Turm.Type typ) {
         InGameScene szene;
         if (!(SceneManager.instance.getActiveScene() instanceof InGameScene)) return;
 
@@ -55,7 +55,7 @@ public abstract class SpielManager extends Element {
         boolean kaufen;
         if (!kannFallen(szene.getFallPosition())) return;
         if (typ == Turm.Type.ENERGIE_FABRIK) {
-            kaufen = kaufen((int) (energieFabriken.size() * energieFabriken.size() * Math.PI * 0.1f));
+            kaufen = kaufen((int) (typ.getKosten() * energieFabriken.size() * energieFabriken.size() * Math.PI * 0.1f));
         } else {
             kaufen = kaufen(typ.getKosten());
         }

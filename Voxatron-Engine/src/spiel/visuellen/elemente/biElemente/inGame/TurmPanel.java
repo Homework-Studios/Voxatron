@@ -45,9 +45,9 @@ public class TurmPanel {
         // Setze Turm breite
         float breite = groesse.x / 10;
 
-       
+
         float finalerScroll = -scroll + UiUtils.getWidthPercent(30);
-       float finalerX = position.x - groesse.x / 2 + index * (breite + UiUtils.getWidthPercent(1)) + finalerScroll;
+        float finalerX = position.x - groesse.x / 2 + index * (breite + UiUtils.getWidthPercent(1)) + finalerScroll;
         float finalerY = position.y - groesse.y / 2;
         finalerY += finalerX < UiUtils.getWidthPercent(30) ? (-finalerX + UiUtils.getWidthPercent(30)) * (-finalerX + UiUtils.getWidthPercent(30)) * 0.002 : 0;
         finalerY += finalerX > UiUtils.getWidthPercent(70) ? (UiUtils.getWidthPercent(70) - finalerX) * (UiUtils.getWidthPercent(70) - finalerX) * 0.002 : 0;
@@ -70,7 +70,7 @@ public class TurmPanel {
         if (ziehen) {
             if (IsMouseButtonReleased(Raylib.MOUSE_BUTTON_LEFT)) {
                 ziehen = false;
-                SpielManager.getInstance().placeTower(turm);
+                SpielManager.getInstance().plaziereTurm(turm);
             }
         }
 
