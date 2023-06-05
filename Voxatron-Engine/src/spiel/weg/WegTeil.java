@@ -10,8 +10,8 @@ public class WegTeil {
     public float laenge;
 
     public WegTeil(Vector3 start, Vector3 ende) {
-        this.start = start;
-        this.ende = ende;
+        this.start = start.add(0, 1, 0);
+        this.ende = ende.add(0, 1, 0);
         this.laenge = start.distance(ende);
     }
 

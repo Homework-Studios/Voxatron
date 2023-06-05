@@ -14,6 +14,6 @@ public class SpielManagerElement extends SpielManager {
 
     @Override
     public void render() {
-        Raylib.DrawText("Energie: " + getEnergie() + "\nLeben: " + getLeben() + "\nRunde: " + getRunde() + " (" + getSchwierigkeit() + ")" + "\n" + beschwwoerGewicht, (int) UiUtils.getWidthPercent(5), (int) UiUtils.getHeightPercent(5), (int) UiUtils.getHeightPercent(3), new Jaylib.Color(46, 46, 46, 255));
+        Raylib.DrawText("Energie: " + getEnergie() + "\nLeben: " + getLeben() + "\nRunde: " + getRunde(), (int) UiUtils.getWidthPercent(5), (int) UiUtils.getHeightPercent(5), (int) UiUtils.getHeightPercent(3), new Jaylib.Color(46, 46, 46, 255));
     }
 }
