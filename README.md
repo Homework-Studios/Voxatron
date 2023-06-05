@@ -1,9 +1,24 @@
-# Voxatron
+# Example Gradle project for Jaylib
 
-###### Ein Schulprojekt von Jonas und Timon
+You can import this project into IntelliJ or Eclipse.
 
-Die Engine ist based auf Java termuin 11 und dem Jaylib OpenGL Interface
+## Use it to run the included examples in IntelliJ
 
-Made with jaylib
+Right-click on the example and select `run`.
 
-https://mango-dune-07a8b7110.1.azurestaticapps.net/?repo=Homework-Studios%2FVoxatron
+## Use it to run the included examples from the command line
+
+    ./gradlew run -Pmain=examples.HeightMap
+    ./gradlew run -Pmain=examples.CubicMap
+
+## Use it as the basis of your own game.
+
+Edit `Main.java` with your own code.  (You can delete the examples.)  Then
+
+To run:
+
+    ./gradlew run
+
+To build a zip file you can distribute:
+
+    ./gradlew distZip

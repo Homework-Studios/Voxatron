@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Voxatron-Engine/lib/jaylib-4.2.0-1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Voxatron-Engine/lib/jaylib-4.2.0-1-javadoc.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

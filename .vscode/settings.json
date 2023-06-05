@@ -1,6 +1,0 @@
-{
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "Voxatron-Engine\\lib\\jaylib-4.2.0-1.jar"
-    ]
-}
