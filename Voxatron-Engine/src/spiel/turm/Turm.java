@@ -29,12 +29,15 @@ public abstract class Turm extends Element {
         this.typ = typ;
     }
 
+    // Funktion zur Implementierung des Spiel-Schlags
     public abstract void spielSchlag();
 
+    // Funktion zur Setzung der Position des Turms
     public void setPosition(Vector3 fallPosition) {
         position = fallPosition;
     }
 
+    // Funktion zur Darstellung des Bereichs des Turms
     public void drawRange() {
         Raylib.DrawCircle3D(position.toRaylibVector3(), reichweite, new Raylib.Vector3().y(1), 90, new Jaylib.Color(255, 255, 255, 50));
         Raylib.DrawCircle3D(position.toRaylibVector3(), reichweite, new Raylib.Vector3().x(1), 90, new Jaylib.Color(255, 255, 255, 50));
@@ -54,14 +57,17 @@ public abstract class Turm extends Element {
         return kollision.hit();
     }
 
+    // Funktion zur Überprüfung, ob der Turm feuern kann
     public boolean kannFeuern() {
         return hatVersuchtZuFeuern >= feuerrate;
     }
 
+    // Funktion zum Feuern des Turms
     public void feuern() {
         hatVersuchtZuFeuern = 0;
     }
 
+    // Funktion zum Versuch des Feuerns des Turms
     public void versucheZuFeuern() {
         hatVersuchtZuFeuern++;
     }
@@ -97,19 +103,22 @@ public abstract class Turm extends Element {
             this.kosten = kosten;
         }
 
-
+        // Funktion zur Rückgabe des Namens des Turms
         public String getName() {
             return name;
         }
 
+        // Funktion zur Rückgabe der Kosten des Turms
         public int getKosten() {
             return kosten;
         }
 
+        // Funktion zur Rückgabe der Farbe des Turms
         public Raylib.Color getFarbe() {
             return farbe;
         }
 
+        // Funktion zur Erstellung des Turms
         public Turm erstelleTurm() {
             switch (this) {
                 case WUERFEL_KANONE:

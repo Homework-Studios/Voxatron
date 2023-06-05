@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KarteEinsSzene extends InGameScene {
+
     private final Vector3 pos = new Vector3(0, 0, 0);
     ElementBatch elementPaket;
     ElementBatch tutorialPaket;
@@ -34,6 +35,7 @@ public class KarteEinsSzene extends InGameScene {
 
     @Override
     public void init() {
+        // Initialisiert die Szene
         leereFarbe = new Jaylib.Color(146, 218, 225, 255);
         addElement3d(new FallGeistElement() {
             @Override
@@ -64,6 +66,7 @@ public class KarteEinsSzene extends InGameScene {
     }
 
     public Vector3 getFallPosition() {
+        // Gibt die Position zurück, an der der Mauszeiger auf den Boden trifft
         Raylib.Ray ray = Jaylib.GetMouseRay(Jaylib.GetMousePosition(), Renderer.camera.getCamera());
 
         Raylib.Rectangle boden = new Raylib.Rectangle().x(-125).y(-125).width(250).height(250);
@@ -83,6 +86,7 @@ public class KarteEinsSzene extends InGameScene {
 
     @Override
     public void update() {
+        // Aktualisiert die Szene
         if (Raylib.IsKeyPressed(Raylib.KEY_P)) {
             fallPosition.add(getFallPosition());
             System.out.println(fallPosition);
@@ -109,6 +113,7 @@ public class KarteEinsSzene extends InGameScene {
 
     @Override
     public void render() {
+        // Rendert die Szene
         // Enabled the renderer to render 3d elements, without this, the 3d elements will not be rendered.
         // --------------------------------------------
         Renderer.instance.toggleMode3d();

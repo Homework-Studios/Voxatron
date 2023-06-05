@@ -25,17 +25,20 @@ public class LaserKanone extends EnergieVerbraucher {
 
     @Override
     public void update() {
+        // Funktion, die die Bewegung der Kanone aktualisiert
         schweben += 0.01f;
         schweben %= Math.PI * 2;
     }
 
     @Override
     public void render() {
+        // Funktion, die das Modell der Kanone und der Basis rendert
         if (basis != null && kanone != null) {
             Vector3 pos = new Vector3(position).add(0, (float) Math.sin(schweben) / 2, 0);
             Raylib.DrawModel(basis, position.toRaylibVector3(), 2, typ.getFarbe());
             Raylib.DrawModel(kanone, pos.toRaylibVector3(), 2, typ.getFarbe());
 
+            // Funktion, die den Laserstrahl rendert
             if (ziel != null)
                 Raylib.DrawCylinderEx(pos.add(0, 10, 0).toRaylibVector3(), ziel.position.toRaylibVector3(), 0.1f * verbrauch, 0.1f * verbrauch, 12, typ.getFarbe());
         }
@@ -46,6 +49,7 @@ public class LaserKanone extends EnergieVerbraucher {
 
     @Override
     public void spielSchlag() {
+        // Funktion, die den Schuss der Kanone ausführt
         if (ziel == null || !ziel.istAmLeben) {
             ziel = SpielManager.instance.getWeitestenGegnerInReichweite(position, reichweite);
             if (ziel == null) {
@@ -55,7 +59,7 @@ public class LaserKanone extends EnergieVerbraucher {
         }
 
         if (ziel != null)
-            //make canon look at target
+            // Funktion, die die Kanone auf das Ziel ausrichtet
             kanone.transform(Raylib.MatrixRotateY((float) Math.atan2(ziel.position.x - position.x, ziel.position.z - position.z)));
 
         if (hatEnergie(verbrauch)) {

@@ -17,7 +17,7 @@ public abstract class TurmAuswaehler extends Element implements Runnable {
     private float schwebenOffset;
 
     /**
-     * IMPORTANT: minimum of three towers in towers array (scrolling issues)
+     * WICHTIG: Mindestens drei Türme im Turm-Array (Scrolling-Probleme)
      */
     public TurmAuswaehler(Vector2 position, Vector2 groesse) {
         this.position = position;
@@ -27,12 +27,11 @@ public abstract class TurmAuswaehler extends Element implements Runnable {
 
     @Override
     public void update() {
-        // hover check
+        // Hover-Check
         Raylib.Rectangle kollisionen = new Raylib.Rectangle().x(position.x - groesse.x / 2).y(position.y - groesse.y / 2 - schwebenOffset).width(groesse.x).height(groesse.y + UiUtils.getHeightPercent(5));
         boolean schweben = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), kollisionen);
 
-
-        // Check if the mouse is scrolling
+        // Überprüfen, ob die Maus scrollt
         final int scrollGeschwindigkeit = 60;
         if (Raylib.GetMouseWheelMove() > 0 && schweben) {
             zeilScrolling += scrollGeschwindigkeit;
@@ -42,7 +41,7 @@ public abstract class TurmAuswaehler extends Element implements Runnable {
             zeilScrolling -= scrollGeschwindigkeit;
         }
 
-        //clamp target scrolling
+        // Ziel-Scrolling begrenzen
         if (zeilScrolling < 0) {
             zeilScrolling = 0;
         }
@@ -53,17 +52,17 @@ public abstract class TurmAuswaehler extends Element implements Runnable {
             zeilScrolling = (int) maxScroll;
         }
 
-        // smooth scrolling
+        // Sanftes Scrolling
         scroll = (int) LerpUtil.lerp(scroll, zeilScrolling, 0.1f);
 
-        //move up when scrolling
+        // Beim Scrollen nach oben bewegen
         float zielSchwebenAbstand = schweben ? UiUtils.getHeightPercent(20) : 0;
 
-        // update effective position
+        // Effektive Position aktualisieren
         schwebenOffset = LerpUtil.lerp(schwebenOffset, zielSchwebenAbstand, 0.1f);
         Vector2 effectivePosition = new Vector2(position.x, position.y - schwebenOffset);
 
-        // update tabs
+        // Tabs aktualisieren
         for (int i = 0; i < tuerme.length; i++) {
             TurmPanel turm = tuerme[i];
             turm.index = i;

@@ -42,24 +42,18 @@ public class TurmPanel {
     }
 
     public void update() {
-        // Set the width of the tower panel
+        // Setze Turm breite
         float breite = groesse.x / 10;
 
-        // Calculate the final scroll position of the tower panel
+       
         float finalerScroll = -scroll + UiUtils.getWidthPercent(30);
-
-        // Calculate the final X and Y position of the tower element
-        float finalerX = position.x - groesse.x / 2 + index * (breite + UiUtils.getWidthPercent(1)) + finalerScroll;
+       float finalerX = position.x - groesse.x / 2 + index * (breite + UiUtils.getWidthPercent(1)) + finalerScroll;
         float finalerY = position.y - groesse.y / 2;
-
-        // Move elements down at the sides
         finalerY += finalerX < UiUtils.getWidthPercent(30) ? (-finalerX + UiUtils.getWidthPercent(30)) * (-finalerX + UiUtils.getWidthPercent(30)) * 0.002 : 0;
         finalerY += finalerX > UiUtils.getWidthPercent(70) ? (UiUtils.getWidthPercent(70) - finalerX) * (UiUtils.getWidthPercent(70) - finalerX) * 0.002 : 0;
 
-        // Set the rectangle for the tower element
         rechteck = new Raylib.Rectangle().x(finalerX - UiUtils.getWidthPercent(5)).y(finalerY).width(breite).height(groesse.y);
 
-        // Cull the tower element if it is outside the screen
         verstecken = !Jaylib.CheckCollisionBoxes(
                 new Jaylib.BoundingBox(
                         new Jaylib.Vector3(),
@@ -71,10 +65,8 @@ public class TurmPanel {
                 )
         );
 
-        // check if the mouse is hovering over the tower element
         boolean schweben = Raylib.CheckCollisionPointRec(Raylib.GetMousePosition(), rechteck);
 
-        // if dragging and left mouse button is pressed set dragging to false
         if (ziehen) {
             if (IsMouseButtonReleased(Raylib.MOUSE_BUTTON_LEFT)) {
                 ziehen = false;
@@ -82,7 +74,6 @@ public class TurmPanel {
             }
         }
 
-        // if not dragging and left mouse button is pressed and the mouse is hovering over the tower element set dragging to true
         if (!ziehen) {
             if (IsMouseButtonPressed(Raylib.MOUSE_BUTTON_LEFT) && schweben) {
                 ziehen = true;

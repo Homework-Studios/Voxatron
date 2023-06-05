@@ -15,6 +15,7 @@ public class WegManager {
         instance = this;
     }
 
+    // Generiert einen Weg mit den gegebenen Start- und Endpunkten sowie einer Liste von Zwischenpunkten
     public void generiereWeg(Vector3 start, Vector3 ende, Vector3[] punkte) {
         System.out.println("generating Path");
         WegTeil[] WegTeile = new WegTeil[punkte.length + 1];
@@ -28,6 +29,7 @@ public class WegManager {
         momentanerWeg = new Weg(WegTeile);
     }
 
+    // Gibt die Position des Spielers auf dem aktuellen Weg zurück, basierend auf der zurückgelegten Distanz
     public Vector3 getLaufen(float distance) {
         return momentanerWeg.getLaufen(distance);
     }

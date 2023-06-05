@@ -20,6 +20,7 @@ public class EnergieFabrik extends Fabrik {
         reichweite = 100;
     }
 
+    // berechnet die Energieproduktion und fügt sie dem Turm hinzu
     @Override
     public void spielSchlag() {
         if (momentanenSchlag >= gibEnergieProSchlag) {
@@ -30,19 +31,20 @@ public class EnergieFabrik extends Fabrik {
         momentanenSchlag++;
     }
 
+    // aktualisiert die Liste der Energieverbraucher in Reichweite
     @Override
     public void update() {
         verbraucher = spielManager.getNaechstenEnergieVerbraucher(position, reichweite);
     }
 
+    // zeichnet den Turm und die Reichweite, sowie eine Linie zu allen Energieverbrauchern in Reichweite
     @Override
     public void render() {
         drawRange();
 
         if (modell != null)
             Raylib.DrawModel(modell, position.toRaylibVector3(), 3, typ.getFarbe());
-        // draw a line to all the energy consumers in range
-
+        
         for (EnergieVerbraucher verbraucher : verbraucher) {
             Raylib.DrawLine3D(position.toRaylibVector3(), verbraucher.position.toRaylibVector3(), typ.getFarbe());
         }

@@ -12,6 +12,7 @@ public abstract class Fabrik extends Turm {
         super(typ);
     }
 
+    // gibt die überschüssige Energie zurück, die nicht an die Verbraucher verteilt werden konnte
     public float provideEnergy(int menge) {
         EnergieVerbraucher[] verbraucher = spielManager.getNaechstenEnergieVerbraucher(position, reichweite);
 
@@ -30,7 +31,7 @@ public abstract class Fabrik extends Turm {
         return leftoverEnergy;
     }
 
-    // add energy to the factory as long as there is space
+    // fügt Energie zur Fabrik hinzu, solange noch Platz vorhanden ist
     public void addEnergie(float menge) {
         momentaneEnergie += menge;
         if (momentaneEnergie > maximaleEnergie) {

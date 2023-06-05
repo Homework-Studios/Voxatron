@@ -24,9 +24,12 @@ public class EbenenAuswaehlerSzene extends Scene {
 
     @Override
     public void init() {
+        // Erstellt eine Textur mit einem Schachbrettmuster
         Raylib.Texture basisVorderbild = Raylib.LoadTextureFromImage(Jaylib.GenImageChecked(1000, 1000, 10, 10, Jaylib.PINK, Jaylib.BLACK));
 
+        // Erstellt eine ElementBatch, die alle Elemente der Szene enthält
         ebenenAuswahlPaket = new ElementBatch(new Element[]{
+                // Erstellt einen Text, der die Überschrift der Szene darstellt
                 new TextElement(
                         Vector2.byScreenPercent(0, 0),
                         Vector2.byScreenPercent(100, 15),
@@ -34,6 +37,7 @@ public class EbenenAuswaehlerSzene extends Scene {
                         50f,
                         Jaylib.LIGHTGRAY
                 ),
+                // Erstellt einen Button, der die Szene schließt
                 new ButtonElement(
                         Vector2.byScreenPercent(94, 5),
                         Vector2.byScreenPercent(10, 7),
@@ -43,9 +47,11 @@ public class EbenenAuswaehlerSzene extends Scene {
                 ) {
                     @Override
                     public void run() {
+                        // Setzt die aktive Szene auf die TitelSzene
                         SceneManager.instance.setActiveScene(TitelSzene.class);
                     }
                 },
+                // Erstellt einen EbenenAuswaehler, der die verfügbaren Ebenen anzeigt
                 new EbenenAuswaehler(
                         Vector2.byScreenPercent(50, 50),
                         Vector2.byScreenPercent(40, 60),
@@ -62,6 +68,7 @@ public class EbenenAuswaehlerSzene extends Scene {
                 ) {
                     @Override
                     public void run() {
+                        // Setzt die aktive Szene auf die KarteEinsSzene und startet das Spiel
                         SceneManager.instance.setActiveScene(KarteEinsSzene.class);
                         SpielManager.getInstance().start();
                     }
@@ -73,6 +80,7 @@ public class EbenenAuswaehlerSzene extends Scene {
 
     @Override
     public void update() {
+        // Aktualisiert alle Elemente der Szene
         for (Element element : getIterableElements()) {
             element.update();
         }
@@ -80,6 +88,7 @@ public class EbenenAuswaehlerSzene extends Scene {
 
     @Override
     public void render() {
+        // Rendert alle Elemente der Szene
         for (Element element : elements) {
             element.render();
         }

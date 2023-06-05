@@ -26,5 +26,8 @@ public abstract class FallGeistElement extends Element implements Runnable {
     public void render() {
         // Draw a sphere at the position
         Raylib.DrawModel(kugel, position.toRaylibVector3(), 2, Jaylib.GREEN);
+
+        // Draw a line from the position to the target
+        Raylib.DrawLine3D(position.toRaylibVector3(), position.add(0, 0, 0).toRaylibVector3(), Jaylib.GREEN);
     }
 }

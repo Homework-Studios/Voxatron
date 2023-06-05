@@ -21,12 +21,14 @@ public class PylonenKanone extends EnergieVerbraucher {
         modell = asset.getNewModel();
     }
 
+    // Funktion, die den Schlag des Turms ausführt
     @Override
     public void spielSchlag() {
         if (hatEnergie(25)) {
             pause++;
             if (pause >= 60) {
                 pause = 0;
+                // Schaden an allen Gegnern in Reichweite ausführen
                 for (Gegner gegner : SpielManager.instance.getGegnerInReichweiteEinerPosition(position, reichweite)) {
                     gegner.schaden(5);
                 }
@@ -36,6 +38,7 @@ public class PylonenKanone extends EnergieVerbraucher {
         }
     }
 
+    // Funktion, die den Turm aktualisiert
     @Override
     public void update() {
         drehung += 0.01f;
@@ -46,6 +49,7 @@ public class PylonenKanone extends EnergieVerbraucher {
         }
     }
 
+    // Funktion, die den Turm rendert
     @Override
     public void render() {
         Vector3 pos = new Vector3(position).add(0, (float) Math.sin(drehung), 0);
