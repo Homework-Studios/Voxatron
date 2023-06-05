@@ -16,7 +16,7 @@ public class PinkerWuerfel extends Gegner {
 
     @Override
     public void kill() {
-        spawnEnemy(new GelberWuerfel());
-        spawnEnemy(new GelberWuerfel());
+        beschwoereGegner(new GelberWuerfel());
+        beschwoereGegner(new GelberWuerfel());
     }
 }

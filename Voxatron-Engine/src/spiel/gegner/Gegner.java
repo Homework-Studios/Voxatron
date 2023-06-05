@@ -24,6 +24,9 @@ public abstract class Gegner extends Element {
 
     }
 
+    /**
+     * Lässt die Gegner auf dem Weg entlang laufen
+     */
     public void laufeAufWeg() {
         positionAufWeg += (laufgeschwindigkeit * 0.05f * SpielManager.spielGeschwindigkeit);
 
@@ -34,6 +37,11 @@ public abstract class Gegner extends Element {
         }
     }
 
+    /**
+     * Fügt dem Gegner Schaden zu
+     *
+     * @param damage
+     */
     public void schaden(int damage) {
         leben -= damage;
         if (leben <= 0) {
@@ -55,7 +63,12 @@ public abstract class Gegner extends Element {
         laufeAufWeg();
     }
 
-    public void spawnEnemy(Gegner gegner) {
+    /**
+     * Beschwört einen Gegner auf der Aktuellen Position
+     *
+     * @param gegner
+     */
+    public void beschwoereGegner(Gegner gegner) {
         gegner.positionAufWeg = positionAufWeg;
         SpielManager.instance.addGegner(gegner);
     }

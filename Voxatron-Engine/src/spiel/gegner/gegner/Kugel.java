@@ -18,7 +18,7 @@ public class Kugel extends Gegner {
     @Override
     public void kill() {
         for (int i = 0; i < 3; i++) {
-            spawnEnemy(new PinkerWuerfel());
+            beschwoereGegner(new PinkerWuerfel());
         }
     }
 }

@@ -16,6 +16,6 @@ public class GelberWuerfel extends Gegner {
 
     @Override
     public void kill() {
-        spawnEnemy(new GruenerFuerfel());
+        beschwoereGegner(new GruenerFuerfel());
     }
 }

@@ -283,6 +283,10 @@ public abstract class SpielManager extends Element {
             }
         }
 
+        for (int i = 0; i < naechsten.size(); i++) {
+            if (i >= 5) naechsten.remove(i);
+        }
+
         return naechsten.toArray(new EnergieVerbraucher[0]);
     }
 
