@@ -73,14 +73,14 @@ public abstract class Turm extends Element {
     }
 
     public enum Type {
-        WUERFEL_KANONE("Würfel Kanone", Jaylib.RED, 400),
+        WUERFEL_KANONE("Kanone", Jaylib.RED, 400),
         LASER("Laser", Jaylib.RED, 1300),
         TRON_CANON("Tron Canon", Jaylib.RED, 500),
 
         PYLON("Pylon", Jaylib.PURPLE, 700),
         SPHERE_CANON("Sphere Canon", Jaylib.PURPLE, 600),
 
-        ENERGIE_FABRIK("Energie Fabrik", Jaylib.YELLOW, 100);
+        ENERGIE_FABRIK("Fabrik", Jaylib.YELLOW, 100);
 
         public static final TurmPanel[] panels = new TurmPanel[]{
                 new TurmPanel(WUERFEL_KANONE),

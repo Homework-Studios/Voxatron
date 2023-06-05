@@ -2,6 +2,8 @@ package spiel.visuellen.szenen;
 
 import com.raylib.Jaylib;
 import com.raylib.Raylib;
+import engine.assets.AssetManager;
+import engine.assets.basic.ImageAsset;
 import engine.math.Vector2;
 import engine.render.scene.Element;
 import engine.render.scene.ElementBatch;
@@ -25,7 +27,7 @@ public class EbenenAuswaehlerSzene extends Scene {
     @Override
     public void init() {
         // Erstellt eine Textur mit einem Schachbrettmuster
-        Raylib.Texture basisVorderbild = Raylib.LoadTextureFromImage(Jaylib.GenImageChecked(1000, 1000, 10, 10, Jaylib.PINK, Jaylib.BLACK));
+        Raylib.Texture basisVorderbild = new AssetManager<ImageAsset>().getAsset("Game/Icons").getTexture("icons");
 
         // Erstellt eine ElementBatch, die alle Elemente der Szene enthält
         ebenenAuswahlPaket = new ElementBatch(new Element[]{

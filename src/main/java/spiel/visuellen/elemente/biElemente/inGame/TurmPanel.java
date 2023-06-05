@@ -31,13 +31,13 @@ public class TurmPanel {
     public void render() {
         if (verstecken && !ziehen) return;
 
-        int textGroesse = (int) UiUtils.getWidthPercent(2);
+        int textGroesse = (int) UiUtils.getWidthPercent(3);
         Raylib.DrawRectangleRoundedLines(rechteck, 0.1f, 10, 5, turm.getFarbe());
         int kosten = turm.getKosten();
         if (turm == Turm.Type.ENERGIE_FABRIK) {
             kosten = (int) (kosten * SpielManager.getInstance().energieFabriken.size() * SpielManager.getInstance().energieFabriken.size() * Math.PI * 0.1f);
         }
-        Raylib.DrawText(turm.getName() + "\n" + kosten, (int) rechteck.x(), (int) rechteck.y(), textGroesse / 2, Jaylib.WHITE);
+        Raylib.DrawText(turm.getName() + "\nkosten: " + kosten, (int) rechteck.x(), (int) rechteck.y(), textGroesse / 2, Jaylib.WHITE);
 
     }
 
